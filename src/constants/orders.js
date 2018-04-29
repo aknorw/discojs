@@ -1,0 +1,30 @@
+export const EDIT_STATUSES = [
+  'New Order',
+  'Buyer Contacted',
+  'Invoice Sent',
+  'Payment Pending',
+  'Payment Received',
+  'Shipped',
+  'Refund Sent',
+  'Cancelled (Non-Paying Buyer)',
+  'Cancelled (Item Unavailable)',
+  'Cancelled (Per Buyer\'s Request)',
+]
+
+export const ORDER_STATUSES = [
+  'All',
+  'New Order',
+  'Buyer Contacted',
+  'Invoice Sent',
+  'Payment Pending',
+  'Payment Received',
+  'Shipped',
+  'Merged',
+  'Order Changed',
+  'Refund Sent',
+  'Cancelled',
+  'Cancelled (Non-Paying Buyer)',
+  'Cancelled (Item Unavailable)',
+  'Cancelled (Per Buyer\'s Request)',
+  'Cancelled (Refund Received)',
+]

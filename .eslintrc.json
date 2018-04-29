@@ -1,0 +1,17 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "node": true,
+    "mocha": true
+  },
+  "extends": [
+    "airbnb-base"
+  ],
+  "rules": {
+    "semi": [2, "never"],
+    "no-unexpected-multiline": 2,
+    "max-len": [1, { "code": 200 }],
+    "no-underscore-dangle": 0,
+    "import/prefer-default-export": 0
+  }
+}

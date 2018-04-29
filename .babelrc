@@ -1,0 +1,27 @@
+{
+  "env": {
+    "development": {
+      "presets": [
+        "env"
+      ],
+      "plugins": [
+        "transform-object-rest-spread",
+        ["babel-plugin-transform-builtin-extend", { "globals": ["Error"] }],
+        ["transform-runtime", {
+          "polyfill": false,
+          "regenerator": true
+        }]
+      ]
+    },
+    "production": {
+      "presets": [
+        ["env", { "modules": false }]
+      ],
+      "plugins": [
+        "external-helpers",
+        "transform-object-rest-spread",
+        ["babel-plugin-transform-builtin-extend", { "globals": ["Error"] }]
+      ]
+    }
+  }
+}

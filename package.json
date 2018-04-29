@@ -1,0 +1,63 @@
+{
+  "name": "discojs",
+  "version": "1.0.0",
+  "description": "Easiest way to use the Discogs API in Javascript",
+  "author": "aknorw",
+  "license": "MIT",
+  "keywords": [
+    "discogs",
+    "api",
+    "client"
+  ],
+  "main": "./lib/index.js",
+  "scripts": {
+    "clean": "./node_modules/.bin/rimraf lib",
+    "lint": "./node_modules/.bin/eslint src",
+    "test": "cross-env NODE_ENV=development ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha -- ./test ./src/**/*.test.js ./src/**/**/*.test.js --require babel-core/register --timeout 6000",
+    "test:ci": "npm run test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "prebuild": "npm run clean",
+    "build": "cross-env NODE_ENV=production ./node_modules/.bin/rollup -c",
+    "precommit": "npm run clean && npm run lint",
+    "prepush": "npm run test",
+    "prepublish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aknorw/discojs.git"
+  },
+  "homepage": "https://github.com/aknorw/discojs#readme",
+  "bugs": {
+    "url": "https://github.com/aknorw/discojs/issues"
+  },
+  "dependencies": {
+    "bottleneck": "2.3.0",
+    "isomorphic-fetch": "2.2.1"
+  },
+  "devDependencies": {
+    "babel-cli": "6.26.0",
+    "babel-core": "6.26.0",
+    "babel-eslint": "8.2.2",
+    "babel-plugin-external-helpers": "6.22.0",
+    "babel-plugin-transform-builtin-extend": "1.1.2",
+    "babel-plugin-transform-object-rest-spread": "6.26.0",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "babel-preset-env": "1.6.1",
+    "chai": "4.1.2",
+    "coveralls": "3.0.0",
+    "cross-env": "5.1.4",
+    "dotenv": "5.0.1",
+    "eslint": "4.19.1",
+    "eslint-config-airbnb-base": "12.1.0",
+    "eslint-plugin-import": "2.10.0",
+    "husky": "0.14.3",
+    "istanbul": "1.1.0-alpha.1",
+    "mocha": "5.1.0",
+    "rimraf": "2.6.2",
+    "rollup": "0.58.2",
+    "rollup-plugin-babel": "3.0.4",
+    "rollup-plugin-commonjs": "9.1.0",
+    "rollup-plugin-json": "2.3.0",
+    "rollup-plugin-node-builtins": "2.1.2",
+    "rollup-plugin-uglify": "3.0.0"
+  }
+}
