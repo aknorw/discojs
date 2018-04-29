@@ -61,7 +61,7 @@ const client = new Discojs(options)
 
 Key | Type | Default | Details
 --- | --- | --- | ---
-userAgent | *string* | `Discojs/1.0.0` |
+userAgent | *string* | `Discojs/1.0.1` |
 outputFormat | *string* | `discogs` | Must be `discogs`, `plaintext` or `html`
 userToken | *string* | - | For auth purposes
 consumerKey | *string* | - | For auth purposes

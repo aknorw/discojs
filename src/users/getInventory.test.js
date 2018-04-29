@@ -11,7 +11,7 @@ let client
 
 const URL_REGEX = /^https:\/\/api\.discogs\.com\/.*\?(.*)$/
 
-const username = 'deejay.de.'
+const username = 'Kozuch438'
 
 describe('Users - getInventoryMethod', () => {
   before(() => {
@@ -28,7 +28,7 @@ describe('Users - getInventoryMethod', () => {
     client.getInventory().catch(err => err.should.be.an.instanceOf(TypeError))
   })
   it('should return a TypeError if `username` is not a string', () => {
-    client.getInventory(1337).catch(err => err.should.be.an.instanceOf(TypeError))
+    client.getInventory({ username: 1337 }).catch(err => err.should.be.an.instanceOf(TypeError))
   })
   it('should accept status param', async () => {
     const status = 'All'
