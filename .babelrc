@@ -1,26 +1,34 @@
 {
+  "plugins": [
+    "@babel/plugin-proposal-object-rest-spread",
+    [
+      "@babel/plugin-transform-runtime",
+      {
+        "helpers": false,
+        "regenerator": true
+      }
+    ]
+  ],
   "env": {
     "development": {
       "presets": [
-        "env"
-      ],
-      "plugins": [
-        "transform-object-rest-spread",
-        ["babel-plugin-transform-builtin-extend", { "globals": ["Error"] }],
-        ["transform-runtime", {
-          "polyfill": false,
-          "regenerator": true
-        }]
+        [
+          "@babel/preset-env",
+          {
+            "useBuiltIns": "usage"
+          }
+        ]
       ]
     },
     "production": {
       "presets": [
-        ["env", { "modules": false }]
-      ],
-      "plugins": [
-        "external-helpers",
-        "transform-object-rest-spread",
-        ["babel-plugin-transform-builtin-extend", { "globals": ["Error"] }]
+        [
+          "@babel/preset-env",
+          {
+            "modules": false,
+            "useBuiltIns": "usage"
+          }
+        ]
       ]
     }
   }
