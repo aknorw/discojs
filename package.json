@@ -1,6 +1,6 @@
 {
   "name": "discojs",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Easiest way to use the Discogs API in Javascript",
   "author": "aknorw",
   "license": "MIT",
