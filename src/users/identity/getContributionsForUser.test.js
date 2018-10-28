@@ -1,7 +1,7 @@
 import { parse } from 'querystring'
 import chai from 'chai'
 
-import Discojs from '../../'
+import Discojs from '../..'
 import { sortFields } from './getContributionsForUser'
 import { sortOrders } from '../../utils/sort'
 

@@ -1,6 +1,6 @@
 import chai from 'chai'
 
-import Discojs from '../../'
+import Discojs from '../..'
 import { CURRENCIES } from '../../constants'
 
 // eslint-disable-next-line no-unused-vars

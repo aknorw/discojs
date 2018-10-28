@@ -19,7 +19,9 @@ export default function sendMessageForOrder(orderId, { message, status } = {}) {
     if (ORDER_STATUSES.includes(status)) {
       data.status = status
     } else {
-      return Promise.reject(new TypeError(`[sendMessageForOrderMethod] status must be one of '${ORDER_STATUSES.join(' / ')}' (${status})`))
+      return Promise.reject(
+        new TypeError(`[sendMessageForOrderMethod] status must be one of '${ORDER_STATUSES.join(' / ')}' (${status})`),
+      )
     }
   }
   return this._fetch({

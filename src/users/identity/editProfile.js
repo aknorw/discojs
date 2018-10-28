@@ -1,12 +1,6 @@
 import { CURRENCIES } from '../../constants'
 
-export default function editProfile(username, {
-  name,
-  homepage,
-  location,
-  profile,
-  currency,
-} = {}) {
+export default function editProfile(username, { name, homepage, location, profile, currency } = {}) {
   if (typeof username !== 'string') {
     return Promise.reject(new TypeError(`[editProfileMethod] username must be a string (${username})`))
   }
@@ -43,7 +37,9 @@ export default function editProfile(username, {
     if (typeof currency === 'string' && CURRENCIES.includes(currency)) {
       data.curr_abbr = currency
     } else {
-      return Promise.reject(new TypeError(`[editProfileMethod] currency must be one of '${CURRENCIES.join(' / ')}' (${currency})`))
+      return Promise.reject(
+        new TypeError(`[editProfileMethod] currency must be one of '${CURRENCIES.join(' / ')}' (${currency})`),
+      )
     }
   }
   if (Object.keys(data).length === 0) {

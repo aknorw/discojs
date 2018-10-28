@@ -1,6 +1,6 @@
 import chai from 'chai'
 
-import Discojs from '../../'
+import Discojs from '../..'
 
 // eslint-disable-next-line no-unused-vars
 const should = chai.should()
@@ -32,10 +32,12 @@ describe('Marketplace - Listings - createListingMethod', () => {
     client.createListing({ ...defaultOptions, releaseId: 'test' }).catch(err => err.should.be.an.instanceOf(TypeError))
   })
   it('should return a TypeError if `condition.release` is not supported by Discogs', () => {
-    client.createListing({ ...defaultOptions, condition: { release: 'Test' } }).catch(err => err.should.be.an.instanceOf(TypeError))
+    client.createListing({ ...defaultOptions, condition: { release: 'Test' } })
+      .catch(err => err.should.be.an.instanceOf(TypeError))
   })
   it('should return a TypeError if `condition.sleeve` is not supported by Discogs', () => {
-    client.createListing({ ...defaultOptions, condition: { release: 'Poor (P)', sleeve: 'Test' } }).catch(err => err.should.be.an.instanceOf(TypeError))
+    client.createListing({ ...defaultOptions, condition: { release: 'Poor (P)', sleeve: 'Test' } })
+      .catch(err => err.should.be.an.instanceOf(TypeError))
   })
   it('should return a TypeError if `price` is not a number', () => {
     client.createListing({ ...defaultOptions, price: 'test' }).catch(err => err.should.be.an.instanceOf(TypeError))
@@ -44,7 +46,8 @@ describe('Marketplace - Listings - createListingMethod', () => {
     client.createListing({ ...defaultOptions, comments: 1337 }).catch(err => err.should.be.an.instanceOf(TypeError))
   })
   it('should return a TypeError if `allowOffers` is not a boolean', () => {
-    client.createListing({ ...defaultOptions, allowOffers: 'test' }).catch(err => err.should.be.an.instanceOf(TypeError))
+    client.createListing({ ...defaultOptions, allowOffers: 'test' })
+      .catch(err => err.should.be.an.instanceOf(TypeError))
   })
   it('should return a TypeError if `status` is not a `For Sale` or `Draft`', () => {
     client.createListing({ ...defaultOptions, status: 'test' }).catch(err => err.should.be.an.instanceOf(TypeError))

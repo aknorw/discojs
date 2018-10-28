@@ -86,20 +86,21 @@ export default class Discojs {
       this.fetchOptions = {}
     }
   }
+
   static getSupportedCurrencies() {
     return CURRENCIES
   }
+
   static getReleaseConditions() {
     return RELEASE_CONDITIONS
   }
+
   static getSleeveConditions() {
     return SLEEVE_CONDITIONS
   }
+
   _fetch({ uri, query, options = {} }) {
-    const {
-      method = 'GET',
-      data = null,
-    } = options
+    const { method = 'GET', data = null } = options
     const opt = {
       headers: {
         'User-Agent': this.userAgent,
@@ -124,13 +125,18 @@ export default class Discojs {
         opt.headers.Authorization = `Discogs token=${this.auth.userToken}`
       }
     }
-    return limiter.schedule(() => fetch((query && typeof query === 'object') ? `${BASE_URL + uri}?${stringify(query)}` : BASE_URL + uri, opt))
+    return limiter.schedule(() =>
+      fetch(query && typeof query === 'object' ? `${BASE_URL + uri}?${stringify(query)}` : BASE_URL + uri, opt),
+    )
   }
 }
 
-bindMethods({
-  ...Database,
-  ...Users,
-  ...Lists,
-  ...Marketplace,
-}, Discojs)
+bindMethods(
+  {
+    ...Database,
+    ...Users,
+    ...Lists,
+    ...Marketplace,
+  },
+  Discojs,
+)

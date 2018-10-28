@@ -1,9 +1,4 @@
-export default function addToWantlist({
-  username,
-  releaseId,
-  notes,
-  rating = 0,
-} = {}) {
+export default function addToWantlist({ username, releaseId, notes, rating = 0 } = {}) {
   if (typeof username !== 'string') {
     return Promise.reject(new TypeError(`[addToWantlistMethod] username must be a string (${username})`))
   }

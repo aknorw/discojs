@@ -1,16 +1,7 @@
 import paginate from '../../utils/paginate'
 import sortBy from '../../utils/sort'
 
-export const sortFields = [
-  'label',
-  'artist',
-  'title',
-  'catno',
-  'format',
-  'rating',
-  'year',
-  'added',
-]
+export const sortFields = ['label', 'artist', 'title', 'catno', 'format', 'rating', 'year', 'added']
 
 export default function getContributionsForUser(username, pagination, sort) {
   if (typeof username !== 'string') {

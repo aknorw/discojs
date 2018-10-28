@@ -1,6 +1,6 @@
 import chai from 'chai'
 
-import Discojs from '../../'
+import Discojs from '../..'
 
 // eslint-disable-next-line no-unused-vars
 const should = chai.should()
@@ -38,12 +38,15 @@ describe('Users - Wantlist - addToWantlistMethod', () => {
     client.addToWantlist({ username: 1337 }).catch(err => err.should.be.an.instanceOf(TypeError))
   })
   it('should return a TypeError if `releaseId` is not a number', () => {
-    client.addToWantlist({ username: process.env.DGS_USERNAME, releaseId: 'test' }).catch(err => err.should.be.an.instanceOf(TypeError))
+    client.addToWantlist({ username: process.env.DGS_USERNAME, releaseId: 'test' })
+      .catch(err => err.should.be.an.instanceOf(TypeError))
   })
   it('should return a TypeError if `notes` is not a string', () => {
-    client.addToWantlist({ username: process.env.DGS_USERNAME, releaseId: 1337, notes: 1337 }).catch(err => err.should.be.an.instanceOf(TypeError))
+    client.addToWantlist({ username: process.env.DGS_USERNAME, releaseId: 1337, notes: 1337 })
+      .catch(err => err.should.be.an.instanceOf(TypeError))
   })
   it('should return a TypeError if `rating` is not a number', () => {
-    client.addToWantlist({ username: process.env.DGS_USERNAME, releaseId: 1337, rating: 'test' }).catch(err => err.should.be.an.instanceOf(TypeError))
+    client.addToWantlist({ username: process.env.DGS_USERNAME, releaseId: 1337, rating: 'test' })
+      .catch(err => err.should.be.an.instanceOf(TypeError))
   })
 })

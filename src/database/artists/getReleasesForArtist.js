@@ -1,11 +1,7 @@
 import paginate from '../../utils/paginate'
 import sortBy from '../../utils/sort'
 
-export const sortFields = [
-  'year',
-  'title',
-  'format',
-]
+export const sortFields = ['year', 'title', 'format']
 
 export default function getReleasesForArtist(artistId, pagination, sort) {
   if (typeof artistId !== 'number') {
