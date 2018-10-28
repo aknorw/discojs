@@ -1,4 +1,5 @@
 # Discojs
+
 > Easiest way to use the Discogs API in Javascript :musical_note:
 
 [![CircleCI](https://circleci.com/gh/aknorw/discojs.svg?style=svg)](https://circleci.com/gh/aknorw/discojs)
@@ -21,7 +22,8 @@ const client = new Discojs({
 
 // Methods return promises
 
-client.searchArtist('Jacob Desvarieux')
+client
+  .searchArtist('Jacob Desvarieux')
   .then((data) => {
     doSomethingWith(data)
   })
@@ -32,7 +34,7 @@ client.searchArtist('Jacob Desvarieux')
 // If you're using ES7, you can use async functions
 
 async function notifyShipmentForOrder(orderId) {
-  const result = await client.sendMessageForOrder(1337, {
+  const result = await client.sendMessageForOrder(orderId, {
     message: 'Your order is dispatched!',
     status: 'Shipped',
   })
@@ -41,7 +43,8 @@ async function notifyShipmentForOrder(orderId) {
 
 // Just chain methods!
 
-client.getIdentity()
+client
+  .getIdentity()
   .then((identity) => {
     const { username } = identity
     return client.addToWantlist({
@@ -79,102 +82,99 @@ const options = {
 const client = new Discojs(options)
 ```
 
-Key | Type | Default | Details
---- | --- | --- | ---
-userAgent | *string* | `Discojs/1.0.1` |
-outputFormat | *string* | `discogs` | Must be `discogs`, `plaintext` or `html`
-userToken | *string* | - | For auth purposes
-consumerKey | *string* | - | For auth purposes
-consumerSecret | *string* | - | For auth purposes
-requestLimit | *int* | 25 | For API throttling purposes when not authenticated
-requestLimitAuth | *int* | 60 | For API throttling purposes when authenticated
-requestLimitInterval | *int* | 60000 |
-fetchOptions | *object* | {} | Options to be passed to `fetch`
+| Key                  | Type     | Default         | Details                                            |
+| -------------------- | -------- | --------------- | -------------------------------------------------- |
+| userAgent            | _string_ | `Discojs/1.1.0` |
+| outputFormat         | _string_ | `discogs`       | Must be `discogs`, `plaintext` or `html`           |
+| userToken            | _string_ | -               | For auth purposes                                  |
+| consumerKey          | _string_ | -               | For auth purposes                                  |
+| consumerSecret       | _string_ | -               | For auth purposes                                  |
+| requestLimit         | _int_    | 25              | For API throttling purposes when not authenticated |
+| requestLimitAuth     | _int_    | 60              | For API throttling purposes when authenticated     |
+| requestLimitInterval | _int_    | 60000           |
+| fetchOptions         | _object_ | {}              | Options to be passed to `fetch`                    |
 
 ### Methods
 
 Documentation about methods is available in the [wiki](https://github.com/aknorw/discojs/wiki).
 
-* Static methods
-  * [`getSupportedCurrencies`](https://github.com/aknorw/discojs/wiki/Static-methods#get-supported-currencies)
-  * [`getReleaseConditions`](https://github.com/aknorw/discojs/wiki/Static-methods#get-release-conditions)
-  * [`getSleeveConditions`](https://github.com/aknorw/discojs/wiki/Static-methods#get-sleeve-conditions)
-
+- Static methods
+  - [`getSupportedCurrencies`](https://github.com/aknorw/discojs/wiki/Static-methods#get-supported-currencies)
+  - [`getReleaseConditions`](https://github.com/aknorw/discojs/wiki/Static-methods#get-release-conditions)
+  - [`getSleeveConditions`](https://github.com/aknorw/discojs/wiki/Static-methods#get-sleeve-conditions)
 
 * Database
-  * Search
-    * [`searchDatabase`](https://github.com/aknorw/discojs/wiki/Database#search)
-  * Releases
-    * [`getRelease`](https://github.com/aknorw/discojs/wiki/Database#get-release)
-    * [`searchRelease`](https://github.com/aknorw/discojs/wiki/Database#search-release)
-  * Masters
-    * [`getMaster`](https://github.com/aknorw/discojs/wiki/Database#get-master-release)
-    * [`getVersionsForMaster`](https://github.com/aknorw/discojs/wiki/Database#list-versions-for-master-release)
-  * Artists
-   * [`getArtist`](https://github.com/aknorw/discojs/wiki/Database#get-artist)
-   * [`getReleasesForArtist`](https://github.com/aknorw/discojs/wiki/Database#list-releases-for-artist)
-   * [`searchArtist`](https://github.com/aknorw/discojs/wiki/Database#search-artist)
-  * Labels
-    * [`getLabel`](https://github.com/aknorw/discojs/wiki/Database#get-label)
-    * [`getReleasesForLabel`](https://github.com/aknorw/discojs/wiki/Database#list-releases-for-label)
-    * [`searchLabel`](https://github.com/aknorw/discojs/wiki/Database#search-label)
+  - Search
+    - [`searchDatabase`](https://github.com/aknorw/discojs/wiki/Database#search)
+  - Releases
+    - [`getRelease`](https://github.com/aknorw/discojs/wiki/Database#get-release)
+    - [`searchRelease`](https://github.com/aknorw/discojs/wiki/Database#search-release)
+  - Masters
+    - [`getMaster`](https://github.com/aknorw/discojs/wiki/Database#get-master-release)
+    - [`getVersionsForMaster`](https://github.com/aknorw/discojs/wiki/Database#list-versions-for-master-release)
+  - Artists
+  - [`getArtist`](https://github.com/aknorw/discojs/wiki/Database#get-artist)
+  - [`getReleasesForArtist`](https://github.com/aknorw/discojs/wiki/Database#list-releases-for-artist)
+  - [`searchArtist`](https://github.com/aknorw/discojs/wiki/Database#search-artist)
+  - Labels
+    - [`getLabel`](https://github.com/aknorw/discojs/wiki/Database#get-label)
+    - [`getReleasesForLabel`](https://github.com/aknorw/discojs/wiki/Database#list-releases-for-label)
+    - [`searchLabel`](https://github.com/aknorw/discojs/wiki/Database#search-label)
 
-
-* Lists
-  * [`getItemsInList`](https://github.com/aknorw/discojs/wiki/Lists#get-items-in-list)
-
+- Lists
+  - [`getItemsInList`](https://github.com/aknorw/discojs/wiki/Lists#get-items-in-list)
 
 * Marketplace
-  * Listings
-    * [`getListing`](https://github.com/aknorw/discojs/wiki/Marketplace#get-listing)
-    * [`editListing`](https://github.com/aknorw/discojs/wiki/Marketplace#edit-listing)
-    * [`removeListing`](https://github.com/aknorw/discojs/wiki/Marketplace#remove-listing)
-    * [`createListing`](https://github.com/aknorw/discojs/wiki/Marketplace#create-listing)
-  * Orders
-    * [`listOrders`](https://github.com/aknorw/discojs/wiki/Marketplace#list-orders)
-    * [`getOrder`](https://github.com/aknorw/discojs/wiki/Marketplace#get-order)
-    * [`editOrder`](https://github.com/aknorw/discojs/wiki/Marketplace#edit-order)
-    * [`listMessagesForOrder`](https://github.com/aknorw/discojs/wiki/Marketplace#list-order-messages)
-    * [`sendMessageForOrder`](https://github.com/aknorw/discojs/wiki/Marketplace#send-order-message)
-  * Fees
-    * [`getFee`](https://github.com/aknorw/discojs/wiki/Marketplace#fees)
-  * Price suggestions
-    * [`getPriceSuggestions`](https://github.com/aknorw/discojs/wiki/Marketplace#price-suggestions)
+  - Listings
+    - [`getListing`](https://github.com/aknorw/discojs/wiki/Marketplace#get-listing)
+    - [`editListing`](https://github.com/aknorw/discojs/wiki/Marketplace#edit-listing)
+    - [`removeListing`](https://github.com/aknorw/discojs/wiki/Marketplace#remove-listing)
+    - [`createListing`](https://github.com/aknorw/discojs/wiki/Marketplace#create-listing)
+  - Orders
+    - [`listOrders`](https://github.com/aknorw/discojs/wiki/Marketplace#list-orders)
+    - [`getOrder`](https://github.com/aknorw/discojs/wiki/Marketplace#get-order)
+    - [`editOrder`](https://github.com/aknorw/discojs/wiki/Marketplace#edit-order)
+    - [`listMessagesForOrder`](https://github.com/aknorw/discojs/wiki/Marketplace#list-order-messages)
+    - [`sendMessageForOrder`](https://github.com/aknorw/discojs/wiki/Marketplace#send-order-message)
+  - Fees
+    - [`getFee`](https://github.com/aknorw/discojs/wiki/Marketplace#fees)
+  - Price suggestions
+    - [`getPriceSuggestions`](https://github.com/aknorw/discojs/wiki/Marketplace#price-suggestions)
 
-
-* User
-  * Inventory
-    * [`getInventory`](https://github.com/aknorw/discojs/wiki/User#inventory)
-  * Identity
-    * [`getIdentity`](https://github.com/aknorw/discojs/wiki/User#get-identity)
-    * Profile
-      * [`getProfile`](https://github.com/aknorw/discojs/wiki/User#get-profile)
-      * [`editProfile`](https://github.com/aknorw/discojs/wiki/User#edit-profile)
-    * Submissions
-      * [`getSubmissionsForUser`](https://github.com/aknorw/discojs/wiki/User#submissions)
-    * Contributions
-      * [`getContributionsForUser`](https://github.com/aknorw/discojs/wiki/User#contributions)
-  * Collection
-    * Folders
-      * [`listFoldersForUser`](https://github.com/aknorw/discojs/wiki/User#list-folders)
-      * [`getFolderForUser`](https://github.com/aknorw/discojs/wiki/User#get-folder)
-      * [`editFolderForUser`](https://github.com/aknorw/discojs/wiki/User#edit-folder)
-      * [`removeFolderForUser`](https://github.com/aknorw/discojs/wiki/User#remove-folder)
-      * [`createFolderForUser`](https://github.com/aknorw/discojs/wiki/User#create-folder)
-    * Custom fields
-      * [`getCustomFields`](https://github.com/aknorw/discojs/wiki/User#custom-fields)
-    * Collection value
-      * [`getValue`](https://github.com/aknorw/discojs/wiki/User#collection-value)
-  * Wantlist
-    * [`getWantlist`](https://github.com/aknorw/discojs/wiki/User#get-wantlist)
-    * [`addToWantlist`](https://github.com/aknorw/discojs/wiki/User#add-to-wantlist)
-    * [`removeFromWantlist`](https://github.com/aknorw/discojs/wiki/User#remove-from-wantlist)
-  * Lists
-    * [`getListsForUser`](https://github.com/aknorw/discojs/wiki/User#lists)
+- User
+  - Inventory
+    - [`getInventory`](https://github.com/aknorw/discojs/wiki/User#inventory)
+  - Identity
+    - [`getIdentity`](https://github.com/aknorw/discojs/wiki/User#get-identity)
+    - Profile
+      - [`getProfile`](https://github.com/aknorw/discojs/wiki/User#get-profile)
+      - [`editProfile`](https://github.com/aknorw/discojs/wiki/User#edit-profile)
+    - Submissions
+      - [`getSubmissionsForUser`](https://github.com/aknorw/discojs/wiki/User#submissions)
+    - Contributions
+      - [`getContributionsForUser`](https://github.com/aknorw/discojs/wiki/User#contributions)
+  - Collection
+    - Folders
+      - [`listFoldersForUser`](https://github.com/aknorw/discojs/wiki/User#list-folders)
+      - [`getFolderForUser`](https://github.com/aknorw/discojs/wiki/User#get-folder)
+      - [`editFolderForUser`](https://github.com/aknorw/discojs/wiki/User#edit-folder)
+      - [`removeFolderForUser`](https://github.com/aknorw/discojs/wiki/User#remove-folder)
+      - [`createFolderForUser`](https://github.com/aknorw/discojs/wiki/User#create-folder)
+      - [`getItemsInFolderForUser`](https://github.com/aknorw/discojs/wiki/User#get-items-in-folder)
+    - Custom fields
+      - [`getCustomFields`](https://github.com/aknorw/discojs/wiki/User#custom-fields)
+    - Collection value
+      - [`getValue`](https://github.com/aknorw/discojs/wiki/User#collection-value)
+  - Wantlist
+    - [`getWantlist`](https://github.com/aknorw/discojs/wiki/User#get-wantlist)
+    - [`addToWantlist`](https://github.com/aknorw/discojs/wiki/User#add-to-wantlist)
+    - [`removeFromWantlist`](https://github.com/aknorw/discojs/wiki/User#remove-from-wantlist)
+  - Lists
+    - [`getListsForUser`](https://github.com/aknorw/discojs/wiki/User#lists)
 
 ## Tests
 
-As several methods need authentication, you'll need 2 environment variables: *DGS_USERNAME* and *USER_TOKEN*.
+As several methods need authentication, you'll need 2 environment variables: _DGS_USERNAME_ and _USER_TOKEN_.
 
 Create a `.env` file at the root of the directory, and add the following lines:
 

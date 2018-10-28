@@ -13,6 +13,7 @@ export { default as createFolderForUser } from './collection/createFolderForUser
 export { default as getFolderForUser } from './collection/getFolderForUser'
 export { default as editFolderForUser } from './collection/editFolderForUser'
 export { default as removeFolderForUser } from './collection/removeFolderForUser'
+export { default as getItemsInFolderForUser } from './collection/getItemsInFolderForUser'
 
 export { default as getCustomFields } from './collection/getCustomFields'
 export { default as getValue } from './collection/getValue'

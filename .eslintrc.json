@@ -4,13 +4,17 @@
     "node": true,
     "mocha": true
   },
-  "extends": [
-    "airbnb-base"
-  ],
+  "extends": ["airbnb-base", "prettier"],
   "rules": {
     "semi": [2, "never"],
     "no-unexpected-multiline": 2,
-    "max-len": [1, { "code": 200 }],
+    "max-len": [
+      1,
+      {
+        "code": 120,
+        "comments": 200
+      }
+    ],
     "no-underscore-dangle": 0,
     "import/prefer-default-export": 0
   }

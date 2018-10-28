@@ -1,16 +1,10 @@
 import { RELEASE_CONDITIONS, SLEEVE_CONDITIONS } from '../../constants'
 
-const listingStatus = [
-  'For Sale',
-  'Draft',
-]
+const listingStatus = ['For Sale', 'Draft']
 
 export default function createListing({
   releaseId,
-  condition: {
-    release,
-    sleeve,
-  } = {},
+  condition: { release, sleeve } = {},
   price,
   comments,
   allowOffers = false,
@@ -29,13 +23,21 @@ export default function createListing({
   if (RELEASE_CONDITIONS.includes(release)) {
     data.condition = release
   } else {
-    return Promise.reject(new TypeError(`[createListingMethod] condition.release must be one of '${RELEASE_CONDITIONS.join(' / ')}' (${release})`))
+    return Promise.reject(
+      new TypeError(
+        `[createListingMethod] condition.release must be one of '${RELEASE_CONDITIONS.join(' / ')}' (${release})`,
+      ),
+    )
   }
   if (sleeve) {
     if (SLEEVE_CONDITIONS.includes(sleeve)) {
       data.sleeve_condition = sleeve
     } else {
-      return Promise.reject(new TypeError(`[createListingMethod] condition.sleeve must be one of '${SLEEVE_CONDITIONS.join(' / ')}' (${sleeve})`))
+      return Promise.reject(
+        new TypeError(
+          `[createListingMethod] condition.sleeve must be one of '${SLEEVE_CONDITIONS.join(' / ')}' (${sleeve})`,
+        ),
+      )
     }
   }
   if (typeof price === 'number') {
@@ -58,7 +60,9 @@ export default function createListing({
   if (listingStatus.includes(status)) {
     data.status = status
   } else {
-    return Promise.reject(new TypeError(`[createListingMethod] status must be one of '${listingStatus.join(' / ')}' (${status})`))
+    return Promise.reject(
+      new TypeError(`[createListingMethod] status must be one of '${listingStatus.join(' / ')}' (${status})`),
+    )
   }
   if (externalId) {
     if (typeof externalId === 'string') {

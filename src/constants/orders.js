@@ -8,7 +8,7 @@ export const EDIT_STATUSES = [
   'Refund Sent',
   'Cancelled (Non-Paying Buyer)',
   'Cancelled (Item Unavailable)',
-  'Cancelled (Per Buyer\'s Request)',
+  "Cancelled (Per Buyer's Request)",
 ]
 
 export const ORDER_STATUSES = [
@@ -25,6 +25,6 @@ export const ORDER_STATUSES = [
   'Cancelled',
   'Cancelled (Non-Paying Buyer)',
   'Cancelled (Item Unavailable)',
-  'Cancelled (Per Buyer\'s Request)',
+  "Cancelled (Per Buyer's Request)",
   'Cancelled (Refund Received)',
 ]

@@ -9,7 +9,9 @@ export default function editOrder(orderId, { status, shipping } = {}) {
     if (EDIT_STATUSES.includes(status)) {
       data.status = status
     } else {
-      return Promise.reject(new TypeError(`[editOrderMethod] status must be one of '${EDIT_STATUSES.join(' / ')}' (${status})`))
+      return Promise.reject(
+        new TypeError(`[editOrderMethod] status must be one of '${EDIT_STATUSES.join(' / ')}' (${status})`),
+      )
     }
   }
   if (shipping) {

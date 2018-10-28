@@ -1,0 +1,7 @@
+node_modules/
+coverage/
+lib/
+yarn.lock
+package.json
+test/
+*.test.js

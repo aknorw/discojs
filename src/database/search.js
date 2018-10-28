@@ -1,32 +1,30 @@
 import paginate from '../utils/paginate'
 
-const typeFields = [
-  'release',
-  'master',
-  'artist',
-  'label',
-]
+const typeFields = ['release', 'master', 'artist', 'label']
 
-export default function searchDatabase({
-  query,
-  type,
-  title,
-  releaseTitle,
-  credit,
-  artist,
-  anv,
-  label,
-  genre,
-  style,
-  country,
-  year,
-  format,
-  catno,
-  barcode,
-  track,
-  submitter,
-  contributor,
-} = {}, paginationOpt = {}) {
+export default function searchDatabase(
+  {
+    query,
+    type,
+    title,
+    releaseTitle,
+    credit,
+    artist,
+    anv,
+    label,
+    genre,
+    style,
+    country,
+    year,
+    format,
+    catno,
+    barcode,
+    track,
+    submitter,
+    contributor,
+  } = {},
+  paginationOpt = {},
+) {
   const opt = {}
   if (query) {
     if (typeof query === 'string') {
@@ -39,7 +37,9 @@ export default function searchDatabase({
     if (typeFields.includes(type)) {
       opt.type = type
     } else {
-      return Promise.reject(new TypeError(`[searchDatabaseMethod] type must be one of '${typeFields.join(' / ')}' (${type})`))
+      return Promise.reject(
+        new TypeError(`[searchDatabaseMethod] type must be one of '${typeFields.join(' / ')}' (${type})`),
+      )
     }
   }
   if (title) {

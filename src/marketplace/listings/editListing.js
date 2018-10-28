@@ -1,25 +1,23 @@
 import { RELEASE_CONDITIONS, SLEEVE_CONDITIONS, CURRENCIES } from '../../constants'
 
-const listingStatus = [
-  'For Sale',
-  'Draft',
-]
+const listingStatus = ['For Sale', 'Draft']
 
-export default function editListing(listingId, {
-  releaseId,
-  condition: {
-    release,
-    sleeve,
+export default function editListing(
+  listingId,
+  {
+    releaseId,
+    condition: { release, sleeve } = {},
+    price,
+    comments,
+    allowOffers = false,
+    status = listingStatus[0],
+    externalId,
+    location,
+    weight = 'auto',
+    formatQty = 'auto',
   } = {},
-  price,
-  comments,
-  allowOffers = false,
-  status = listingStatus[0],
-  externalId,
-  location,
-  weight = 'auto',
-  formatQty = 'auto',
-} = {}, currency) {
+  currency,
+) {
   if (typeof listingId !== 'number') {
     return Promise.reject(new TypeError(`[editListingMethod] listingId must be a number (${listingId})`))
   }
@@ -32,13 +30,21 @@ export default function editListing(listingId, {
   if (RELEASE_CONDITIONS.includes(release)) {
     data.condition = release
   } else {
-    return Promise.reject(new TypeError(`[editListingMethod] condition.release must be one of '${RELEASE_CONDITIONS.join(' / ')}' (${release})`))
+    return Promise.reject(
+      new TypeError(
+        `[editListingMethod] condition.release must be one of '${RELEASE_CONDITIONS.join(' / ')}' (${release})`,
+      ),
+    )
   }
   if (sleeve) {
     if (SLEEVE_CONDITIONS.includes(sleeve)) {
       data.sleeve_condition = sleeve
     } else {
-      return Promise.reject(new TypeError(`[editListingMethod] condition.sleeve must be one of '${SLEEVE_CONDITIONS.join(' / ')}' (${sleeve})`))
+      return Promise.reject(
+        new TypeError(
+          `[editListingMethod] condition.sleeve must be one of '${SLEEVE_CONDITIONS.join(' / ')}' (${sleeve})`,
+        ),
+      )
     }
   }
   if (typeof price === 'number') {
@@ -61,7 +67,9 @@ export default function editListing(listingId, {
   if (listingStatus.includes(status)) {
     data.status = status
   } else {
-    return Promise.reject(new TypeError(`[editListingMethod] status must be one of '${listingStatus.join(' / ')}' (${status})`))
+    return Promise.reject(
+      new TypeError(`[editListingMethod] status must be one of '${listingStatus.join(' / ')}' (${status})`),
+    )
   }
   if (externalId) {
     if (typeof externalId === 'string') {
