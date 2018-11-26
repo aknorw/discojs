@@ -23,7 +23,7 @@ describe('Users - Collection - getItemsInFolderForUser', () => {
   })
   it('should get items in a folder in a user\'s collection from its username and a `folderId`', async () => {
 
-    const data = await client.getItemsInFolderForUser({ username, folderId, pagination: { perPage: 1 } })
+    const data = await client.getItemsInFolderForUser( username, folderId, pagination: { perPage: 1 } )
     data.should.be.an('object').and.have.property('releases')
     data.should.be.an('object').and.have.property('pagination')
     data.pagination.should.be.an('object').and.have.property('urls')
