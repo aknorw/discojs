@@ -53,7 +53,7 @@ describe('Users - Collection - getItemsInFolderForUser', () => {
   it('should accept pagination', async () => {
     const page = 1
     const perPage = 3
-    const data = await client.getInventory({
+    const data = await client.getItemsInFolderForUser({
       username,
       pagination: { page, perPage },
     })
