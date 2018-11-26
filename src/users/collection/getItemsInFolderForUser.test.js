@@ -22,8 +22,13 @@ describe('Users - Collection - getItemsInFolderForUser', () => {
     })
   })
   it('should get items in a folder in a user\'s collection from its username and a `folderId`', async () => {
-    const data = await client.getItemsInFolderForUser(username, folderId)
+
+    const data = await client.getItemsInFolderForUser( username, folderId, pagination: { perPage: 1 } )
     data.should.be.an('object').and.have.property('releases')
+    data.should.be.an('object').and.have.property('pagination')
+    data.pagination.should.be.an('object').and.have.property('urls')
+    data.pagination.urls.should.be.an('object').and.have.all.keys('last', 'next')
+    parse(URL_REGEX.exec(data.pagination.urls.last)[1]).status.should.be.equal(status)
   })
   it('should return a TypeError if no param', () => {
     client.getItemsInFolderForUser().catch(err => err.should.be.an.instanceOf(TypeError))
@@ -44,5 +49,19 @@ describe('Users - Collection - getItemsInFolderForUser', () => {
     const { sort, sort_order } = parse(URL_REGEX.exec(data.pagination.urls.last)[1]) // eslint-disable-line camelcase
     sort.should.be.equal(by)
     sort_order.should.be.equal(order)
+  })
+  it('should accept pagination', async () => {
+    const page = 1
+    const perPage = 3
+    const data = await client.getItemsInFolderForUser({
+      username,
+      pagination: { page, perPage },
+    })
+    data.should.be.an('object').and.have.property('pagination')
+    data.pagination.should.be.an('object')
+    data.pagination.should.have.property('per_page')
+    data.pagination.per_page.should.be.equal(perPage)
+    data.pagination.should.have.property('page')
+    data.pagination.page.should.be.equal(page)
   })
 })
