@@ -1,8 +1,9 @@
+import paginate from '../../utils/paginate'
 import sortBy from '../../utils/sort'
 
 export const sortFields = ['label', 'artist', 'title', 'catno', 'format', 'rating', 'year', 'added']
 
-export default function getItemsInFolderForUser(username, folderId, sort) {
+export default function getItemsInFolderForUser(username, folderId, pagination, sort) {
   if (typeof username !== 'string') {
     return Promise.reject(new TypeError(`[getItemsInFolderForUserMethod] username must be a string (${username})`))
   }
@@ -13,6 +14,7 @@ export default function getItemsInFolderForUser(username, folderId, sort) {
     uri: `/users/${username}/collection/folders/${folderId}/releases`,
     query: {
       ...sortBy(sort, sortFields),
+      ...paginate(pagination),
     },
   })
 }
