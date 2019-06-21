@@ -7,7 +7,7 @@ import { CURRENCIES } from '../../constants'
 const should = chai.should()
 let client
 
-const listingId = 230025590
+const listingId = 848131131
 
 describe('Marketplace - Listings - getListingMethod', () => {
   before(() => {

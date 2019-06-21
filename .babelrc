@@ -1,4 +1,14 @@
 {
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "modules": false,
+        "useBuiltIns": "entry",
+        "corejs": 3
+      }
+    ]
+  ],
   "plugins": [
     "@babel/plugin-proposal-object-rest-spread",
     [
@@ -10,26 +20,8 @@
     ]
   ],
   "env": {
-    "development": {
-      "presets": [
-        [
-          "@babel/preset-env",
-          {
-            "useBuiltIns": "usage"
-          }
-        ]
-      ]
-    },
-    "production": {
-      "presets": [
-        [
-          "@babel/preset-env",
-          {
-            "modules": false,
-            "useBuiltIns": "usage"
-          }
-        ]
-      ]
+    "test": {
+      "presets": ["@babel/preset-env"]
     }
   }
 }

@@ -1,8 +1,12 @@
 {
   "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module"
+  },
   "env": {
     "node": true,
-    "mocha": true
+    "mocha": true,
+    "es6": true
   },
   "extends": ["airbnb-base", "prettier"],
   "rules": {

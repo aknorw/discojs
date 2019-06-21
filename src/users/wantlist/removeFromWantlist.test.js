@@ -6,15 +6,20 @@ import Discojs from '../..'
 const should = chai.should()
 let client
 
+const releaseId = 1189932
+
 describe('Users - Wantlist - removeFromWantlistMethod', () => {
-  before(() => {
+  before(async () => {
     client = new Discojs({
       userToken: process.env.USER_TOKEN,
       requestLimitAuth: 20,
     })
+    await client.addToWantlist({
+      username: process.env.DGS_USERNAME,
+      releaseId,
+    })
   })
   it('should remove a release from a user\'s wantlist', async () => {
-    const releaseId = 1189932
     const data = await client.removeFromWantlist(process.env.DGS_USERNAME, releaseId)
     data.should.be.an('object').and.have.property('statusCode')
     data.statusCode.should.be.equal(204)
