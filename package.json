@@ -48,7 +48,8 @@
   },
   "dependencies": {
     "bottleneck": "^2.19.1",
-    "isomorphic-fetch": "^2.2.1"
+    "isomorphic-fetch": "^2.2.1",
+    "querystring": "^0.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.4",
