@@ -1,24 +1,13 @@
 import { parse } from 'querystring'
 import chai from 'chai'
 
-import Discojs from '../..'
-import { AuthError } from '../../errors'
-
-// eslint-disable-next-line no-unused-vars
-const should = chai.should()
-let client
+chai.should()
 
 const URL_REGEX = /^https:\/\/api\.discogs\.com\/.*\?(.*)$/
 
 const query = 'Test'
 
 describe('Database - Labels - searchLabelMethod', () => {
-  before(() => {
-    client = new Discojs({
-      userToken: process.env.USER_TOKEN,
-      requestLimitAuth: 20,
-    })
-  })
   it('should search for a label from `query`', async () => {
     const data = await client.searchLabel(query)
     data.should.be.an('object').and.have.property('results')
@@ -46,9 +35,5 @@ describe('Database - Labels - searchLabelMethod', () => {
     data.pagination.per_page.should.be.equal(perPage)
     data.pagination.should.have.property('page')
     data.pagination.page.should.be.equal(page)
-  })
-  it('should return an AuthError if not authenticated', () => {
-    client = new Discojs()
-    client.searchLabel(query).catch(err => err.should.be.an.instanceOf(AuthError))
   })
 })

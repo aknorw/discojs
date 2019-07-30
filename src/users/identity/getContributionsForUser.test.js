@@ -1,25 +1,16 @@
 import { parse } from 'querystring'
 import chai from 'chai'
 
-import Discojs from '../..'
 import { sortFields } from './getContributionsForUser'
 import { sortOrders } from '../../utils/sort'
 
-// eslint-disable-next-line no-unused-vars
-const should = chai.should()
-let client
+chai.should()
 
 const URL_REGEX = /^https:\/\/api\.discogs\.com\/.*\?(.*)$/
 
 const username = 'garytou'
 
 describe('Users - Identity - getContributionsForUserMethod', () => {
-  before(() => {
-    client = new Discojs({
-      userToken: process.env.USER_TOKEN,
-      requestLimitAuth: 20,
-    })
-  })
   it('should get user contributions from its username', async () => {
     const data = await client.getContributionsForUser(username)
     data.should.be.an('object').and.have.property('contributions')

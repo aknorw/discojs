@@ -1,22 +1,12 @@
 import chai from 'chai'
 
-import Discojs from '../..'
-
-// eslint-disable-next-line no-unused-vars
-const should = chai.should()
-let client
+chai.should()
 
 const username = process.env.DGS_USERNAME
 const folderName = `Folder${Math.random()}`
 let folderId
 
 describe('Users - Collection - createCollectionFolderMethod', () => {
-  before(() => {
-    client = new Discojs({
-      userToken: process.env.USER_TOKEN,
-      requestLimitAuth: 20,
-    })
-  })
   after(() => {
     client.removeFolderForUser(username, folderId)
   })

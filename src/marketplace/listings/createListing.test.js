@@ -1,10 +1,6 @@
 import chai from 'chai'
 
-import Discojs from '../..'
-
-// eslint-disable-next-line no-unused-vars
-const should = chai.should()
-let client
+chai.should()
 
 const defaultOptions = {
   releaseId: 4652917,
@@ -19,12 +15,6 @@ const defaultOptions = {
 // CANNOT TEST WITHOUT SELLER SETTINGS
 
 describe('Marketplace - Listings - createListingMethod', () => {
-  before(() => {
-    client = new Discojs({
-      userToken: process.env.USER_TOKEN,
-      requestLimitAuth: 20,
-    })
-  })
   it('should return a TypeError if no param', () => {
     client.createListing().catch(err => err.should.be.an.instanceOf(TypeError))
   })

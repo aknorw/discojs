@@ -1,20 +1,10 @@
 import chai from 'chai'
 
-import Discojs from '../..'
-
-// eslint-disable-next-line no-unused-vars
-const should = chai.should()
-let client
+chai.should()
 
 const labelId = 108713
 
 describe('Database - Labels - getReleasesForLabelMethod', () => {
-  before(() => {
-    client = new Discojs({
-      userToken: process.env.USER_TOKEN,
-      requestLimitAuth: 20,
-    })
-  })
   it('should get releases for the label from its id', async () => {
     const data = await client.getReleasesForLabel(labelId)
     data.should.be.an('object').and.have.property('releases')
