@@ -19,8 +19,6 @@ const DEFAULT_USER_AGENT = `Discojs/${version}`
 const OUTPUT_FORMATS = ['discogs', 'plaintext', 'html']
 const DEFAULT_OUTPUT_FORMAT = OUTPUT_FORMATS[0]
 
-let limiter
-
 export default class Discojs {
   constructor({
     userAgent = DEFAULT_USER_AGENT,
@@ -30,7 +28,7 @@ export default class Discojs {
     consumerSecret,
     requestLimit = 25,
     requestLimitAuth = 60,
-    requestLimitInterval = 60000,
+    requestLimitInterval = 60 * 1000,
     fetchOptions,
   } = {}) {
     if (typeof userAgent !== 'string') {
@@ -48,7 +46,7 @@ export default class Discojs {
       if (typeof requestLimitAuth !== 'number') {
         throw new TypeError(`[Constructor] requestLimitAuth must be a number (${requestLimitAuth})`)
       }
-      limiter = createLimiter({ waitTime: requestLimitInterval / requestLimitAuth })
+      this.limiter = createLimiter({ maxRequests: requestLimitAuth, requestLimitInterval })
       if (userToken) {
         if (typeof userToken !== 'string') {
           throw new TypeError(`[Constructor] userToken must be a string (${userToken})`)
@@ -74,7 +72,7 @@ export default class Discojs {
       if (typeof requestLimit !== 'number') {
         throw new TypeError(`[Constructor] requestLimit must be a number (${requestLimit})`)
       }
-      limiter = createLimiter({ waitTime: requestLimitInterval / requestLimit })
+      this.limiter = createLimiter({ maxRequests: requestLimit, requestLimitInterval })
     }
     if (fetchOptions) {
       if (typeof fetchOptions !== 'object') {
@@ -125,7 +123,7 @@ export default class Discojs {
         opt.headers.Authorization = `Discogs token=${this.auth.userToken}`
       }
     }
-    return limiter.schedule(() =>
+    return this.limiter.schedule(() =>
       fetch(query && typeof query === 'object' ? `${BASE_URL + uri}?${stringify(query)}` : BASE_URL + uri, opt),
     )
   }
