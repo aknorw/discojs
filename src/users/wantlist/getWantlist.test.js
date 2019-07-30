@@ -1,20 +1,10 @@
 import chai from 'chai'
 
-import Discojs from '../..'
-
-// eslint-disable-next-line no-unused-vars
-const should = chai.should()
-let client
+chai.should()
 
 const username = 'rodneyfool'
 
 describe('Users - Wantlist - getWantlistMethod', () => {
-  before(() => {
-    client = new Discojs({
-      userToken: process.env.USER_TOKEN,
-      requestLimitAuth: 20,
-    })
-  })
   it('should return the list of releases in a user\'s wantlist', async () => {
     const data = await client.getWantlist(username)
     data.should.be.an('object').and.have.property('wants')

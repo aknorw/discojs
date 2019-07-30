@@ -1,25 +1,16 @@
 import { parse } from 'querystring'
 import chai from 'chai'
 
-import Discojs from '..'
 import { sortFields } from './getInventory'
 import { sortOrders } from '../utils/sort'
 
-// eslint-disable-next-line no-unused-vars
-const should = chai.should()
-let client
+chai.should()
 
 const URL_REGEX = /^https:\/\/api\.discogs\.com\/.*\?(.*)$/
 
 const username = 'Kozuch438'
 
 describe('Users - getInventoryMethod', () => {
-  before(() => {
-    client = new Discojs({
-      userToken: process.env.USER_TOKEN,
-      requestLimitAuth: 20,
-    })
-  })
   it('should get inventory for an user', async () => {
     const data = await client.getInventory({ username })
     data.should.be.an('object').and.have.property('listings')

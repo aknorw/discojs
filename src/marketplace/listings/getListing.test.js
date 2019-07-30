@@ -1,21 +1,12 @@
 import chai from 'chai'
 
-import Discojs from '../..'
 import { CURRENCIES } from '../../constants'
 
-// eslint-disable-next-line no-unused-vars
-const should = chai.should()
-let client
+chai.should()
 
 const listingId = 848131131
 
 describe('Marketplace - Listings - getListingMethod', () => {
-  before(() => {
-    client = new Discojs({
-      userToken: process.env.USER_TOKEN,
-      requestLimitAuth: 20,
-    })
-  })
   it('should get a listing from its id', async () => {
     const data = await client.getListing(listingId)
     data.should.be.an('object').and.have.property('id')

@@ -8,8 +8,7 @@ const sortFields = [
   'format',
 ]
 
-// eslint-disable-next-line no-unused-vars
-const should = chai.should()
+chai.should()
 
 describe('Utils - sortFn', () => {
   it('should throw a TypeError if no param', () => {

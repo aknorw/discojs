@@ -1,20 +1,10 @@
 import chai from 'chai'
 
-import Discojs from '..'
+chai.should()
 
-// eslint-disable-next-line no-unused-vars
-const should = chai.should()
-let client
-
-const listId = 405348
+const listId = 342829
 
 describe('Lists - getItemsInListMethod', () => {
-  before(() => {
-    client = new Discojs({
-      userToken: process.env.USER_TOKEN,
-      requestLimitAuth: 20,
-    })
-  })
   it('should get list items from its id', async () => {
     const data = await client.getItemsInList(listId)
     data.should.be.an('object').and.have.property('items')

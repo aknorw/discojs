@@ -1,21 +1,12 @@
 import chai from 'chai'
 
-import Discojs from '../..'
 import { CURRENCIES } from '../../constants'
 
-// eslint-disable-next-line no-unused-vars
-const should = chai.should()
-let client
+chai.should()
 
 const releaseId = 249504
 
 describe('Database - Releases - getReleaseMethod', () => {
-  before(() => {
-    client = new Discojs({
-      userToken: process.env.USER_TOKEN,
-      requestLimitAuth: 20,
-    })
-  })
   it('should get a release from its id', async () => {
     const data = await client.getRelease(releaseId)
     data.should.be.an('object').and.have.property('id')
