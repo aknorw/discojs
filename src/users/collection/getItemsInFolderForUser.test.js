@@ -1,13 +1,10 @@
 import { parse } from 'querystring'
 import chai from 'chai'
 
-import Discojs from '../..'
 import { sortFields } from './getItemsInFolderForUser'
 import { sortOrders } from '../../utils/sort'
 
-// eslint-disable-next-line no-unused-vars
-const should = chai.should()
-let client
+chai.should()
 
 const URL_REGEX = /^https:\/\/api\.discogs\.com\/.*\?(.*)$/
 
@@ -15,18 +12,11 @@ const username = 'rodneyfool'
 const folderId = 0
 
 describe('Users - Collection - getItemsInFolderForUser', () => {
-  before(() => {
-    client = new Discojs({
-      userToken: process.env.USER_TOKEN,
-      requestLimitAuth: 20,
-    })
-  })
-
   it('should get items in a folder in a user\'s collection from its username and a `folderId`', async () => {
     const data = await client.getItemsInFolderForUser(username, folderId)
     data.should.be.an('object').and.have.property('releases')
   })
-  
+
   it('should return a TypeError if no param', () => {
     client.getItemsInFolderForUser().catch(err => err.should.be.an.instanceOf(TypeError))
   })

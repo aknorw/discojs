@@ -1,20 +1,10 @@
 import chai from 'chai'
 
-import Discojs from '../..'
-
-// eslint-disable-next-line no-unused-vars
-const should = chai.should()
-let client
+chai.should()
 
 const username = process.env.DGS_USERNAME
 
 describe('Users - Lists - getListsMethod', () => {
-  before(() => {
-    client = new Discojs({
-      userToken: process.env.USER_TOKEN,
-      requestLimitAuth: 20,
-    })
-  })
   it('should get user\'s lists from its username', async () => {
     const data = await client.getListsForUser(username)
     data.should.be.an('object').and.have.property('lists')

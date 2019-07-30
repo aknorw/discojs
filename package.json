@@ -1,6 +1,6 @@
 {
   "name": "discojs",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "Easiest way to use the Discogs API in Javascript",
   "author": "aknorw",
   "license": "MIT",
@@ -16,9 +16,9 @@
   ],
   "scripts": {
     "clean": "rimraf lib",
-    "pretty": "prettier --config .prettierrc --write src/**/*.js",
+    "pretty": "prettier --config .prettierrc --write 'src/**/*.js'",
     "lint": "eslint --ext .js src",
-    "test": "cross-env NODE_ENV=test nyc --reporter=text mocha ./test ./src/**/*.test.js ./src/**/**/*.test.js --require @babel/register --timeout 10000",
+    "test": "cross-env NODE_ENV=test nyc --reporter=text mocha ./test ./src/**/*.test.js ./src/**/**/*.test.js --require @babel/register --require ./test/setup --globals global --timeout 10000",
     "test:ci": "npm run test && nyc report --reporter=text-lcov | coveralls",
     "prebuild": "yarn run clean",
     "build": "cross-env NODE_ENV=production ./node_modules/.bin/rollup -c"

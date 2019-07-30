@@ -1,25 +1,16 @@
 import { parse } from 'querystring'
 import chai from 'chai'
 
-import Discojs from '../..'
 import { sortFields } from './getReleasesForArtist'
 import { sortOrders } from '../../utils/sort'
 
-// eslint-disable-next-line no-unused-vars
-const should = chai.should()
-let client
+chai.should()
 
 const URL_REGEX = /^https:\/\/api\.discogs\.com\/.*\?(.*)$/
 
 const artistId = 108713
 
 describe('Database - Artists - getReleasesForArtistMethod', () => {
-  before(() => {
-    client = new Discojs({
-      userToken: process.env.USER_TOKEN,
-      requestLimitAuth: 20,
-    })
-  })
   it('should get releases for an artist from its id', async () => {
     const data = await client.getReleasesForArtist(artistId)
     data.should.be.an('object').and.have.property('releases')

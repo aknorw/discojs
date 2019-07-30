@@ -1,21 +1,11 @@
 import chai from 'chai'
 
-import Discojs from '../..'
-
-// eslint-disable-next-line no-unused-vars
-const should = chai.should()
-let client
+chai.should()
 
 const username = 'rodneyfool'
 const folderId = 0
 
 describe('Users - Collection - getFolderForUserMethod', () => {
-  before(() => {
-    client = new Discojs({
-      userToken: process.env.USER_TOKEN,
-      requestLimitAuth: 20,
-    })
-  })
   it('should get folder in a user\'s collection from its username and a `folderId`', async () => {
     const data = await client.getFolderForUser(username, folderId)
     data.should.be.an('object').and.have.all.keys('id', 'name', 'resource_url', 'count')

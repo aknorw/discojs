@@ -2,8 +2,7 @@ import chai from 'chai'
 
 import paginate from './paginate'
 
-// eslint-disable-next-line no-unused-vars
-const should = chai.should()
+chai.should()
 
 describe('Utils - paginateFn', () => {
   it('should return default pagination options if no param', () => {

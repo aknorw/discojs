@@ -1,20 +1,10 @@
 import chai from 'chai'
 
-import Discojs from '../..'
-
-// eslint-disable-next-line no-unused-vars
-const should = chai.should()
-let client
+chai.should()
 
 const username = 'rodneyfool'
 
 describe('Users - Identity - getProfileMethod', () => {
-  before(() => {
-    client = new Discojs({
-      userToken: process.env.USER_TOKEN,
-      requestLimitAuth: 20,
-    })
-  })
   it('should get an user from its username', async () => {
     const data = await client.getProfile(username)
     data.should.be.an('object').and.have.property('username')
