@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "clean": "rimraf lib",
-    "pretty": "prettier --config .prettierrc --write src/**/*.js",
+    "pretty": "prettier --config .prettierrc --write 'src/**/*.js'",
     "lint": "eslint --ext .js src",
     "test": "cross-env NODE_ENV=test nyc --reporter=text mocha ./test ./src/**/*.test.js ./src/**/**/*.test.js --require @babel/register --require ./test/setup --globals global --timeout 10000",
     "test:ci": "npm run test && nyc report --reporter=text-lcov | coveralls",
