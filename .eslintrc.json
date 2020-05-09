@@ -1,6 +1,7 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
+    "ecmaVersion": 2018,
     "sourceType": "module"
   },
   "env": {
@@ -9,6 +10,7 @@
     "es6": true
   },
   "extends": ["airbnb-base", "prettier"],
+  "plugins": ["@typescript-eslint"],
   "rules": {
     "semi": [2, "never"],
     "no-unexpected-multiline": 2,
@@ -19,10 +21,19 @@
         "comments": 200
       }
     ],
+    "camelcase": "off",
     "no-underscore-dangle": 0,
-    "import/prefer-default-export": 0
+    "import/extensions": "off",
+    "import/prefer-default-export": 0,
+    "no-unused-vars": "off",
+    "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }]
   },
   "globals": {
     "client": true
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
   }
 }
