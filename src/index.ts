@@ -234,14 +234,17 @@ export class Discojs {
       method: method || HTTPVerbsEnum.GET,
     }
 
+    const clonedHeaders = new Map(this.fetchHeaders)
+
     if (data) {
       const stringifiedData = JSON.stringify(transformData(data))
       options.body = stringifiedData
 
-      const clonedHeaders = { ...this.fetchHeaders }
       clonedHeaders.set('Content-Type', 'application/json')
       clonedHeaders.set('Content-Length', Buffer.byteLength(stringifiedData, 'utf8').toString())
     }
+
+    options.headers = Object.fromEntries(clonedHeaders)
 
     return this.limiter.schedule(async () =>
       fetch<T>(query && typeof query === 'object' ? `${BASE_URL + uri}?${stringify(query)}` : BASE_URL + uri, options),
