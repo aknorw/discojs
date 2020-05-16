@@ -1,0 +1,50 @@
+import * as t from 'io-ts'
+
+import { ImageIO, ResourceURLIO, StatNumberIO, VideoIO } from './commons'
+import { makeEnumIOType } from './helpers'
+import { ReleaseArtistIO, TrackIO } from './release'
+import { CommunityStatusesEnum, DataQualityEnum } from '../src/constants'
+
+export const MasterIO = t.intersection([
+  ResourceURLIO,
+  t.type({
+    id: t.Integer,
+    main_release: t.Integer,
+    main_release_url: t.string,
+    versions_url: t.string,
+    title: t.string,
+    artists: t.array(ReleaseArtistIO),
+    genres: t.array(t.string),
+    styles: t.array(t.string),
+    year: t.Integer,
+    tracklist: t.array(TrackIO),
+    lowest_price: t.number,
+    num_for_sale: t.Integer,
+    data_quality: makeEnumIOType(DataQualityEnum),
+    images: t.array(ImageIO),
+    videos: t.array(VideoIO),
+    uri: t.string,
+  }),
+])
+
+export interface Master extends t.TypeOf<typeof MasterIO> {}
+
+export const MasterVersionIO = t.intersection([
+  ResourceURLIO,
+  t.type({
+    id: t.Integer,
+    title: t.string,
+    format: t.string,
+    major_formats: t.array(t.string),
+    label: t.string,
+    catno: t.string,
+    released: t.string,
+    country: t.string,
+    status: makeEnumIOType(CommunityStatusesEnum),
+    stats: t.type({
+      user: StatNumberIO,
+      community: StatNumberIO,
+    }),
+    thumb: t.string,
+  }),
+])

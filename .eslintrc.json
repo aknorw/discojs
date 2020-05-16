@@ -6,7 +6,7 @@
   },
   "env": {
     "node": true,
-    "mocha": true,
+    "jest": true,
     "es6": true
   },
   "extends": ["airbnb-base", "prettier"],
@@ -22,12 +22,20 @@
       }
     ],
     "camelcase": "off",
-    "no-underscore-dangle": 0,
-    "import/extensions": "off",
-    "import/prefer-default-export": 0,
+    "no-underscore-dangle": "off",
     "no-unused-vars": "off",
+    "import/extensions": "off",
+    "import/prefer-default-export": "off",
     "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }]
   },
+  "overrides": [
+    {
+      "files": ["models/**/*.ts", "src/**/*.spec.ts"],
+      "rules": {
+        "import/no-extraneous-dependencies": "off"
+      }
+    }
+  ],
   "globals": {
     "client": true
   },

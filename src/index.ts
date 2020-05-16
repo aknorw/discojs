@@ -1,6 +1,5 @@
 import Bottleneck from 'bottleneck'
 import { Headers } from 'cross-fetch'
-import { stringify } from 'querystring'
 
 import {
   CurrenciesEnum,
@@ -20,14 +19,27 @@ import {
 } from './constants'
 
 import {
+  addQueryToUri,
+  createLimiter,
+  fetch,
+  HTTPVerbsEnum,
+  paginate,
+  Pagination,
+  sortBy,
+  SortOptions,
+  transformData,
+} from './utils'
+
+import {
   AddToFolderResponse,
   AddToWantlistResponse,
   Artist,
+  ArtistReleasesResponse,
   CollectionValueResponse,
   CommunityReleaseRatingResponse,
   CreateListingResponse,
   CustomFieldsResponse,
-  EditProfileResponse,
+  EditUserProfileResponse,
   EmptyResponse,
   Fee,
   Folder,
@@ -36,6 +48,7 @@ import {
   IdentityResponse,
   InventoryResponse,
   Label,
+  LabelReleasesResponse,
   Listing,
   MarketplaceStatisticsResponse,
   Master,
@@ -47,27 +60,14 @@ import {
   PriceSuggestionsResponse,
   Release,
   ReleaseRatingResponse,
-  ReleasesResponse,
   SearchResponse,
   UserContributionsResponse,
   UserListItemsResponse,
   UserListsResponse,
-  UserResponse,
+  UserProfileResponse,
   UserSubmissionsResponse,
   WantlistResponse,
-} from './discogsTypes'
-
-import {
-  createLimiter,
-  fetch,
-  HTTPVerbsEnum,
-  paginate,
-  Pagination,
-  Range,
-  sortBy,
-  SortOptions,
-  transformData,
-} from './utils'
+} from '../models'
 
 /**
  * Constants.
@@ -145,6 +145,8 @@ type ListingOptions = {
   weight?: 'auto' | number
   formatQuantity?: 'auto' | number
 }
+
+type RatingValues = 0 | 1 | 2 | 3 | 4 | 5
 
 /**
  * Type guards.
@@ -246,8 +248,8 @@ export class Discojs {
 
     options.headers = Object.fromEntries(clonedHeaders)
 
-    return this.limiter.schedule(async () =>
-      fetch<T>(query && typeof query === 'object' ? `${BASE_URL + uri}?${stringify(query)}` : BASE_URL + uri, options),
+    return this.limiter.schedule(() =>
+      fetch<T>(BASE_URL + (query && typeof query === 'object' ? addQueryToUri(uri, query) : uri), options),
     )
   }
 
@@ -271,7 +273,7 @@ export class Discojs {
   // https://www.discogs.com/developers#page:user-identity,header:user-identity-profile
 
   async getProfileForUser(username: string) {
-    return this.fetch<UserResponse>(`/users/${username}`)
+    return this.fetch<UserProfileResponse>(`/users/${username}`)
   }
 
   async getProfile() {
@@ -281,7 +283,7 @@ export class Discojs {
 
   async editProfile(options: ProfileOptions) {
     const username = await this.getUsername()
-    return this.fetch<EditProfileResponse>(`/users/${username}`, {}, HTTPVerbsEnum.POST, { username, ...options })
+    return this.fetch<EditUserProfileResponse>(`/users/${username}`, {}, HTTPVerbsEnum.POST, { username, ...options })
   }
 
   // User - Submissions
@@ -306,7 +308,7 @@ export class Discojs {
     })
   }
 
-  async getContributions(sort: SortOptions<UserSortEnum>, pagination?: Pagination) {
+  async getContributions(sort?: SortOptions<UserSortEnum>, pagination?: Pagination) {
     const username = await this.getUsername()
     return this.getContributionsForUser(username, sort, pagination)
   }
@@ -406,7 +408,7 @@ export class Discojs {
     folderId: FolderIdsEnum | number,
     releaseId: number,
     instanceId: number,
-    rating: Range<0, 6>,
+    rating: RatingValues,
   ) {
     const username = await this.getUsername()
     return this.fetch<EmptyResponse>(
@@ -497,7 +499,7 @@ export class Discojs {
   // User - Wantlist - Add to wantlist
   // https://www.discogs.com/developers#page:user-wantlist,header:user-wantlist-add-to-wantlist
 
-  async addToWantlist(releaseId: number, notes?: string, rating?: Range<0, 6>) {
+  async addToWantlist(releaseId: number, notes?: string, rating?: RatingValues) {
     const username = await this.getUsername()
     return this.fetch<AddToWantlistResponse>(
       `/users/${username}/wants/${releaseId}`,
@@ -557,7 +559,7 @@ export class Discojs {
     return this.getReleaseRatingForUser(username, releaseId)
   }
 
-  async updateReleaseRating(releaseId: number, rating: Range<0, 6>) {
+  async updateReleaseRating(releaseId: number, rating: RatingValues) {
     const username = await this.getUsername()
     return this.fetch<ReleaseRatingResponse>(`/releases/${releaseId}/rating/${username}`, {}, HTTPVerbsEnum.PUT, {
       rating,
@@ -590,6 +592,7 @@ export class Discojs {
   // Database - Master Release Versions
   // https://www.discogs.com/developers#page:database,header:database-master-release-versions
 
+  // @TODO: There are a lot of parameters not handled here
   async getMasterVersions(masterId: number, pagination?: Pagination) {
     return this.fetch<MasterVersionsResponse>(`/masters/${masterId}/versions`, paginate(pagination))
   }
@@ -609,7 +612,7 @@ export class Discojs {
   // https://www.discogs.com/developers#page:database,header:database-artist-releases
 
   async getArtistReleases(artistId: number, sort?: SortOptions<ReleaseSortEnum>, pagination?: Pagination) {
-    return this.fetch<ReleasesResponse>(`/artists/${artistId}/releases`, {
+    return this.fetch<ArtistReleasesResponse>(`/artists/${artistId}/releases`, {
       ...sortBy(ReleaseSortEnum.YEAR, sort),
       ...paginate(pagination),
     })
@@ -630,7 +633,7 @@ export class Discojs {
   // https://www.discogs.com/developers#page:database,header:database-all-label-releases
 
   async getLabelReleases(labelId: number, pagination?: Pagination) {
-    return this.fetch<ReleasesResponse>(`/labels/${labelId}/releases`, paginate(pagination))
+    return this.fetch<LabelReleasesResponse>(`/labels/${labelId}/releases`, paginate(pagination))
   }
 
   // Marketplace - Inventory
@@ -638,7 +641,7 @@ export class Discojs {
 
   async getInventoryForUser(
     username: string,
-    status?: InventoryStatusesEnum,
+    status: InventoryStatusesEnum = InventoryStatusesEnum.ALL,
     sort?: SortOptions<InventorySortEnum>,
     pagination?: Pagination,
   ) {
@@ -742,5 +745,5 @@ export class Discojs {
  */
 
 export * from './constants'
-export * from './discogsTypes'
 export * from './errors'
+export { SortOrdersEnum } from './utils'

@@ -1,3 +1,4 @@
+export * from './community'
 export * from './conditions'
 export * from './currencies'
 export * from './folders'

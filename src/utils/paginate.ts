@@ -5,13 +5,16 @@ export interface Pagination {
   perPage?: number
 }
 
+export const DEFAULT_PAGE = 1
+export const DEFAULT_PER_PAGE = 50
+
 export function paginate(options?: Pagination) {
-  const { page = 1, perPage = 50 } = options || {}
+  const { page = DEFAULT_PAGE, perPage = DEFAULT_PER_PAGE } = options || {}
 
   return {
     // Minimum page is 1
-    page: Math.max(1, page),
+    page: Math.max(DEFAULT_PAGE, page),
     // Maximum items per page are 100
-    per_page: Math.min(100, perPage),
+    per_page: perPage <= 0 || perPage > 100 ? DEFAULT_PER_PAGE : perPage,
   }
 }

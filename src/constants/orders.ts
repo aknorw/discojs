@@ -36,3 +36,11 @@ export enum OrderSortEnum {
   STATUS = 'status',
   LAST_ACTIVITY = 'last_activity',
 }
+
+export enum OrderMessageTypesEnum {
+  STATUS = 'status',
+  MESSAGE = 'message',
+  SHIPPING = 'shipping',
+  REFUND_SENT = 'refund_sent',
+  REFUND_RECEIVED = 'refund_received',
+}
