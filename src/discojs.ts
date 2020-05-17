@@ -69,11 +69,18 @@ import {
 } from '../models'
 
 /**
- * Base URL to which URI will be appended.
+ * Base API URL to which URI will be appended.
  *
  * @internal
  */
-const BASE_URL = 'https://api.discogs.com'
+const API_BASE_URL = 'https://api.discogs.com'
+
+/**
+ * Base URL dedicated to Discogs images.
+ *
+ * @internal
+ */
+const IMG_BASE_URL = 'https://img.discogs.com'
 
 /**
  * Discogs API version.
@@ -297,6 +304,11 @@ export class Discojs {
    * @internal
    */
   private async fetch<T>(uri: string, query?: Record<string, any>, method?: HTTPVerbsEnum, data?: Record<string, any>) {
+    const isImgEndpoint = uri.startsWith(IMG_BASE_URL)
+    const endpoint = isImgEndpoint
+      ? uri
+      : API_BASE_URL + (query && typeof query === 'object' ? addQueryToUri(uri, query) : uri)
+
     const options = {
       ...this.fetchOptions,
       method: method || HTTPVerbsEnum.GET,
@@ -314,9 +326,7 @@ export class Discojs {
 
     options.headers = Object.fromEntries(clonedHeaders)
 
-    return this.limiter.schedule(() =>
-      fetch<T>(BASE_URL + (query && typeof query === 'object' ? addQueryToUri(uri, query) : uri), options),
-    )
+    return this.limiter.schedule(() => fetch<T>(endpoint, options, isImgEndpoint))
   }
 
   /**
@@ -1288,5 +1298,18 @@ export class Discojs {
    */
   async getMarketplaceStatistics(releaseId: number, currency?: CurrenciesEnum) {
     return this.fetch<MarketplaceStatisticsResponse>(`/marketplace/stats/${releaseId}`, { currency })
+  }
+
+  /**
+   * Retrieve an image retrieved in another response.
+   *
+   * @requires authentication
+   *
+   * @category Helpers
+   *
+   * @link https://www.discogs.com/developers#page:images
+   */
+  async fetchImage(imageUrl: string) {
+    return this.fetch<Blob>(imageUrl)
   }
 }

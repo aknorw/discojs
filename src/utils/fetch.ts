@@ -25,7 +25,7 @@ export enum HTTPVerbsEnum {
  *
  * @internal
  */
-export async function fetch<T>(url: string, options?: RequestInit): Promise<T> {
+export async function fetch<T>(url: string, options?: RequestInit, shouldReturnBlob?: boolean): Promise<T> {
   const response = await crossFetch(url, options)
 
   // Check status
@@ -36,6 +36,11 @@ export async function fetch<T>(url: string, options?: RequestInit): Promise<T> {
   if (status < 200 || status >= 300) throw new DiscogsError(statusText, status)
 
   if (status === 204) return Promise.resolve({}) as Promise<T>
+
+  if (shouldReturnBlob) {
+    const blob = await response.blob()
+    return (blob as unknown) as T
+  }
 
   const data = await response.json()
   return data
