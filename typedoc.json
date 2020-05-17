@@ -1,0 +1,14 @@
+{
+  "mode": "file",
+  "out": "docs",
+  "theme": "minimal",
+  "categoryOrder": [
+    "User Identity",
+    "User Profile",
+    "User Submissions",
+    "User Contributions",
+    "User Collection",
+    "User Folder",
+    "*"
+  ]
+}

@@ -8,6 +8,11 @@ export interface SortOptions<T> {
   order?: SortOrdersEnum
 }
 
+/**
+ * Sort by helper.
+ *
+ * @internal
+ */
 export function sortBy<T>(defaultSortBy: T, options?: SortOptions<T>) {
   const { by = defaultSortBy, order = SortOrdersEnum.ASC } = options || {}
 

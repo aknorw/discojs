@@ -9,6 +9,11 @@ interface CreateLimiterArgs {
   requestLimitInterval: number
 }
 
+/**
+ * Helper to create a new instance of Bottleneck.
+ *
+ * @internal
+ */
 export function createLimiter({ concurrency = 1, maxRequests, requestLimitInterval }: CreateLimiterArgs) {
   return new Bottleneck({
     maxConcurrent: concurrency,

@@ -3,6 +3,11 @@ import { stringify } from 'querystring'
 
 import { AuthError, DiscogsError } from '../errors'
 
+/**
+ * HTTP verbs.
+ *
+ * @internal
+ */
 export enum HTTPVerbsEnum {
   GET = 'GET',
   POST = 'POST',
@@ -10,6 +15,16 @@ export enum HTTPVerbsEnum {
   DELETE = 'DELETE',
 }
 
+/**
+ * Fetch helper.
+ *
+ * @param url - URL to fetch
+ * @param options - Fetch options
+ * @returns
+ * @throws
+ *
+ * @internal
+ */
 export async function fetch<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await crossFetch(url, options)
 
@@ -26,6 +41,15 @@ export async function fetch<T>(url: string, options?: RequestInit): Promise<T> {
   return data
 }
 
+/**
+ * Helper to add query to a URI. Strips undefined values.
+ *
+ * @param uri - Endpoint to which query will be appended.
+ * @param query
+ * @returns URI + query
+ *
+ * @internal
+ */
 export function addQueryToUri(uri: string, query: Record<string, any>) {
   const definedKeys = Object.entries(query).reduce((acc, [key, value]) => {
     if (typeof value === 'undefined') return acc
@@ -38,7 +62,14 @@ export function addQueryToUri(uri: string, query: Record<string, any>) {
   return `${uri}?${stringify(definedKeys)}`
 }
 
-// We must replace `currency` by `curr_abbr` and transform camelcase to snakecase.
+/**
+ * Helper to transform camelcased data keys to snakecased one and rename `currency` to `curr_abbr`.
+ *
+ * @param data
+ * @returns Tranformed `data` object.
+ *
+ * @internal
+ */
 export function transformData(data: Record<string, any>) {
   return Object.entries(data).reduce(
     (acc, [key, value]) => ({

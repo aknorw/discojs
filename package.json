@@ -20,6 +20,7 @@
     "pretty": "prettier --config .prettierrc --write '{models,src}/**/*.{ts,json}'",
     "lint": "eslint --ext .ts,.json models/ src/",
     "test": "cross-env NODE_ENV=test jest",
+    "docs": "typedoc --inputFiles src/index.ts --exclude \"**/*+(.spec).ts\" --excludeNotExported --excludePrivate --stripInternal",
     "prebuild": "yarn run clean",
     "build": "cross-env NODE_ENV=production rollup -c"
   },
@@ -72,6 +73,7 @@
     "rollup": "^2.8.2",
     "rollup-plugin-commonjs": "^10.1.0",
     "ts-jest": "^25.5.1",
+    "typedoc": "^0.17.6",
     "typescript": "^3.8.3"
   }
 }

@@ -8,6 +8,11 @@ export interface Pagination {
 export const DEFAULT_PAGE = 1
 export const DEFAULT_PER_PAGE = 50
 
+/**
+ * Paginate helper.
+ *
+ * @internal
+ */
 export function paginate(options?: Pagination) {
   const { page = DEFAULT_PAGE, perPage = DEFAULT_PER_PAGE } = options || {}
 
