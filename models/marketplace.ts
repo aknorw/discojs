@@ -147,7 +147,7 @@ export const OrderIO = t.intersection([
 ])
 
 const OrderMessageStatusIO = t.type({
-  type: t.literal(OrderMessageTypesEnum.STATUS),
+  // type: t.literal(OrderMessageTypesEnum.STATUS),
   status_id: t.Integer,
   actor: t.intersection([
     ResourceURLIO,
@@ -158,7 +158,7 @@ const OrderMessageStatusIO = t.type({
 })
 
 const OrderMessageMessageIO = t.type({
-  type: t.literal(OrderMessageTypesEnum.MESSAGE),
+  // type: t.literal(OrderMessageTypesEnum.MESSAGE),
   from: t.intersection([
     ResourceURLIO,
     t.type({
@@ -170,13 +170,13 @@ const OrderMessageMessageIO = t.type({
 })
 
 const OrderMessageShippingIO = t.type({
-  type: t.literal(OrderMessageTypesEnum.SHIPPING),
+  // type: t.literal(OrderMessageTypesEnum.SHIPPING),
   original: t.number,
   new: t.number,
 })
 
 const OrderMessageRefundIO = t.type({
-  type: t.union([t.literal(OrderMessageTypesEnum.REFUND_SENT), t.literal(OrderMessageTypesEnum.REFUND_RECEIVED)]),
+  // type: t.union([t.literal(OrderMessageTypesEnum.REFUND_SENT), t.literal(OrderMessageTypesEnum.REFUND_RECEIVED)]),
   refund: t.type({
     amount: t.number,
     order: t.intersection([
