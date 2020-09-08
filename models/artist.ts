@@ -4,6 +4,9 @@ import { ImageIO, ResourceURLIO } from './commons'
 import { makeEnumIOType } from './helpers'
 import { DataQualityEnum } from '../src/constants'
 
+/**
+ * @internal
+ */
 const MemberIO = t.intersection([
   ResourceURLIO,
   t.type({
@@ -13,6 +16,9 @@ const MemberIO = t.intersection([
   }),
 ])
 
+/**
+ * @internal
+ */
 const ArtistBaseIO = t.intersection([
   ResourceURLIO,
   t.type({
@@ -29,6 +35,9 @@ const ArtistBaseIO = t.intersection([
   }),
 ])
 
+/**
+ * @internal
+ */
 export const ArtistIO = t.intersection([
   ArtistBaseIO,
   t.partial({
@@ -36,8 +45,11 @@ export const ArtistIO = t.intersection([
   }),
 ])
 
-export interface Artist extends t.TypeOf<typeof ArtistIO> {}
+export type Artist = t.TypeOf<typeof ArtistIO>
 
+/**
+ * @internal
+ */
 export const UserSubmissionArtistIO = t.intersection([
   ArtistBaseIO,
   t.partial({

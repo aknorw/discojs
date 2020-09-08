@@ -1,5 +1,10 @@
 import * as t from 'io-ts'
 
+/**
+ * Helper to use Enums in io-ts types.
+ *
+ * @internal
+ */
 export function makeEnumIOType<T extends object>(srcEnum: T) {
   const enumValues = new Set(Object.values(srcEnum))
   return new t.Type<T[keyof T], string>(

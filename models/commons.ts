@@ -3,6 +3,9 @@ import * as t from 'io-ts'
 import { makeEnumIOType } from './helpers'
 import { CurrenciesEnum } from '../src/constants'
 
+/**
+ * @internal
+ */
 export const PaginationIO = t.type({
   items: t.Integer,
   page: t.Integer,
@@ -16,10 +19,16 @@ export const PaginationIO = t.type({
   }),
 })
 
+/**
+ * @internal
+ */
 export const ResourceURLIO = t.type({
   resource_url: t.string,
 })
 
+/**
+ * @internal
+ */
 export const ImageIO = t.intersection([
   ResourceURLIO,
   t.type({
@@ -31,6 +40,9 @@ export const ImageIO = t.intersection([
   }),
 ])
 
+/**
+ * @internal
+ */
 export const VideoIO = t.type({
   title: t.string,
   description: t.string,
@@ -39,16 +51,25 @@ export const VideoIO = t.type({
   uri: t.string,
 })
 
+/**
+ * @internal
+ */
 export const ValueWithCurrencyIO = t.partial({
   value: t.number,
   currency: makeEnumIOType(CurrenciesEnum),
 })
 
+/**
+ * @internal
+ */
 export const StatNumberIO = t.type({
   in_collection: t.number,
   in_wantlist: t.number,
 })
 
+/**
+ * @internal
+ */
 export const StatBooleanIO = t.type({
   in_collection: t.boolean,
   in_wantlist: t.boolean,

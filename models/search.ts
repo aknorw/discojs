@@ -4,6 +4,9 @@ import { ResourceURLIO, StatBooleanIO } from './commons'
 import { makeEnumIOType } from './helpers'
 import { SearchTypeEnum } from '../src/constants'
 
+/**
+ * @internal
+ */
 export const SearchEntityIO = t.intersection([
   ResourceURLIO,
   t.type({
