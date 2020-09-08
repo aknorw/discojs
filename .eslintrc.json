@@ -22,6 +22,8 @@
       }
     ],
     "camelcase": "off",
+    "no-shadow": "off",
+    "no-undef": "warn",
     "no-underscore-dangle": "off",
     "no-unused-vars": "off",
     "import/extensions": "off",
