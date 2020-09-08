@@ -4,9 +4,19 @@ import { ImageIO, ResourceURLIO, StatNumberIO, VideoIO } from './commons'
 import { makeEnumIOType } from './helpers'
 import { CommunityStatusesEnum, DataQualityEnum } from '../src/constants'
 
+/**
+ * @internal
+ */
 const CommunityStatusesRuntimeEnum = makeEnumIOType(CommunityStatusesEnum)
+
+/**
+ * @internal
+ */
 const DataQualityRuntimeEnum = makeEnumIOType(DataQualityEnum)
 
+/**
+ * @internal
+ */
 const ContributorIO = t.intersection([
   ResourceURLIO,
   t.type({
@@ -14,11 +24,17 @@ const ContributorIO = t.intersection([
   }),
 ])
 
+/**
+ * @internal
+ */
 export const CommunityReleaseRatingIO = t.type({
   count: t.Integer,
   average: t.number,
 })
 
+/**
+ * @internal
+ */
 export const ReleaseArtistIO = t.intersection([
   ResourceURLIO,
   t.type({
@@ -31,12 +47,18 @@ export const ReleaseArtistIO = t.intersection([
   }),
 ])
 
+/**
+ * @internal
+ */
 const ReleaseFormatIO = t.type({
   name: t.string,
   qty: t.string,
   descriptions: t.array(t.string),
 })
 
+/**
+ * @internal
+ */
 const ReleaseEntityIO = t.intersection([
   ResourceURLIO,
   t.type({
@@ -48,11 +70,17 @@ const ReleaseEntityIO = t.intersection([
   }),
 ])
 
+/**
+ * @internal
+ */
 const ReleaseIdentifierIO = t.type({
   type: t.string,
   value: t.string,
 })
 
+/**
+ * @internal
+ */
 export const TrackIO = t.type({
   type_: t.string,
   title: t.string,
@@ -60,6 +88,9 @@ export const TrackIO = t.type({
   duration: t.string,
 })
 
+/**
+ * @internal
+ */
 export const ReleaseBasicInfoIO = t.intersection([
   ResourceURLIO,
   t.type({
@@ -74,6 +105,9 @@ export const ReleaseBasicInfoIO = t.intersection([
   }),
 ])
 
+/**
+ * @internal
+ */
 export const ReleaseMinimalInfoIO = t.intersection([
   ReleaseBasicInfoIO,
   t.type({
@@ -84,6 +118,9 @@ export const ReleaseMinimalInfoIO = t.intersection([
   }),
 ])
 
+/**
+ * @internal
+ */
 export const ReleaseIO = t.intersection([
   ResourceURLIO,
   t.partial({
@@ -132,8 +169,11 @@ export const ReleaseIO = t.intersection([
   }),
 ])
 
-export interface Release extends t.TypeOf<typeof ReleaseIO> {}
+export type Release = t.TypeOf<typeof ReleaseIO>
 
+/**
+ * @internal
+ */
 export const ArtistReleaseIO = t.intersection([
   ResourceURLIO,
   t.type({
@@ -149,6 +189,9 @@ export const ArtistReleaseIO = t.intersection([
   }),
 ])
 
+/**
+ * @internal
+ */
 export const LabelReleaseIO = t.intersection([
   ArtistReleaseIO,
   t.type({

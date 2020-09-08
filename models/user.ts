@@ -4,6 +4,9 @@ import { ResourceURLIO } from './commons'
 import { makeEnumIOType } from './helpers'
 import { CurrenciesEnum, SearchTypeEnum } from '../src/constants'
 
+/**
+ * @internal
+ */
 export const UserListIO = t.intersection([
   ResourceURLIO,
   t.type({
@@ -17,6 +20,9 @@ export const UserListIO = t.intersection([
   }),
 ])
 
+/**
+ * @internal
+ */
 export const UserListItemIO = t.intersection([
   ResourceURLIO,
   t.type({
@@ -29,6 +35,9 @@ export const UserListItemIO = t.intersection([
   }),
 ])
 
+/**
+ * @internal
+ */
 export const IdentityIO = t.intersection([
   ResourceURLIO,
   t.type({
@@ -38,6 +47,9 @@ export const IdentityIO = t.intersection([
   }),
 ])
 
+/**
+ * @internal
+ */
 export const UserIO = t.intersection([
   ResourceURLIO,
   t.partial({

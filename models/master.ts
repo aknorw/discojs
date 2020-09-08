@@ -5,6 +5,9 @@ import { makeEnumIOType } from './helpers'
 import { ReleaseArtistIO, TrackIO } from './release'
 import { CommunityStatusesEnum, DataQualityEnum } from '../src/constants'
 
+/**
+ * @internal
+ */
 export const MasterIO = t.intersection([
   ResourceURLIO,
   t.type({
@@ -27,8 +30,11 @@ export const MasterIO = t.intersection([
   }),
 ])
 
-export interface Master extends t.TypeOf<typeof MasterIO> {}
+export type Master = t.TypeOf<typeof MasterIO>
 
+/**
+ * @internal
+ */
 export const MasterVersionIO = t.intersection([
   ResourceURLIO,
   t.type({

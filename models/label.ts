@@ -4,6 +4,9 @@ import { ImageIO, ResourceURLIO } from './commons'
 import { makeEnumIOType } from './helpers'
 import { DataQualityEnum } from '../src/constants'
 
+/**
+ * @internal
+ */
 const SubLabelIO = t.intersection([
   ResourceURLIO,
   t.type({
@@ -12,6 +15,9 @@ const SubLabelIO = t.intersection([
   }),
 ])
 
+/**
+ * @internal
+ */
 export const LabelIO = t.intersection([
   ResourceURLIO,
   t.type({
@@ -28,4 +34,4 @@ export const LabelIO = t.intersection([
   }),
 ])
 
-export interface Label extends t.TypeOf<typeof LabelIO> {}
+export type Label = t.TypeOf<typeof LabelIO>

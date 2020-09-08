@@ -11,17 +11,34 @@ import {
   SleeveConditionsEnum,
 } from '../src/constants'
 
+/**
+ * @internal
+ */
 const ReleaseConditionsRuntimeEnum = makeEnumIOType(ReleaseConditionsEnum)
+
+/**
+ * @internal
+ */
 const SleeveConditionsRuntimeEnum = makeEnumIOType(SleeveConditionsEnum)
+
+/**
+ * @internal
+ */
 const EditOrderStatusesRuntimeEnum = makeEnumIOType(EditOrderStatusesEnum)
 
+/**
+ * @internal
+ */
 export const FeeIO = ValueWithCurrencyIO
 
+/**
+ * @internal
+ */
 const SellerIO = t.intersection([
   ResourceURLIO,
   t.type({
     id: t.Integer,
-    uid: t.Integer, // Added
+    uid: t.Integer,
     username: t.string,
     avatar_url: t.string,
     payment: t.string,
@@ -37,6 +54,9 @@ const SellerIO = t.intersection([
   }),
 ])
 
+/**
+ * @internal
+ */
 const OriginalPriceIO = t.partial({
   value: t.number,
   curr_id: t.Integer,
@@ -44,6 +64,9 @@ const OriginalPriceIO = t.partial({
   formatted: t.string,
 })
 
+/**
+ * @internal
+ */
 export const ListingIO = t.intersection([
   ResourceURLIO,
   t.type({
@@ -96,6 +119,9 @@ export const ListingIO = t.intersection([
   }),
 ])
 
+/**
+ * @internal
+ */
 const OrderItemIO = t.type({
   id: t.Integer,
   release: t.type({
@@ -107,6 +133,9 @@ const OrderItemIO = t.type({
   sleeve_condition: SleeveConditionsRuntimeEnum,
 })
 
+/**
+ * @internal
+ */
 export const OrderIO = t.intersection([
   ResourceURLIO,
   t.type({
@@ -146,6 +175,9 @@ export const OrderIO = t.intersection([
   }),
 ])
 
+/**
+ * @internal
+ */
 const OrderMessageStatusIO = t.type({
   // type: t.literal(OrderMessageTypesEnum.STATUS),
   status_id: t.Integer,
@@ -157,6 +189,9 @@ const OrderMessageStatusIO = t.type({
   ]),
 })
 
+/**
+ * @internal
+ */
 const OrderMessageMessageIO = t.type({
   // type: t.literal(OrderMessageTypesEnum.MESSAGE),
   from: t.intersection([
@@ -169,12 +204,18 @@ const OrderMessageMessageIO = t.type({
   ]),
 })
 
+/**
+ * @internal
+ */
 const OrderMessageShippingIO = t.type({
   // type: t.literal(OrderMessageTypesEnum.SHIPPING),
   original: t.number,
   new: t.number,
 })
 
+/**
+ * @internal
+ */
 const OrderMessageRefundIO = t.type({
   // type: t.union([t.literal(OrderMessageTypesEnum.REFUND_SENT), t.literal(OrderMessageTypesEnum.REFUND_RECEIVED)]),
   refund: t.type({
@@ -188,6 +229,9 @@ const OrderMessageRefundIO = t.type({
   }),
 })
 
+/**
+ * @internal
+ */
 export const OrderMessageIO = t.intersection([
   t.type({
     type: makeEnumIOType(OrderMessageTypesEnum),
@@ -207,7 +251,7 @@ export const OrderMessageIO = t.intersection([
   OrderMessageRefundIO,
 ])
 
-export interface Fee extends t.TypeOf<typeof FeeIO> {}
-export interface Listing extends t.TypeOf<typeof ListingIO> {}
-export interface Order extends t.TypeOf<typeof OrderIO> {}
-export interface OrderMessage extends t.TypeOf<typeof OrderMessageIO> {}
+export type Fee = t.TypeOf<typeof FeeIO>
+export type Listing = t.TypeOf<typeof ListingIO>
+export type Order = t.TypeOf<typeof OrderIO>
+export type OrderMessage = t.TypeOf<typeof OrderMessageIO>
