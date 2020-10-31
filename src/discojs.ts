@@ -1,5 +1,6 @@
 import Bottleneck from 'bottleneck'
 import { Headers } from 'cross-fetch'
+import OAuth from 'oauth-1.0a'
 
 import {
   CurrenciesEnum,
@@ -106,6 +107,10 @@ type ConsumerKeyAuth = {
   consumerKey: string
   /** Consumer secret. */
   consumerSecret: string
+  /** OAuth token. */
+  oAuthToken: string
+  /** OAuth token secret. */
+  oAuthTokenSecret: string
 }
 
 // @TODO: Make a better limiter (one limit, no interval, should use headers from Discogs).
@@ -206,7 +211,13 @@ function isAuthenticatedWithToken(options?: Partial<UserTokenAuth>): options is 
  * @internal
  */
 function isAuthenticatedWithConsumerKey(options?: Partial<ConsumerKeyAuth>): options is ConsumerKeyAuth {
-  return Boolean(options) && typeof options!.consumerKey === 'string' && typeof options!.consumerSecret === 'string'
+  return (
+    Boolean(options) &&
+    typeof options!.consumerKey === 'string' &&
+    typeof options!.consumerSecret === 'string' &&
+    typeof options!.oAuthToken === 'string' &&
+    typeof options!.oAuthTokenSecret === 'string'
+  )
 }
 
 /**
@@ -227,6 +238,7 @@ export class Discojs {
   public outputFormat: OutputFormatsEnum
   private limiter: Bottleneck
   private fetchHeaders: Headers
+  private setAuthorizationHeader?: (url?: string, method?: HTTPVerbsEnum) => string
   private fetchOptions: RequestInit
 
   constructor(options?: DiscojsOptions) {
@@ -258,10 +270,26 @@ export class Discojs {
       'User-Agent': this.userAgent,
     })
 
-    if (isAuthenticatedWithToken(options)) this.fetchHeaders.set('Authorization', `Discogs token=${options.userToken}`)
+    if (isAuthenticatedWithToken(options)) this.setAuthorizationHeader = () => `Discogs token=${options.userToken}`
 
-    if (isAuthenticatedWithConsumerKey(options))
-      this.fetchHeaders.set('Authorization', `Discogs key=${options.consumerKey}, secret=${options.consumerSecret}`)
+    if (isAuthenticatedWithConsumerKey(options)) {
+      const oAuth = new OAuth({
+        consumer: { key: options.consumerKey, secret: options.consumerSecret },
+        signature_method: 'PLAINTEXT',
+        version: '1.0',
+      })
+
+      this.setAuthorizationHeader = (url?: string, method?: HTTPVerbsEnum) => {
+        if (!url || !method) return ''
+
+        const authObject = oAuth.authorize(
+          { url, method },
+          { key: options.oAuthToken, secret: options.oAuthTokenSecret },
+        )
+
+        return oAuth.toHeader(authObject).Authorization
+      }
+    }
   }
 
   /**
@@ -313,6 +341,10 @@ export class Discojs {
       ...this.fetchOptions,
       method: method || HTTPVerbsEnum.GET,
     }
+
+    // Set Authorization header.
+    if (this.setAuthorizationHeader)
+      this.fetchHeaders.set('Authorization', this.setAuthorizationHeader(uri, method || HTTPVerbsEnum.GET))
 
     const clonedHeaders = new Map(this.fetchHeaders)
 

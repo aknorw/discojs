@@ -47,6 +47,7 @@
   "dependencies": {
     "bottleneck": "^2.19.5",
     "cross-fetch": "^3.0.5",
+    "oauth-1.0a": "^2.2.6",
     "querystring": "^0.2.0"
   },
   "devDependencies": {

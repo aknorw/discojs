@@ -53,7 +53,6 @@ export const ReleaseArtistIO = t.intersection([
 const ReleaseFormatIO = t.type({
   name: t.string,
   qty: t.string,
-  descriptions: t.array(t.string),
 })
 
 /**
