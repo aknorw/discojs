@@ -1,14 +1,16 @@
 {
-  "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
+    "ecmaVersion": 2018,
     "sourceType": "module"
   },
   "env": {
     "node": true,
-    "mocha": true,
+    "jest": true,
     "es6": true
   },
   "extends": ["airbnb-base", "prettier"],
+  "plugins": ["@typescript-eslint"],
   "rules": {
     "semi": [2, "never"],
     "no-unexpected-multiline": 2,
@@ -19,10 +21,29 @@
         "comments": 200
       }
     ],
-    "no-underscore-dangle": 0,
-    "import/prefer-default-export": 0
+    "camelcase": "off",
+    "no-shadow": "off",
+    "no-undef": "warn",
+    "no-underscore-dangle": "off",
+    "no-unused-vars": "off",
+    "import/extensions": "off",
+    "import/prefer-default-export": "off",
+    "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }]
   },
+  "overrides": [
+    {
+      "files": ["models/**/*.ts", "src/**/*.spec.ts"],
+      "rules": {
+        "import/no-extraneous-dependencies": "off"
+      }
+    }
+  ],
   "globals": {
     "client": true
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
   }
 }
