@@ -1352,10 +1352,8 @@ export class Discojs {
     return this.fetch<Blob>(imageUrl)
   }
 
-  async next<TResponse extends IPaginated>(response: TResponse) {
+  next<TResponse extends IPaginated>(response: TResponse) {
     const { next } = response.pagination.urls
-    // eslint-disable-next-line no-console
-    console.log({ response, next })
     if (next === undefined) {
       return Promise.resolve(undefined)
     }
@@ -1370,10 +1368,8 @@ export class Discojs {
     let result: TResultElement[] = []
     while (response !== undefined) {
       const data = response[key]
-      // eslint-disable-next-line no-console
-      console.log({ response, data, result, onProgress })
-      result = result.concat(data)
       onProgress?.(data)
+      result = result.concat(data)
       // eslint-disable-next-line no-await-in-loop, no-param-reassign
       response = await this.next(response)
       if (response === undefined) {
