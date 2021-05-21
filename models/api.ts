@@ -20,6 +20,12 @@ import { ReleaseConditionsEnum } from '../src/constants'
 
 export type EmptyResponse = {}
 
+export type Pagination = t.TypeOf<typeof PaginationIO>
+
+export interface IPaginated {
+  pagination: Pagination
+}
+
 export type IdentityResponse = t.TypeOf<typeof IdentityIO>
 
 export type UserProfileResponse = t.TypeOf<typeof UserIO>

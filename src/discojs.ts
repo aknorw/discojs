@@ -47,6 +47,7 @@ import {
   FoldersResponse,
   IdentityResponse,
   InventoryResponse,
+  IPaginated,
   Label,
   LabelReleasesResponse,
   Listing,
@@ -229,6 +230,10 @@ function isAuthenticated(options?: DiscojsOptions) {
   return isAuthenticatedWithToken(options) || isAuthenticatedWithConsumerKey(options)
 }
 
+type PropertyNamesOfType<TResponse, TResultElement> = {
+  [P in keyof TResponse]: TResponse[P] extends TResultElement ? P : never
+}[keyof TResponse]
+
 /**
  * Discojs.
  */
@@ -332,10 +337,12 @@ export class Discojs {
    * @internal
    */
   private async fetch<T>(uri: string, query?: Record<string, any>, method?: HTTPVerbsEnum, data?: Record<string, any>) {
+    const isApiEndpoint = uri.startsWith(API_BASE_URL)
     const isImgEndpoint = uri.startsWith(IMG_BASE_URL)
-    const endpoint = isImgEndpoint
-      ? uri
-      : API_BASE_URL + (query && typeof query === 'object' ? addQueryToUri(uri, query) : uri)
+    const endpoint =
+      isImgEndpoint || isApiEndpoint
+        ? uri
+        : API_BASE_URL + (query && typeof query === 'object' ? addQueryToUri(uri, query) : uri)
 
     const options = {
       ...this.fetchOptions,
@@ -1343,5 +1350,36 @@ export class Discojs {
    */
   async fetchImage(imageUrl: string) {
     return this.fetch<Blob>(imageUrl)
+  }
+
+  async next<TResponse extends IPaginated>(response: TResponse) {
+    const { next } = response.pagination.urls
+    // eslint-disable-next-line no-console
+    console.log({ response, next })
+    if (next === undefined) {
+      return Promise.resolve(undefined)
+    }
+    return this.fetch<TResponse>(next)
+  }
+
+  async all<
+    TResponse extends IPaginated,
+    TResultElement,
+    TKey extends PropertyNamesOfType<TResponse, TResultElement[]>,
+  >(key: TKey, response: TResponse | undefined, onProgress?: (data: TResultElement[]) => void) {
+    let result: TResultElement[] = []
+    while (response !== undefined) {
+      const data = response[key]
+      // eslint-disable-next-line no-console
+      console.log({ response, data, result, onProgress })
+      result = result.concat(data)
+      onProgress?.(data)
+      // eslint-disable-next-line no-await-in-loop, no-param-reassign
+      response = await this.next(response)
+      if (response === undefined) {
+        break
+      }
+    }
+    return result
   }
 }
