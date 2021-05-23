@@ -62,6 +62,13 @@ export const FoldersResponseIO = t.type({
 })
 export type FoldersResponse = t.TypeOf<typeof FoldersResponseIO>
 
+export const FieldIO = t.type({
+  field_id:t.Integer,
+  value: t.string,
+})
+
+export type Field = t.TypeOf<typeof FieldIO>
+
 /**
  * @internal
  */
@@ -74,6 +81,8 @@ export const FolderReleasesResponseIO = t.type({
       rating: t.Integer,
       date_added: t.string,
       basic_information: ReleaseMinimalInfoIO,
+      folder_id: t.Integer,
+      notes: t.array(FieldIO),
     }),
   ),
 })
