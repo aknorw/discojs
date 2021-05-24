@@ -22,6 +22,7 @@ import {
   addQueryToUri,
   createLimiter,
   fetch,
+  FetchOptions,
   HTTPVerbsEnum,
   paginate,
   Pagination,
@@ -148,7 +149,7 @@ interface DiscojsOptions extends Partial<UserTokenAuth>, Partial<ConsumerKeyAuth
    * @default discogs
    */
   outputFormat?: OutputFormatsEnum
-  fetchOptions?: RequestInit
+  fetchOptions?: FetchOptions
 }
 
 type SearchOptions = {
@@ -244,7 +245,7 @@ export class Discojs {
   private limiter: Bottleneck
   private fetchHeaders: Headers
   private setAuthorizationHeader?: (url?: string, method?: HTTPVerbsEnum) => string
-  private fetchOptions: RequestInit
+  private fetchOptions: FetchOptions
 
   constructor(options?: DiscojsOptions) {
     const {

@@ -3,6 +3,10 @@ import { stringify } from 'querystring'
 
 import { AuthError, DiscogsError } from '../errors'
 
+type RequestInit = Parameters<typeof global.fetch>[1]
+
+export type FetchOptions = RequestInit & { fetch?: typeof global.fetch }
+
 /**
  * HTTP verbs.
  *
@@ -25,8 +29,8 @@ export enum HTTPVerbsEnum {
  *
  * @internal
  */
-export async function fetch<T>(url: string, options?: RequestInit, shouldReturnBlob?: boolean): Promise<T> {
-  const response = await crossFetch(url, options)
+export async function fetch<T>(url: string, options?: FetchOptions, shouldReturnBlob?: boolean): Promise<T> {
+  const response = await (options?.fetch || crossFetch)(url, options)
 
   // Check status
   const { status, statusText } = response
