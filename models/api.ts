@@ -63,7 +63,7 @@ export const FoldersResponseIO = t.type({
 export type FoldersResponse = t.TypeOf<typeof FoldersResponseIO>
 
 export const FieldIO = t.type({
-  field_id:t.Integer,
+  field_id: t.Integer,
   value: t.string,
 })
 
