@@ -1,5 +1,5 @@
 import Bottleneck from 'bottleneck'
-import { Headers } from 'cross-fetch'
+import crossFetch, { Headers } from 'cross-fetch'
 import OAuth from 'oauth-1.0a'
 
 import {
@@ -22,10 +22,11 @@ import {
   addQueryToUri,
   createLimiter,
   fetch,
-  FetchOptions,
   HTTPVerbsEnum,
   paginate,
   Pagination,
+  RequestInit,
+  Response,
   sortBy,
   SortOptions,
   transformData,
@@ -136,6 +137,10 @@ enum OutputFormatsEnum {
   // HTML = 'html',
 }
 
+export type ResultCache = {
+  get<T>(factory: () => Promise<T>, ...args: Parameters<typeof crossFetch>): Promise<T>
+}
+
 interface DiscojsOptions extends Partial<UserTokenAuth>, Partial<ConsumerKeyAuth>, LimiterOptions {
   /**
    * User-agent to be used in requests.
@@ -149,7 +154,8 @@ interface DiscojsOptions extends Partial<UserTokenAuth>, Partial<ConsumerKeyAuth
    * @default discogs
    */
   outputFormat?: OutputFormatsEnum
-  fetchOptions?: FetchOptions
+  cache?: ResultCache
+  fetchOptions?: RequestInit
 }
 
 type SearchOptions = {
@@ -245,7 +251,8 @@ export class Discojs {
   private limiter: Bottleneck
   private fetchHeaders: Headers
   private setAuthorizationHeader?: (url?: string, method?: HTTPVerbsEnum) => string
-  private fetchOptions: FetchOptions
+  private cache?: ResultCache
+  private fetchOptions: RequestInit
 
   constructor(options?: DiscojsOptions) {
     const {
@@ -254,6 +261,7 @@ export class Discojs {
       requestLimit = 25,
       requestLimitAuth = 60,
       requestLimitInterval = 60 * 1000,
+      cache = undefined,
       fetchOptions = {},
     } = options || {}
 
@@ -265,6 +273,8 @@ export class Discojs {
       maxRequests: isAuthenticated(options) ? requestLimitAuth : requestLimit,
       requestLimitInterval,
     })
+
+    this.cache = cache
 
     this.fetchOptions = fetchOptions
 
@@ -365,8 +375,11 @@ export class Discojs {
     }
 
     options.headers = Object.fromEntries(clonedHeaders)
-
-    return this.limiter.schedule(() => fetch<T>(endpoint, options, isImgEndpoint))
+    const execute = () => fetch<T>(this.limiter, endpoint, options, isImgEndpoint)
+    if (this.cache) {
+      return this.cache.get(execute, endpoint, options)
+    }
+    return execute()
   }
 
   /**
@@ -781,6 +794,7 @@ export class Discojs {
   ) {
     const username = await this.getUsername()
     return this.fetch<EmptyResponse>(
+      // eslint-disable-next-line max-len
       `/users/${username}/collection/folders/${folderId}/releases/${releaseId}/instances/${instanceId}/fields/${fieldId}`,
       { value },
       HTTPVerbsEnum.POST,
@@ -1350,7 +1364,7 @@ export class Discojs {
    * @link https://www.discogs.com/developers#page:images
    */
   async fetchImage(imageUrl: string) {
-    return this.fetch<Blob>(imageUrl)
+    return this.fetch<Response['blob']>(imageUrl)
   }
 
   next<TResponse extends IPaginated>(response: TResponse) {
