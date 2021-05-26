@@ -1,7 +1,6 @@
 import resolve from '@rollup/plugin-node-resolve'
 import replace from '@rollup/plugin-replace'
-// Not using the "official" plugin because it does not emit declaration files.
-import typescript from '@wessberg/rollup-plugin-ts'
+import typescript from '@rollup/plugin-typescript'
 import commonjs from 'rollup-plugin-commonjs'
 
 import pkg from './package.json'
@@ -25,7 +24,7 @@ export default {
       extensions: ['.ts'],
     }),
     commonjs(),
-    typescript(),
-    replace({ __packageVersion__: pkg.version }),
+    typescript({sourceMap: false}),
+    replace({ __packageVersion__: pkg.version, preventAssignment: true}),
   ],
 }

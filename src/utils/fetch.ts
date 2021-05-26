@@ -6,7 +6,7 @@ import { AuthError, DiscogsError } from '../errors'
 
 export type RequestInit = Parameters<typeof crossFetch>[1]
 export type Response = ReturnType<typeof crossFetch> extends Promise<infer Q> ? Q : never
-
+export type Blob = ReturnType<Response['blob']> extends Promise<infer Q> ? Q : never
 /**
  * HTTP verbs.
  *

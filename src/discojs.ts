@@ -26,7 +26,7 @@ import {
   paginate,
   Pagination,
   RequestInit,
-  Response,
+  Blob,
   sortBy,
   SortOptions,
   transformData,
@@ -1364,7 +1364,7 @@ export class Discojs {
    * @link https://www.discogs.com/developers#page:images
    */
   async fetchImage(imageUrl: string) {
-    return this.fetch<Response['blob']>(imageUrl)
+    return this.fetch<Blob>(imageUrl)
   }
 
   next<TResponse extends IPaginated>(response: TResponse) {

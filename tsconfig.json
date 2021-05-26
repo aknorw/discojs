@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "outDir": "lib",
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "emitDeclarationOnly": true,
@@ -9,5 +10,8 @@
     "target": "esnext",
     "strict": true
   },
-  "include": ["./models/", "./src/"]
+  "include": [
+    "./models/",
+    "./src/"
+  ]
 }
