@@ -20,6 +20,12 @@ import { ReleaseConditionsEnum } from '../src/constants'
 
 export type EmptyResponse = {}
 
+export const ErrorResponseIO = t.type({
+  message: t.string,
+})
+
+export type ErrorResponse = t.TypeOf<typeof ErrorResponseIO>
+
 export type Pagination = t.TypeOf<typeof PaginationIO>
 
 export interface IPaginated {
@@ -236,7 +242,7 @@ export const OrdersResponseIO = t.type({
   pagination: PaginationIO,
   orders: t.array(OrderIO),
 })
-export interface OrdersResponse extends t.TypeOf<typeof OrdersResponseIO> {}
+export interface OrdersResponse extends t.TypeOf<typeof OrdersResponseIO> { }
 
 /**
  * @internal

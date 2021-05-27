@@ -796,8 +796,9 @@ export class Discojs {
     return this.fetch<EmptyResponse>(
       // eslint-disable-next-line max-len
       `/users/${username}/collection/folders/${folderId}/releases/${releaseId}/instances/${instanceId}/fields/${fieldId}`,
-      { value },
+      undefined,
       HTTPVerbsEnum.POST,
+      { value },
     )
   }
 

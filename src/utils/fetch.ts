@@ -1,6 +1,7 @@
 import Bottleneck from 'bottleneck'
 import crossFetch from 'cross-fetch'
 import { stringify } from 'querystring'
+import { ErrorResponse } from '../../models'
 
 import { AuthError, DiscogsError } from '../errors'
 
@@ -40,7 +41,15 @@ export async function fetch<T>(
   // Check status
   const { status, statusText } = response
 
+
   if (status === 401) throw new AuthError()
+
+  if (status === 422 || status >= 500) {
+    const { message }: ErrorResponse = await response.json()
+    // eslint-disable-next-line no-console
+    console.log({ status, statusText, message })
+    throw new DiscogsError(message, status)
+  }
 
   if (status < 200 || status >= 300) throw new DiscogsError(statusText, status)
 
