@@ -242,7 +242,7 @@ export const OrdersResponseIO = t.type({
   pagination: PaginationIO,
   orders: t.array(OrderIO),
 })
-export interface OrdersResponse extends t.TypeOf<typeof OrdersResponseIO> { }
+export interface OrdersResponse extends t.TypeOf<typeof OrdersResponseIO> {}
 
 /**
  * @internal

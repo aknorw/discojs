@@ -41,7 +41,6 @@ export async function fetch<T>(
   // Check status
   const { status, statusText } = response
 
-
   if (status === 401) throw new AuthError()
 
   if (status === 422 || status >= 500) {
