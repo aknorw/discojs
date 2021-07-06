@@ -5,7 +5,7 @@ import { makeEnumIOType } from './helpers'
 import {
   CurrenciesEnum,
   EditOrderStatusesEnum,
-  ListingStatusesEnum,
+  InventoryStatusesEnum,
   OrderMessageTypesEnum,
   ReleaseConditionsEnum,
   SleeveConditionsEnum,
@@ -71,7 +71,7 @@ export const ListingIO = t.intersection([
   ResourceURLIO,
   t.type({
     id: t.Integer,
-    status: makeEnumIOType(ListingStatusesEnum),
+    status: makeEnumIOType(InventoryStatusesEnum),
     release: t.intersection([
       ResourceURLIO,
       t.type({

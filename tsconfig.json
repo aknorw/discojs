@@ -3,7 +3,6 @@
     "outDir": "lib",
     "allowSyntheticDefaultImports": true,
     "declaration": true,
-    "emitDeclarationOnly": true,
     "forceConsistentCasingInFileNames": true,
     "module": "ESNext",
     "moduleResolution": "node",

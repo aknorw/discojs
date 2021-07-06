@@ -1,6 +1,7 @@
 import resolve from '@rollup/plugin-node-resolve'
 import replace from '@rollup/plugin-replace'
-import typescript from '@rollup/plugin-typescript'
+// import typescript from '@rollup/plugin-typescript'
+import typescript from 'rollup-plugin-ts'
 import commonjs from '@rollup/plugin-commonjs'
 
 import pkg from './package.json'
@@ -24,7 +25,7 @@ export default {
       extensions: ['.ts'],
     }),
     commonjs(),
-    typescript({sourceMap: false}),
-    replace({ __packageVersion__: pkg.version, preventAssignment: true}),
+    typescript(),
+    replace({ __packageVersion__: pkg.version, preventAssignment: true }),
   ],
 }
