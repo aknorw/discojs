@@ -50,10 +50,18 @@ export const ReleaseArtistIO = t.intersection([
 /**
  * @internal
  */
-const ReleaseFormatIO = t.type({
+const ReleaseFormatIOConcrete = t.type({
   name: t.string,
   qty: t.string,
 })
+const ReleaseFormatIOOptional = t.partial({
+  text: t.string,
+  descriptions: t.array(t.string),
+})
+const ReleaseFormatIO = t.intersection([
+  ReleaseFormatIOConcrete,
+  ReleaseFormatIOOptional,
+])
 
 /**
  * @internal
