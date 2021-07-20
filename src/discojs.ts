@@ -278,13 +278,20 @@ export class Discojs {
 
     this.fetchOptions = fetchOptions
 
-    this.fetchHeaders = new Headers({
-      Accept: `application/vnd.discogs.${API_VERSION}.${this.outputFormat}+json`,
-      'Accept-Encoding': 'gzip,deflate',
-      Connection: 'close',
-      'Content-Type': 'application/json',
-      'User-Agent': this.userAgent,
-    })
+    // eslint-disable-next-line no-undef
+    this.fetchHeaders =
+      typeof window?.document !== 'undefined'
+        ? new Headers({
+            Accept: `application/vnd.discogs.${API_VERSION}.${this.outputFormat}+json`,
+            'Content-Type': 'application/json',
+          })
+        : new Headers({
+            Accept: `application/vnd.discogs.${API_VERSION}.${this.outputFormat}+json`,
+            'Accept-Encoding': 'gzip,deflate',
+            Connection: 'close',
+            'Content-Type': 'application/json',
+            'User-Agent': this.userAgent,
+          })
 
     if (isAuthenticatedWithToken(options)) this.setAuthorizationHeader = () => `Discogs token=${options.userToken}`
 
