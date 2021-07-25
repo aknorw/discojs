@@ -58,10 +58,7 @@ const ReleaseFormatIOOptional = t.partial({
   text: t.string,
   descriptions: t.array(t.string),
 })
-const ReleaseFormatIO = t.intersection([
-  ReleaseFormatIOConcrete,
-  ReleaseFormatIOOptional,
-])
+const ReleaseFormatIO = t.intersection([ReleaseFormatIOConcrete, ReleaseFormatIOOptional])
 
 /**
  * @internal
