@@ -378,7 +378,8 @@ export class Discojs {
       options.body = stringifiedData
 
       clonedHeaders.set('Content-Type', 'application/json')
-      clonedHeaders.set('Content-Length', Buffer.byteLength(stringifiedData, 'utf8').toString())
+      if (typeof window?.document === 'undefined')
+        clonedHeaders.set('Content-Length', Buffer.byteLength(stringifiedData, 'utf8').toString())
     }
 
     options.headers = Object.fromEntries(clonedHeaders)
