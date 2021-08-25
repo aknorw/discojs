@@ -114,9 +114,21 @@ export const ListingIO = t.intersection([
     audio: t.boolean,
     uri: t.string,
   }),
+  // If the user is authorized, the listing will contain a in_cart boolean field indicating whether or not this listing is in their cart.
   t.partial({
     in_cart: t.boolean,
   }),
+  // If the authorized user is the listing owner the listing will include the weight, format_quantity, external_id, and location keys.
+  t.intersection([
+    t.type({
+      weight: t.number,
+      format_quantity: t.number,
+      external_id: t.string,
+      location: t.string,
+    }),
+    t.type({
+    }),
+  ]),
 ])
 
 /**
