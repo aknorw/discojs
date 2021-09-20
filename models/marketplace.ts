@@ -126,8 +126,7 @@ export const ListingIO = t.intersection([
       external_id: t.string,
       location: t.string,
     }),
-    t.type({
-    }),
+    t.type({}),
   ]),
 ])
 

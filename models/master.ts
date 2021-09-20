@@ -30,7 +30,7 @@ export const MasterIO = t.intersection([
   }),
   t.partial({
     notes: t.string,
-  })
+  }),
 ])
 
 export type Master = t.TypeOf<typeof MasterIO>
