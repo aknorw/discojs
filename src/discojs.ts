@@ -1235,7 +1235,7 @@ export class Discojs {
    * @link https://www.discogs.com/developers#page:marketplace,header:marketplace-new-listing
    */
   async createListing(options: ListingOptions) {
-    return this.fetch<CreateListingResponse>('/marketplace/listings/', {}, HTTPVerbsEnum.POST, options)
+    return this.fetch<CreateListingResponse>('/marketplace/listings', {}, HTTPVerbsEnum.POST, options)
   }
 
   /**
