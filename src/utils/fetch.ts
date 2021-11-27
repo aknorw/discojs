@@ -50,7 +50,9 @@ export async function fetch<T>(
     throw new DiscogsError(message, status)
   }
 
-  if (status < 200 || status >= 300) throw new DiscogsError(statusText, status)
+  if (status < 200 || status >= 300) {
+    throw new DiscogsError(statusText, status)
+  }
 
   if (status === 204) return Promise.resolve({}) as Promise<T>
 
