@@ -237,10 +237,6 @@ function isAuthenticated(options?: DiscojsOptions) {
   return isAuthenticatedWithToken(options) || isAuthenticatedWithConsumerKey(options)
 }
 
-type PropertyNamesOfType<TResponse, TResultElement> = {
-  [P in keyof TResponse]: TResponse[P] extends TResultElement ? P : never
-}[keyof TResponse]
-
 /**
  * Discojs.
  */
@@ -1385,9 +1381,9 @@ export class Discojs {
   }
 
   async all<
-    TResponse extends IPaginated,
+    TKey extends string,
     TResultElement,
-    TKey extends PropertyNamesOfType<TResponse, TResultElement[]>,
+    TResponse extends IPaginated & {[K in TKey]: TResultElement[]},
   >(key: TKey, response: TResponse | undefined, onProgress?: (data: TResultElement[]) => void) {
     let result: TResultElement[] = []
     while (response !== undefined) {
