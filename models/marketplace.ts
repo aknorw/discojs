@@ -9,7 +9,7 @@ import {
   OrderMessageTypesEnum,
   ReleaseConditionsEnum,
   SleeveConditionsEnum,
-} from '../src/constants'
+} from '../src/enums'
 
 /**
  * @internal

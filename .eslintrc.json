@@ -42,7 +42,9 @@
         "optionalDependencies": false
       }
     ],
-    "default-param-last": "warn"
+    "default-param-last": "warn",
+    "no-redeclare": "off",
+    "@typescript-eslint/no-redeclare": "error"
   },
   "globals": {
     "client": true

@@ -70,19 +70,26 @@ describe('Marketplace', () => {
 
     // @TODO: Find a way to test editListing
     // @TODO: Find a way to test deleteListing
+  })
+
+  describe('New Listing', () => {
     // @TODO: Find a way to test createListing
   })
 
   describe('Order', () => {
     // @TODO: Find a way to test getOrder
     // @TODO: Find a way to test editOrder
+  })
 
+  describe('List Orders', () => {
     // @TODO: Add status, archived, sort, pagination
     it('listOrders', async () => {
       const apiResponse = await client.listOrders()
       expect(t.exact(OrdersResponseIO).is(apiResponse)).toBeTruthy()
     })
+  })
 
+  describe('Order Messages', () => {
     // @TODO: Find a way to test listOrderMessages
     // @TODO: Find a way to test sendOrderMessage
   })
@@ -92,23 +99,14 @@ describe('Marketplace', () => {
 
     // @TODO: Add currency
     // Seems like fee is gone?
-    /*
     it('getFee', async () => {
       const apiResponse = await client.getFee(price)
       expect(t.exact(FeeIO).is(apiResponse)).toBeTruthy()
     })
-    */
   })
 
   describe('Price suggestions', () => {
-    /*
-    NEEDS A SELLER ACCOUNT
-    it('getPriceSuggestions', async () => {
-      const releaseId = 7781525
-      const apiResponse = await client.getPriceSuggestions(releaseId)
-      console.log(apiResponse)
-    })
-    */
+    // @TODO: Find a way to test getPriceSuggestions
   })
 
   describe('Statistics', () => {

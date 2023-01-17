@@ -16,7 +16,7 @@ import {
 } from './release'
 import { SearchEntityIO } from './search'
 import { IdentityIO, UserIO, UserListIO, UserListItemIO } from './user'
-import { ReleaseConditionsEnum } from '../src/constants'
+import { ReleaseConditionsEnum } from '../src/enums'
 
 export type EmptyResponse = {}
 
@@ -184,6 +184,15 @@ export const CommunityReleaseRatingResponseIO = t.type({
   rating: CommunityReleaseRatingIO,
 })
 export type CommunityReleaseRatingResponse = t.TypeOf<typeof CommunityReleaseRatingResponseIO>
+
+/**
+ * @internal
+ */
+export const ReleaseStatsResponseIO = t.type({
+  num_have: t.Integer,
+  num_want: t.Integer,
+})
+export type ReleaseStatsResponse = t.TypeOf<typeof ReleaseStatsResponseIO>
 
 /**
  * @internal
