@@ -11,7 +11,7 @@ export function makeEnumIOType<T extends object>(srcEnum: T) {
     'Enum',
     (value: any): value is T[keyof T] => Boolean(value && enumValues.has(value)),
     (value, context) =>
-      !value || !enumValues.has(value) ? t.failure(value, context) : t.success((value as any) as T[keyof T]),
+      !value || !enumValues.has(value) ? t.failure(value, context) : t.success(value as any as T[keyof T]),
     (value) => String(value),
   )
 }

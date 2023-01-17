@@ -39,7 +39,7 @@ export async function fetch<T>(url: string, options?: RequestInit, shouldReturnB
 
   if (shouldReturnBlob) {
     const blob = await response.blob()
-    return (blob as unknown) as T
+    return blob as unknown as T
   }
 
   const data = await response.json()

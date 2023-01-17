@@ -28,16 +28,25 @@
     "no-unused-vars": "off",
     "import/extensions": "off",
     "import/prefer-default-export": "off",
-    "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }]
-  },
-  "overrides": [
-    {
-      "files": ["models/**/*.ts", "src/**/*.spec.ts"],
-      "rules": {
-        "import/no-extraneous-dependencies": "off"
+    "lines-between-class-members": ["error", "always", { "exceptAfterSingleLine": true }],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "models/**/*.ts",
+          "src/**/*.spec.ts",
+          "src/**/*.e2e.ts",
+          "jest.config.cjs",
+          "jest.setup.ts",
+          "rollup.config.js"
+        ],
+        "optionalDependencies": false
       }
-    }
-  ],
+    ],
+    "default-param-last": "warn",
+    "no-redeclare": "off",
+    "@typescript-eslint/no-redeclare": "error"
+  },
   "globals": {
     "client": true
   },

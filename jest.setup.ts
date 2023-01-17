@@ -8,11 +8,13 @@ dotenv.config()
 
 const userAgent = `Discojs/Test/0.0.0`
 
-declare const global: any
+declare const global: {
+  client: Discojs
+}
+
 global.client = new Discojs({
   userAgent,
   userToken: process.env.USER_TOKEN,
-  requestLimitAuth: 20,
 })
 
 // Set Jest timeout to 30s.
