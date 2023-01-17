@@ -1,7 +1,6 @@
-import { AddToWantlistResponse, EmptyResponse, WantlistResponse } from '../models'
+import { AddToWantlistResponse, EmptyResponse, RatingValues, WantlistResponse } from '../models'
 
 import type { Discojs } from './discojs'
-import type { RatingValues } from './userCollection'
 import { HTTPVerbsEnum, paginate, Pagination } from './utils'
 
 export class UserWantlist {

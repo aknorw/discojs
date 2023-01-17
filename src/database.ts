@@ -7,6 +7,7 @@ import {
   LabelReleasesResponse,
   Master,
   MasterVersionsResponse,
+  RatingValues,
   Release,
   ReleaseRatingResponse,
   ReleaseStatsResponse,
@@ -15,7 +16,6 @@ import {
 
 import type { Discojs } from './discojs'
 import { CurrenciesEnum, ReleaseSortEnum, SearchTypeEnum } from './enums'
-import type { RatingValues } from './userCollection'
 import { HTTPVerbsEnum, paginate, Pagination, sortBy, SortOptions } from './utils'
 
 type SearchOptions = {

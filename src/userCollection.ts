@@ -6,14 +6,12 @@ import {
   Folder,
   FolderReleasesResponse,
   FoldersResponse,
+  RatingValues,
 } from '../models'
 
 import type { Discojs } from './discojs'
 import { FolderIdsEnum, UserSortEnum } from './enums'
 import { HTTPVerbsEnum, paginate, Pagination, sortBy, SortOptions } from './utils'
-
-// @TODO: Move elsewhere.
-export type RatingValues = 0 | 1 | 2 | 3 | 4 | 5
 
 export class UserCollection {
   /**
