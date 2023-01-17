@@ -15,7 +15,6 @@ declare const global: {
 global.client = new Discojs({
   userAgent,
   userToken: process.env.USER_TOKEN,
-  requestLimitAuth: 15,
 })
 
 // Set Jest timeout to 30s.

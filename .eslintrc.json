@@ -35,6 +35,7 @@
         "devDependencies": [
           "models/**/*.ts",
           "src/**/*.spec.ts",
+          "src/**/*.e2e.ts",
           "jest.config.cjs",
           "jest.setup.ts",
           "rollup.config.js"
