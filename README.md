@@ -14,7 +14,7 @@ yarn add discojs
 ## Usage example
 
 ```js
-import Discojs from 'discojs'
+import {Discojs} from 'discojs'
 
 const client = new Discojs({
   userToken: process.env.USER_TOKEN,
