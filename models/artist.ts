@@ -25,12 +25,12 @@ const ArtistBaseIO = t.intersection([
     id: t.Integer,
     profile: t.string,
     data_quality: makeEnumIOType(DataQualityEnum),
-    namevariations: t.array(t.string),
     releases_url: t.string,
     images: t.array(ImageIO),
     uri: t.string,
   }),
   t.partial({
+    namevariations: t.array(t.string),
     urls: t.array(t.string),
   }),
 ])

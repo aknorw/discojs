@@ -227,13 +227,15 @@ export class MarketPlace {
    * @label Fee
    *
    * @link https://www.discogs.com/developers#page:marketplace,header:marketplace-fee
+   *
+   * Note: This endpoint is broken.
    */
-  async getFee(this: Discojs, price: number, currency?: CurrenciesEnum) {
-    let uri = `/marketplace/fee/${price}`
-    if (currency) uri += `/${currency}`
+  // async getFee(this: Discojs, price: number, currency?: CurrenciesEnum) {
+  //   let uri = `/marketplace/fee/${price}`
+  //   if (currency) uri += `/${currency}`
 
-    return this.fetch<Fee>(uri)
-  }
+  //   return this.fetch<Fee>(uri)
+  // }
 
   /**
    * Retrieve price suggestions for the provided Release ID.

@@ -94,17 +94,6 @@ describe('Marketplace', () => {
     // @TODO: Find a way to test sendOrderMessage
   })
 
-  describe('Fee', () => {
-    const price = 42
-
-    // @TODO: Add currency
-    // Seems like fee is gone?
-    it('getFee', async () => {
-      const apiResponse = await client.getFee(price)
-      expect(t.exact(FeeIO).is(apiResponse)).toBeTruthy()
-    })
-  })
-
   describe('Price suggestions', () => {
     // @TODO: Find a way to test getPriceSuggestions
   })

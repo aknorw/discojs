@@ -118,15 +118,22 @@ export class Database {
   }
 
   /**
-   * retrieves the total number of “haves” (in the community’s collections) and “wants” (in the community’s wantlists) for a given release.
+   * Retrieves the total number of “haves” (in the community’s collections) and “wants” (in the community’s wantlists) for a given release.
    *
    * @category Database
    * @label Release Stats
    *
    * @link https://www.discogs.com/developers#page:database,header:database-release-stats
+   *
+   * Note: This endpoint is broken, see link below for a workaround.
+   * @link https://www.discogs.com/fr/forum/thread/865093?message_id=8630743
    */
-  async getReleaseStats(this: Discojs, releaseId: number) {
-    return this.fetch<ReleaseStatsResponse>(`/releases/${releaseId}/stats`)
+  async getReleaseStats(this: Discojs, releaseId: number): Promise<ReleaseStatsResponse> {
+    const { community } = await this.getRelease(releaseId)
+    return {
+      num_have: community.have,
+      num_want: community.want,
+    }
   }
 
   /**

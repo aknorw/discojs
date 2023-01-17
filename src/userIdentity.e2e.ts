@@ -41,7 +41,6 @@ describe('User Identity', () => {
   })
 
   describe('Submissions', () => {
-    // @TODO: This test is not passing any longer.
     it('getSubmissionsForUser', async () => {
       const apiResponse = await client.getSubmissionsForUser(rodneyfool)
       expect(t.exact(UserSubmissionsResponseIO).is(apiResponse)).toBeTruthy()
