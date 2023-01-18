@@ -21,7 +21,7 @@
     "pretty": "prettier --config .prettierrc --write '{models,src}/**/*.{ts,json}'",
     "lint": "eslint --ext .ts,.json models/ src/",
     "test:spec": "cross-env NODE_ENV=test jest --testMatch='**/*.spec.ts'",
-    "test:e2e": "cross-env NODE_ENV=test jest --testMatch='**/*.e2e.ts' --runInBand",
+    "test:e2e": "yarn build && cross-env NODE_ENV=test jest --testMatch='**/*.e2e.ts' --runInBand",
     "test": "yarn test:spec && yarn test:e2e",
     "docs": "typedoc --inputFiles src/index.ts --exclude \"**/*+(.spec).ts\" --excludeNotExported --excludePrivate --stripInternal",
     "prebuild": "yarn run clean",

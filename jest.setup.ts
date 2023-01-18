@@ -2,7 +2,7 @@
 
 import * as dotenv from 'dotenv'
 
-import { Discojs } from './src'
+import { Discojs } from './lib'
 
 dotenv.config()
 

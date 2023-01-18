@@ -1,6 +1,7 @@
 import * as t from 'io-ts'
 
-import { Discojs, SortOrdersEnum, UserSortEnum } from '.'
+import { Discojs, SortOrdersEnum, UserSortEnum } from '../lib'
+
 import { UserSubmissionsResponseIO, UserContributionsResponseIO } from '../models/api'
 import { IdentityIO, UserIO } from '../models/user'
 
