@@ -1,5 +1,4 @@
 import crossFetch from 'cross-fetch'
-import { stringify } from 'querystring'
 
 import { AuthError, DiscogsError } from '../errors'
 
@@ -56,15 +55,15 @@ export async function fetch<T>(url: string, options?: RequestInit, shouldReturnB
  * @internal
  */
 export function addQueryToUri(uri: string, query: Record<string, any>) {
-  const definedKeys = Object.entries(query).reduce((acc, [key, value]) => {
-    if (typeof value === 'undefined') return acc
+  const params = new URLSearchParams()
 
-    return {
-      ...acc,
-      [key]: value,
+  Object.entries(query).forEach(([key, value]) => {
+    if (typeof value !== 'undefined') {
+      params.append(key, value)
     }
-  }, {} as Record<string, any>)
-  return `${uri}?${stringify(definedKeys)}`
+  })
+
+  return `${uri}?${params.toString()}`
 }
 
 /**
