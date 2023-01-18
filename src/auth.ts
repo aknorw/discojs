@@ -59,7 +59,11 @@ export function isAuthenticated(options?: Partial<AuthOptions>) {
 
 export type SetAuthorizationHeaderFunction = (url?: string, method?: HTTPVerbsEnum) => string
 
-// @TODO: add doc.
+/**
+ * Helper to create a function to set the Authorization header based on the authentication strategy.
+ *
+ * @internal
+ */
 export function makeSetAuthorizationHeader(options?: Partial<AuthOptions>): SetAuthorizationHeaderFunction | undefined {
   if (isAuthenticatedWithToken(options)) return () => `Discogs token=${options.userToken}`
 

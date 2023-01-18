@@ -49,7 +49,7 @@ export class Database {
    * @link https://www.discogs.com/developers#page:database,header:database-release
    */
   async getRelease(this: Discojs, releaseId: number, currency?: CurrenciesEnum) {
-    return this.fetch<Release>(`/releases/${releaseId}`, { currency })
+    return this.fetcher.schedule<Release>(`/releases/${releaseId}`, { currency })
   }
 
   /**
@@ -61,7 +61,7 @@ export class Database {
    * @link https://www.discogs.com/developers#page:database,header:database-release-rating-by-user
    */
   async getReleaseRatingForUser(this: Discojs, username: string, releaseId: number) {
-    return this.fetch<ReleaseRatingResponse>(`/releases/${releaseId}/rating/${username}`)
+    return this.fetcher.schedule<ReleaseRatingResponse>(`/releases/${releaseId}/rating/${username}`)
   }
 
   /**
@@ -87,9 +87,12 @@ export class Database {
    */
   async updateReleaseRating(this: Discojs, releaseId: number, rating: RatingValues) {
     const username = await this.getUsername()
-    return this.fetch<ReleaseRatingResponse>(`/releases/${releaseId}/rating/${username}`, {}, HTTPVerbsEnum.PUT, {
-      rating,
-    })
+    return this.fetcher.schedule<ReleaseRatingResponse>(
+      `/releases/${releaseId}/rating/${username}`,
+      {},
+      HTTPVerbsEnum.PUT,
+      { rating },
+    )
   }
 
   /**
@@ -102,7 +105,7 @@ export class Database {
    */
   async deleteReleaseRating(this: Discojs, releaseId: number) {
     const username = await this.getUsername()
-    return this.fetch<EmptyResponse>(`/releases/${releaseId}/rating/${username}`, {}, HTTPVerbsEnum.DELETE)
+    return this.fetcher.schedule<EmptyResponse>(`/releases/${releaseId}/rating/${username}`, {}, HTTPVerbsEnum.DELETE)
   }
 
   /**
@@ -114,7 +117,7 @@ export class Database {
    * @link https://www.discogs.com/developers#page:database,header:database-community-release-rating
    */
   async getCommunityReleaseRating(this: Discojs, releaseId: number) {
-    return this.fetch<CommunityReleaseRatingResponse>(`/releases/${releaseId}/rating`)
+    return this.fetcher.schedule<CommunityReleaseRatingResponse>(`/releases/${releaseId}/rating`)
   }
 
   /**
@@ -145,7 +148,7 @@ export class Database {
    * @link https://www.discogs.com/developers#page:database,header:database-master-release
    */
   async getMaster(this: Discojs, masterId: number) {
-    return this.fetch<Master>(`/masters/${masterId}`)
+    return this.fetcher.schedule<Master>(`/masters/${masterId}`)
   }
 
   /**
@@ -158,7 +161,7 @@ export class Database {
    */
   // @TODO: There are a lot of parameters not handled here
   async getMasterVersions(this: Discojs, masterId: number, pagination?: Pagination) {
-    return this.fetch<MasterVersionsResponse>(`/masters/${masterId}/versions`, paginate(pagination))
+    return this.fetcher.schedule<MasterVersionsResponse>(`/masters/${masterId}/versions`, paginate(pagination))
   }
 
   /**
@@ -170,7 +173,7 @@ export class Database {
    * @link https://www.discogs.com/developers#page:database,header:database-artist
    */
   async getArtist(this: Discojs, artistId: number) {
-    return this.fetch<Artist>(`/artists/${artistId}`)
+    return this.fetcher.schedule<Artist>(`/artists/${artistId}`)
   }
 
   /**
@@ -187,7 +190,7 @@ export class Database {
     sort?: SortOptions<ReleaseSortEnum>,
     pagination?: Pagination,
   ) {
-    return this.fetch<ArtistReleasesResponse>(`/artists/${artistId}/releases`, {
+    return this.fetcher.schedule<ArtistReleasesResponse>(`/artists/${artistId}/releases`, {
       ...sortBy(ReleaseSortEnum.YEAR, sort),
       ...paginate(pagination),
     })
@@ -202,7 +205,7 @@ export class Database {
    * @link https://www.discogs.com/developers#page:database,header:database-label
    */
   async getLabel(this: Discojs, labelId: number) {
-    return this.fetch<Label>(`/labels/${labelId}`)
+    return this.fetcher.schedule<Label>(`/labels/${labelId}`)
   }
 
   /**
@@ -214,7 +217,7 @@ export class Database {
    * @link https://www.discogs.com/developers#page:database,header:database-all-label-releases
    */
   async getLabelReleases(this: Discojs, labelId: number, pagination?: Pagination) {
-    return this.fetch<LabelReleasesResponse>(`/labels/${labelId}/releases`, paginate(pagination))
+    return this.fetcher.schedule<LabelReleasesResponse>(`/labels/${labelId}/releases`, paginate(pagination))
   }
 
   /**
@@ -226,7 +229,7 @@ export class Database {
    * @link https://www.discogs.com/developers#page:database,header:database-search
    */
   async searchDatabase(this: Discojs, options: SearchOptions = {}, pagination?: Pagination) {
-    return this.fetch<SearchResponse>('/database/search', { ...options, ...paginate(pagination) })
+    return this.fetcher.schedule<SearchResponse>('/database/search', { ...options, ...paginate(pagination) })
   }
 
   /**

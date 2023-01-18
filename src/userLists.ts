@@ -15,7 +15,7 @@ export class UserLists {
    * @link https://www.discogs.com/developers#page:user-lists,header:user-lists-user-lists
    */
   async getListsForUser(this: Discojs, username: string, pagination?: Pagination) {
-    return this.fetch<UserListsResponse>(`/users/${username}/lists`, paginate(pagination))
+    return this.fetcher.schedule<UserListsResponse>(`/users/${username}/lists`, paginate(pagination))
   }
 
   /**
@@ -43,6 +43,6 @@ export class UserLists {
    * @link https://www.discogs.com/developers#page:user-lists,header:user-lists-user-lists
    */
   async getListItems(this: Discojs, listId: number) {
-    return this.fetch<UserListItemsResponse>(`/lists/${listId}`)
+    return this.fetcher.schedule<UserListItemsResponse>(`/lists/${listId}`)
   }
 }

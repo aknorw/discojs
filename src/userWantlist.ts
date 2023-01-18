@@ -19,7 +19,7 @@ export class UserWantlist {
    * @link https://www.discogs.com/developers#page:user-wantlist,header:user-wantlist-wantlist
    */
   async getWantlistForUser(this: Discojs, username: string, pagination?: Pagination) {
-    return this.fetch<WantlistResponse>(`/users/${username}/wants`, paginate(pagination))
+    return this.fetcher.schedule<WantlistResponse>(`/users/${username}/wants`, paginate(pagination))
   }
 
   /**
@@ -47,7 +47,7 @@ export class UserWantlist {
    */
   async addToWantlist(this: Discojs, releaseId: number, notes?: string, rating?: RatingValues) {
     const username = await this.getUsername()
-    return this.fetch<AddToWantlistResponse>(
+    return this.fetcher.schedule<AddToWantlistResponse>(
       `/users/${username}/wants/${releaseId}`,
       { notes, rating },
       HTTPVerbsEnum.PUT,
@@ -64,6 +64,6 @@ export class UserWantlist {
    */
   async removeFromWantlist(this: Discojs, releaseId: number) {
     const username = await this.getUsername()
-    return this.fetch<EmptyResponse>(`/users/${username}/wants/${releaseId}`, {}, HTTPVerbsEnum.DELETE)
+    return this.fetcher.schedule<EmptyResponse>(`/users/${username}/wants/${releaseId}`, {}, HTTPVerbsEnum.DELETE)
   }
 }

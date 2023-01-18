@@ -31,7 +31,7 @@ export class UserIdentity {
    * @link https://www.discogs.com/developers#page:user-identity,header:user-identity-identity
    */
   async getIdentity(this: Discojs) {
-    return this.fetch<IdentityResponse>('/oauth/identity')
+    return this.fetcher.schedule<IdentityResponse>('/oauth/identity')
   }
 
   /**
@@ -61,7 +61,7 @@ export class UserIdentity {
    * @link https://www.discogs.com/developers#page:user-identity,header:user-identity-profile
    */
   async getProfileForUser(this: Discojs, username: string) {
-    return this.fetch<UserProfileResponse>(`/users/${username}`)
+    return this.fetcher.schedule<UserProfileResponse>(`/users/${username}`)
   }
 
   /**
@@ -85,7 +85,10 @@ export class UserIdentity {
    */
   async editProfile(this: Discojs, options: ProfileOptions) {
     const username = await this.getUsername()
-    return this.fetch<EditUserProfileResponse>(`/users/${username}`, {}, HTTPVerbsEnum.POST, { username, ...options })
+    return this.fetcher.schedule<EditUserProfileResponse>(`/users/${username}`, {}, HTTPVerbsEnum.POST, {
+      username,
+      ...options,
+    })
   }
 
   /**
@@ -96,7 +99,7 @@ export class UserIdentity {
    * @link https://www.discogs.com/developers#page:user-identity,header:user-identity-user-submissions
    */
   async getSubmissionsForUser(this: Discojs, username: string, pagination?: Pagination) {
-    return this.fetch<UserSubmissionsResponse>(`/users/${username}/submissions`, paginate(pagination))
+    return this.fetcher.schedule<UserSubmissionsResponse>(`/users/${username}/submissions`, paginate(pagination))
   }
 
   /**
@@ -124,7 +127,7 @@ export class UserIdentity {
     sort?: SortOptions<UserSortEnum>,
     pagination?: Pagination,
   ) {
-    return this.fetch<UserContributionsResponse>(`/users/${username}/contributions`, {
+    return this.fetcher.schedule<UserContributionsResponse>(`/users/${username}/contributions`, {
       ...sortBy(UserSortEnum.ADDED, sort),
       ...paginate(pagination),
     })

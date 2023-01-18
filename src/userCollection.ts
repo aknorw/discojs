@@ -26,7 +26,7 @@ export class UserCollection {
    * @link https://www.discogs.com/developers#page:user-collection,header:user-collection-collection
    */
   async listFoldersForUser(this: Discojs, username: string) {
-    return this.fetch<FoldersResponse>(`/users/${username}/collection/folders`)
+    return this.fetcher.schedule<FoldersResponse>(`/users/${username}/collection/folders`)
   }
 
   /**
@@ -50,7 +50,7 @@ export class UserCollection {
    */
   async createFolder(this: Discojs, name: string) {
     const username = await this.getUsername()
-    return this.fetch<Folder>(`/users/${username}/collection/folders`, {}, HTTPVerbsEnum.POST, { name })
+    return this.fetcher.schedule<Folder>(`/users/${username}/collection/folders`, {}, HTTPVerbsEnum.POST, { name })
   }
 
   /**
@@ -64,7 +64,7 @@ export class UserCollection {
    * @link https://www.discogs.com/developers#page:user-collection,header:user-collection-collection-folder
    */
   async getFolderForUser(this: Discojs, username: string, folderId: FolderIdsEnum | number) {
-    return this.fetch<Folder>(`/users/${username}/collection/folders/${folderId}`)
+    return this.fetcher.schedule<Folder>(`/users/${username}/collection/folders/${folderId}`)
   }
 
   /**
@@ -91,7 +91,7 @@ export class UserCollection {
    */
   async editFolder(this: Discojs, folderId: FolderIdsEnum | number, name: string) {
     const username = await this.getUsername()
-    return this.fetch<Folder>(`/users/${username}/collection/folders/${folderId}`, {}, HTTPVerbsEnum.POST, {
+    return this.fetcher.schedule<Folder>(`/users/${username}/collection/folders/${folderId}`, {}, HTTPVerbsEnum.POST, {
       name,
     })
   }
@@ -108,7 +108,11 @@ export class UserCollection {
    */
   async deleteFolder(this: Discojs, folderId: FolderIdsEnum | number) {
     const username = await this.getUsername()
-    return this.fetch<EmptyResponse>(`/users/${username}/collection/folders/${folderId}`, {}, HTTPVerbsEnum.DELETE)
+    return this.fetcher.schedule<EmptyResponse>(
+      `/users/${username}/collection/folders/${folderId}`,
+      {},
+      HTTPVerbsEnum.DELETE,
+    )
   }
 
   /**
@@ -123,7 +127,7 @@ export class UserCollection {
    * @link https://www.discogs.com/developers#page:user-collection,header:user-collection-collection-items-by-release
    */
   async listItemsByReleaseForUser(this: Discojs, username: string, release_id: number, pagination?: Pagination) {
-    return this.fetch<FolderReleasesResponse>(
+    return this.fetcher.schedule<FolderReleasesResponse>(
       `/users/${username}/collection/releases/${release_id}`,
       paginate(pagination),
     )
@@ -162,7 +166,7 @@ export class UserCollection {
     sort?: SortOptions<UserSortEnum>,
     pagination?: Pagination,
   ) {
-    return this.fetch<FolderReleasesResponse>(`/users/${username}/collection/folders/${folderId}/releases`, {
+    return this.fetcher.schedule<FolderReleasesResponse>(`/users/${username}/collection/folders/${folderId}/releases`, {
       ...sortBy(UserSortEnum.ADDED, sort),
       ...paginate(pagination),
     })
@@ -203,7 +207,7 @@ export class UserCollection {
     folderId: FolderIdsEnum | number = FolderIdsEnum.UNCATEGORIZED,
   ) {
     const username = await this.getUsername()
-    return this.fetch<AddToFolderResponse>(
+    return this.fetcher.schedule<AddToFolderResponse>(
       `/users/${username}/collection/folders/${folderId}/releases/${releaseId}`,
       {},
       HTTPVerbsEnum.POST,
@@ -226,7 +230,7 @@ export class UserCollection {
     rating: RatingValues,
   ) {
     const username = await this.getUsername()
-    return this.fetch<EmptyResponse>(
+    return this.fetcher.schedule<EmptyResponse>(
       `/users/${username}/collection/folders/${folderId}/releases/${releaseId}/instances/${instanceId}`,
       {},
       HTTPVerbsEnum.POST,
@@ -250,7 +254,7 @@ export class UserCollection {
     newFolderId: FolderIdsEnum | number,
   ) {
     const username = await this.getUsername()
-    return this.fetch<EmptyResponse>(
+    return this.fetcher.schedule<EmptyResponse>(
       `/users/${username}/collection/folders/${oldFolderId}/releases/${releaseId}/instances/${instanceId}`,
       {},
       HTTPVerbsEnum.POST,
@@ -273,7 +277,7 @@ export class UserCollection {
     instanceId: number,
   ) {
     const username = await this.getUsername()
-    return this.fetch<EmptyResponse>(
+    return this.fetcher.schedule<EmptyResponse>(
       `/users/${username}/collection/folders/${folderId}/releases/${releaseId}/instances/${instanceId}`,
       {},
       HTTPVerbsEnum.DELETE,
@@ -293,7 +297,7 @@ export class UserCollection {
    * @link https://www.discogs.com/developers#page:user-collection,header:user-collection-list-custom-fields
    */
   async listCustomFieldsForUser(this: Discojs, username: string) {
-    return this.fetch<CustomFieldsResponse>(`/users/${username}/collection/fields`)
+    return this.fetcher.schedule<CustomFieldsResponse>(`/users/${username}/collection/fields`)
   }
 
   /**
@@ -326,7 +330,7 @@ export class UserCollection {
     value: string,
   ) {
     const username = await this.getUsername()
-    return this.fetch<EmptyResponse>(
+    return this.fetcher.schedule<EmptyResponse>(
       `/users/${username}/collection/folders/${folderId}/releases/${releaseId}/instances/${instanceId}/fields/${fieldId}`,
       { value },
       HTTPVerbsEnum.POST,
@@ -345,6 +349,6 @@ export class UserCollection {
    */
   async getCollectionValue(this: Discojs) {
     const username = await this.getUsername()
-    return this.fetch<CollectionValueResponse>(`/users/${username}/collection/value`)
+    return this.fetcher.schedule<CollectionValueResponse>(`/users/${username}/collection/value`)
   }
 }
