@@ -1,6 +1,6 @@
 import OAuth from 'oauth-1.0a'
 
-import { HTTPVerbsEnum } from './utils'
+import { HTTPVerbsEnum } from './fetch'
 
 type UserTokenAuth = {
   /** User token. */

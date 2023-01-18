@@ -1,9 +1,20 @@
 import crossFetch, { Headers } from 'cross-fetch'
 
-import { AuthOptions, isAuthenticated, makeSetAuthorizationHeader, SetAuthorizationHeaderFunction } from '../auth'
-import { API_BASE_URL, API_VERSION, DEFAULT_USER_AGENT, IMG_BASE_URL } from '../constants'
+import { AuthOptions, isAuthenticated, makeSetAuthorizationHeader, SetAuthorizationHeaderFunction } from './auth'
 import { AuthError, DiscogsError } from '../errors'
 import { createLimiter, Limiter, LimiterOptions } from './limiter'
+
+/** Base API URL to which URI will be appended. */
+const API_BASE_URL = 'https://api.discogs.com'
+
+/** Base URL dedicated to Discogs images. */
+const IMG_BASE_URL = 'https://img.discogs.com'
+
+/** Discogs API version. */
+const API_VERSION = 'v2'
+
+/** Default user-agent to be used in requests. */
+const DEFAULT_USER_AGENT = `Discojs/__packageVersion__`
 
 /** Header set by Discogs API to indicate the total number of requests you can make in a one minute window. */
 const RATE_LIMIT_HEADER = 'X-Discogs-Ratelimit'
