@@ -48,8 +48,7 @@
     "cross-fetch": "^3.1.5",
     "fp-ts": "^2.13.1",
     "io-ts": "^2.2.20",
-    "oauth-1.0a": "^2.2.6",
-    "querystring": "^0.2.1"
+    "oauth-1.0a": "^2.2.6"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.0.1",
