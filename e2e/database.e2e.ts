@@ -1,6 +1,7 @@
 import * as t from 'io-ts'
 
-import { CurrenciesEnum, Discojs, ReleaseSortEnum, SortOrdersEnum } from '.'
+import { CurrenciesEnum, Discojs, ReleaseSortEnum, SortOrdersEnum } from '../lib'
+
 import {
   ArtistReleasesResponseIO,
   CommunityReleaseRatingResponseIO,

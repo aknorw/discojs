@@ -1,6 +1,7 @@
 import * as t from 'io-ts'
 
-import { Discojs, FolderIdsEnum, SortOrdersEnum, UserSortEnum } from '.'
+import { Discojs, FolderIdsEnum, SortOrdersEnum, UserSortEnum } from '../lib'
+
 import { FoldersResponseIO, FolderReleasesResponseIO, AddToFolderResponseIO, CustomFieldsResponseIO } from '../models'
 import { FolderIO, CollectionValueIO } from '../models/folder'
 

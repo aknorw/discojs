@@ -21,7 +21,7 @@
     "lint": "eslint --ext .ts,.json models/ src/",
     "test:spec": "cross-env NODE_ENV=test jest --testMatch='**/*.spec.ts'",
     "test:e2e": "cross-env NODE_ENV=test jest --testMatch='**/*.e2e.ts' --runInBand",
-    "test": "yarn test:spec && yarn test:e2e",
+    "test": "yarn build && yarn test:spec && yarn test:e2e",
     "docs": "typedoc --inputFiles src/index.ts --exclude \"**/*+(.spec).ts\" --excludeNotExported --excludePrivate --stripInternal",
     "prebuild": "yarn run clean",
     "build": "cross-env NODE_ENV=production rollup -c",
@@ -47,8 +47,7 @@
     "cross-fetch": "^3.1.5",
     "fp-ts": "^2.13.1",
     "io-ts": "^2.2.20",
-    "oauth-1.0a": "^2.2.6",
-    "querystring": "^0.2.1"
+    "oauth-1.0a": "^2.2.6"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^15.0.1",
