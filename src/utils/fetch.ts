@@ -170,6 +170,8 @@ export class Fetcher {
       ? uri
       : API_BASE_URL + (query && typeof query === 'object' ? Fetcher.addQueryToUri(uri, query) : uri)
 
+    const isCsvEndpoint = uri.endsWith('/download')
+
     const options = {
       ...this.options,
       method: method || HTTPVerbsEnum.GET,
@@ -191,7 +193,7 @@ export class Fetcher {
 
     options.headers = Object.fromEntries(clonedHeaders)
 
-    return this.limiter.schedule(() => this.fetch<T>(endpoint, options, isImgEndpoint))
+    return this.limiter.schedule(() => this.fetch<T>(endpoint, options, isImgEndpoint || isCsvEndpoint))
   }
 
   /**

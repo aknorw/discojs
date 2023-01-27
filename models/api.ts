@@ -17,6 +17,7 @@ import {
 import { SearchEntityIO } from './search'
 import { IdentityIO, UserIO, UserListIO, UserListItemIO } from './user'
 import { ReleaseConditionsEnum } from '../src/enums'
+import { ExportItemIO } from './inventory'
 
 export type EmptyResponse = {}
 
@@ -264,3 +265,12 @@ export const MarketplaceStatisticsResponseIO = t.type({
   num_for_sale: t.union([t.Integer, t.null]),
 })
 export type MarketplaceStatisticsResponse = t.TypeOf<typeof MarketplaceStatisticsResponseIO>
+
+/**
+ * @internal
+ */
+export const RecentExportsResponseIO = t.type({
+  pagination: PaginationIO,
+  items: t.array(ExportItemIO),
+})
+export type RecentExportsResponse = t.TypeOf<typeof RecentExportsResponseIO>
