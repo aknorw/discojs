@@ -1,11 +1,11 @@
-import resolve from '@rollup/plugin-node-resolve'
-import replace from '@rollup/plugin-replace'
-import typescript from 'rollup-plugin-ts'
-import commonjs from 'rollup-plugin-commonjs'
+const resolve = require('@rollup/plugin-node-resolve')
+const replace = require('@rollup/plugin-replace')
+const typescript = require('rollup-plugin-ts')
+const commonjs = require('rollup-plugin-commonjs')
 
-import pkg from './package.json' assert {type: 'json'}
+const pkg = require('./package.json')
 
-export default {
+module.exports = {
   input: 'src/index.ts',
   output: [
     {
@@ -26,7 +26,7 @@ export default {
     typescript(),
     replace({
       preventAssignment: true,
-      __packageVersion__: pkg.version
+      __packageVersion__: pkg.version,
     }),
   ],
 }

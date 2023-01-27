@@ -9,7 +9,6 @@
     "api",
     "client"
   ],
-  "type": "module",
   "main": "lib/index.js",
   "module": "lib/index.es.js",
   "files": [
