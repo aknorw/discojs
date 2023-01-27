@@ -17,5 +17,5 @@ global.client = new Discojs({
   userToken: process.env.USER_TOKEN,
 })
 
-// Set Jest timeout to 30s.
-jest.setTimeout(30000)
+// Set Jest timeout to 60s.
+jest.setTimeout(60000)

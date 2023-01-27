@@ -61,7 +61,7 @@ export class MarketPlace {
     sort?: SortOptions<InventorySortEnum>,
     pagination?: Pagination,
   ) {
-    return this.fetch<InventoryResponse>(`/users/${username}/inventory`, {
+    return this.fetcher.schedule<InventoryResponse>(`/users/${username}/inventory`, {
       status,
       ...sortBy(InventorySortEnum.LISTED, sort),
       ...paginate(pagination),
@@ -99,7 +99,7 @@ export class MarketPlace {
    * @link https://www.discogs.com/developers#page:marketplace,header:marketplace-listing
    */
   async getListing(this: Discojs, listingId: number, currency?: CurrenciesEnum) {
-    return this.fetch<Listing>(`/marketplace/listings/${listingId}`, { currency })
+    return this.fetcher.schedule<Listing>(`/marketplace/listings/${listingId}`, { currency })
   }
 
   /**
@@ -114,7 +114,12 @@ export class MarketPlace {
    * @link https://www.discogs.com/developers#page:marketplace,header:marketplace-listing
    */
   async editListing(this: Discojs, listingId: number, options: ListingOptions, currency?: CurrenciesEnum) {
-    return this.fetch<EmptyResponse>(`/marketplace/listings/${listingId}`, { currency }, HTTPVerbsEnum.POST, options)
+    return this.fetcher.schedule<EmptyResponse>(
+      `/marketplace/listings/${listingId}`,
+      { currency },
+      HTTPVerbsEnum.POST,
+      options,
+    )
   }
 
   /**
@@ -126,7 +131,7 @@ export class MarketPlace {
    * @link https://www.discogs.com/developers#page:marketplace,header:marketplace-listing
    */
   async deleteListing(this: Discojs, listingId: number) {
-    return this.fetch<EmptyResponse>(`/marketplace/listings/${listingId}`, {}, HTTPVerbsEnum.DELETE)
+    return this.fetcher.schedule<EmptyResponse>(`/marketplace/listings/${listingId}`, {}, HTTPVerbsEnum.DELETE)
   }
 
   /**
@@ -138,7 +143,7 @@ export class MarketPlace {
    * @link https://www.discogs.com/developers#page:marketplace,header:marketplace-new-listing
    */
   async createListing(this: Discojs, options: ListingOptions) {
-    return this.fetch<CreateListingResponse>('/marketplace/listings/', {}, HTTPVerbsEnum.POST, options)
+    return this.fetcher.schedule<CreateListingResponse>('/marketplace/listings/', {}, HTTPVerbsEnum.POST, options)
   }
 
   /**
@@ -150,7 +155,7 @@ export class MarketPlace {
    * @link https://www.discogs.com/developers#page:marketplace,header:marketplace-order
    */
   async getOrder(this: Discojs, orderId: number) {
-    return this.fetch<Order>(`/marketplace/orders/${orderId}`)
+    return this.fetcher.schedule<Order>(`/marketplace/orders/${orderId}`)
   }
 
   /**
@@ -162,7 +167,7 @@ export class MarketPlace {
    * @link https://www.discogs.com/developers#page:marketplace,header:marketplace-order
    */
   async editOrder(this: Discojs, orderId: number, status?: EditOrderStatusesEnum, shipping?: number) {
-    return this.fetch<Order>(`/marketplace/orders/${orderId}`, {}, HTTPVerbsEnum.POST, { status, shipping })
+    return this.fetcher.schedule<Order>(`/marketplace/orders/${orderId}`, {}, HTTPVerbsEnum.POST, { status, shipping })
   }
 
   /**
@@ -180,7 +185,7 @@ export class MarketPlace {
     sort?: SortOptions<OrderSortEnum>,
     pagination?: Pagination,
   ) {
-    return this.fetch<OrdersResponse>('/marketplace/orders', {
+    return this.fetcher.schedule<OrdersResponse>('/marketplace/orders', {
       status,
       archived,
       ...sortBy(OrderSortEnum.ID, sort),
@@ -197,7 +202,7 @@ export class MarketPlace {
    * @link https://www.discogs.com/developers#page:marketplace,header:marketplace-list-order-messages
    */
   async listOrderMessages(this: Discojs, orderId: number) {
-    return this.fetch<OrderMessagesResponse>(`/marketplace/orders/${orderId}/messages`)
+    return this.fetcher.schedule<OrderMessagesResponse>(`/marketplace/orders/${orderId}/messages`)
   }
 
   /**
@@ -214,7 +219,7 @@ export class MarketPlace {
    * @link https://www.discogs.com/developers#page:marketplace,header:marketplace-list-order-messages
    */
   async sendOrderMessage(this: Discojs, orderId: number, message?: string, status?: OrderStatusesEnum) {
-    return this.fetch<OrderMessage>(`/marketplace/orders/${orderId}/messages`, {}, HTTPVerbsEnum.POST, {
+    return this.fetcher.schedule<OrderMessage>(`/marketplace/orders/${orderId}/messages`, {}, HTTPVerbsEnum.POST, {
       message,
       status,
     })
@@ -234,7 +239,7 @@ export class MarketPlace {
   //   let uri = `/marketplace/fee/${price}`
   //   if (currency) uri += `/${currency}`
 
-  //   return this.fetch<Fee>(uri)
+  //   return this.fetcher.schedule<Fee>(uri)
   // }
 
   /**
@@ -249,7 +254,7 @@ export class MarketPlace {
    * @link https://www.discogs.com/developers#page:marketplace,header:marketplace-price-suggestions
    */
   async getPriceSuggestions(this: Discojs, releaseId: number) {
-    return this.fetch<PriceSuggestionsResponse>(`/marketplace/price_suggestions/${releaseId}`)
+    return this.fetcher.schedule<PriceSuggestionsResponse>(`/marketplace/price_suggestions/${releaseId}`)
   }
 
   /**
@@ -266,6 +271,6 @@ export class MarketPlace {
    * @link https://www.discogs.com/developers#page:marketplace,header:marketplace-release-statistics
    */
   async getMarketplaceStatistics(this: Discojs, releaseId: number, currency?: CurrenciesEnum) {
-    return this.fetch<MarketplaceStatisticsResponse>(`/marketplace/stats/${releaseId}`, { currency })
+    return this.fetcher.schedule<MarketplaceStatisticsResponse>(`/marketplace/stats/${releaseId}`, { currency })
   }
 }
