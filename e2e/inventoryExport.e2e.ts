@@ -1,6 +1,7 @@
 import * as t from 'io-ts'
 
-import { Discojs } from '.'
+import { Discojs } from '../lib'
+
 import { RecentExportsResponseIO } from '../models'
 import { ExportItemIO } from '../models/inventory'
 
