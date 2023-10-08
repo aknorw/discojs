@@ -373,7 +373,10 @@ export class Discojs {
       const stringifiedData = JSON.stringify(transformData(data))
       options.body = stringifiedData
 
-      clonedHeaders.set('Content-Type', 'application/json')
+      // Discogs 443s if there are multiple content types,
+      // and requires the lowercase version for some reason.
+      clonedHeaders.delete('Content-Type')
+      clonedHeaders.set('content-type', 'application/json')
       if (typeof window?.document === 'undefined')
         clonedHeaders.set('Content-Length', Buffer.byteLength(stringifiedData, 'utf8').toString())
     }
@@ -1380,11 +1383,11 @@ export class Discojs {
     return this.fetch<TResponse>(next)
   }
 
-  async all<
-    TKey extends string,
-    TResultElement,
-    TResponse extends IPaginated & {[K in TKey]: TResultElement[]},
-  >(key: TKey, response: TResponse | undefined, onProgress?: (data: TResultElement[]) => void) {
+  async all<TKey extends string, TResultElement, TResponse extends IPaginated & { [K in TKey]: TResultElement[] }>(
+    key: TKey,
+    response: TResponse | undefined,
+    onProgress?: (data: TResultElement[]) => void,
+  ) {
     let result: TResultElement[] = []
     while (response !== undefined) {
       const data = response[key]

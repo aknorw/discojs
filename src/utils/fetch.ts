@@ -44,10 +44,12 @@ export async function fetch<T>(
   if (status === 401) throw new AuthError()
 
   if (status === 422 || status >= 500) {
-    const { message }: ErrorResponse = await response.json()
-    // eslint-disable-next-line no-console
-    console.log({ status, statusText, message })
-    throw new DiscogsError(message, status)
+    const error: ErrorResponse = await response.json()
+    const { message, detail } = error
+    const errorMessage = detail 
+      ? detail.map(e => `${e.loc.join('.')}: ${e.msg} (${e.type})`).join('\n') 
+      : message
+    throw new DiscogsError(errorMessage, status)
   }
 
   if (status < 200 || status >= 300) {

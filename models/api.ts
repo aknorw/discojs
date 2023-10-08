@@ -20,9 +20,19 @@ import { ReleaseConditionsEnum } from '../src/constants'
 
 export type EmptyResponse = {}
 
-export const ErrorResponseIO = t.type({
-  message: t.string,
-})
+export const ErrorResponseIO = t.intersection([
+  t.type({
+    message: t.string,
+  }),
+  t.partial({
+    detail: t.array(
+      t.type({
+        loc: t.array(t.string),
+        msg: t.string,
+        type: t.string,
+      })),
+    }),
+])
 
 export type ErrorResponse = t.TypeOf<typeof ErrorResponseIO>
 
