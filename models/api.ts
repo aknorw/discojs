@@ -30,8 +30,9 @@ export const ErrorResponseIO = t.intersection([
         loc: t.array(t.string),
         msg: t.string,
         type: t.string,
-      })),
-    }),
+      }),
+    ),
+  }),
 ])
 
 export type ErrorResponse = t.TypeOf<typeof ErrorResponseIO>
