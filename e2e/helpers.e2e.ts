@@ -1,4 +1,4 @@
-import { CurrenciesEnum, Discojs, ReleaseConditionsEnum, SleeveConditionsEnum } from '.'
+import { CurrenciesEnum, Discojs, ReleaseConditionsEnum, SleeveConditionsEnum } from '../lib'
 
 declare const client: Discojs
 

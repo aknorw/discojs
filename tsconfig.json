@@ -9,8 +9,5 @@
     "target": "ES2019",
     "strict": true
   },
-  "include": [
-    "./models/",
-    "./src/"
-  ]
+  "include": ["./e2e", "./models/", "./src/"]
 }

@@ -1,4 +1,4 @@
-import { addQueryToUri, transformData } from './fetch'
+import { Fetcher } from './fetch'
 
 describe('addQueryToUri', () => {
   const uri = '/test'
@@ -8,7 +8,7 @@ describe('addQueryToUri', () => {
   }
 
   it('should add query params to URI', () => {
-    const output = addQueryToUri(uri, query)
+    const output = Fetcher.addQueryToUri(uri, query)
     const [, params] = output.split('?')
     const splitParams = params.split('&')
     expect(splitParams.length).toEqual(2)
@@ -19,7 +19,7 @@ describe('addQueryToUri', () => {
   })
 
   it('should remove undefined values', () => {
-    const output = addQueryToUri(uri, { ...query, param2: undefined })
+    const output = Fetcher.addQueryToUri(uri, { ...query, param2: undefined })
     const [, params] = output.split('?')
     const splitParams = params.split('&')
     expect(splitParams.length).toEqual(1)
@@ -33,14 +33,14 @@ describe('transformData', () => {
       firstParam: 42,
       secondParam: '1337',
     }
-    const output = transformData(data)
+    const output = Fetcher.transformData(data)
     Object.keys(output).forEach((key) => {
       expect(/[A-Z]/.test(key)).toBeFalsy()
     })
   })
 
   it('should replace `currency` by `curr_abbr`', () => {
-    const output = transformData({
+    const output = Fetcher.transformData({
       currency: 'test',
     })
     expect(output).toHaveProperty('curr_abbr')

@@ -3,7 +3,7 @@ import * as t from 'io-ts'
 import { ImageIO, ResourceURLIO, StatNumberIO, VideoIO } from './commons'
 import { makeEnumIOType } from './helpers'
 import { ReleaseArtistIO, TrackIO } from './release'
-import { CommunityStatusesEnum, DataQualityEnum } from '../src/constants'
+import { CommunityStatusesEnum, DataQualityEnum } from '../src/enums'
 
 /**
  * @internal

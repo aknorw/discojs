@@ -9,7 +9,7 @@ import {
   OrderMessageTypesEnum,
   ReleaseConditionsEnum,
   SleeveConditionsEnum,
-} from '../src/constants'
+} from '../src/enums'
 
 /**
  * @internal
@@ -50,7 +50,6 @@ const SellerIO = t.intersection([
     }),
     url: t.string,
     html_url: t.string,
-    is_mp2020_seller: t.boolean,
   }),
 ])
 

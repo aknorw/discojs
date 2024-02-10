@@ -1,12 +1,14 @@
 import * as t from 'io-ts'
 
-import { CurrenciesEnum, Discojs, ReleaseSortEnum, SortOrdersEnum } from '.'
+import { CurrenciesEnum, Discojs, ReleaseSortEnum, SortOrdersEnum } from '../lib'
+
 import {
   ArtistReleasesResponseIO,
   CommunityReleaseRatingResponseIO,
   LabelReleasesResponseIO,
   MasterVersionsResponseIO,
   ReleaseRatingResponseIO,
+  ReleaseStatsResponseIO,
   SearchResponseIO,
 } from '../models/api'
 import { ArtistIO } from '../models/artist'
@@ -19,37 +21,12 @@ declare const client: Discojs
 const pagination = { page: 1, perPage: 1 }
 
 describe('Database', () => {
-  describe('Search', () => {
-    // TODO - With pagination + test all options
-    it('searchDatabase', async () => {
-      const apiResponse = await client.searchDatabase()
-      expect(t.exact(SearchResponseIO).is(apiResponse)).toBeTruthy()
-    })
-
-    it('searchRelease', async () => {
-      const apiResponse = await client.searchRelease('Number')
-      expect(t.exact(SearchResponseIO).is(apiResponse)).toBeTruthy()
-    })
-
-    it('searchMaster', async () => {
-      const apiResponse = await client.searchMaster('Number')
-      expect(t.exact(SearchResponseIO).is(apiResponse)).toBeTruthy()
-    })
-
-    it('searchArtist', async () => {
-      const apiResponse = await client.searchArtist('Jacob')
-      expect(t.exact(SearchResponseIO).is(apiResponse)).toBeTruthy()
-    })
-
-    it('searchLabel', async () => {
-      const apiResponse = await client.searchLabel('Music')
-      expect(t.exact(SearchResponseIO).is(apiResponse)).toBeTruthy()
-    })
-  })
+  const releaseId = 249504
+  const masterId = 1000
+  const artistId = 108713
+  const labelId = 1
 
   describe('Release', () => {
-    const releaseId = 249504
-
     it('getRelease', async () => {
       const apiResponse = await client.getRelease(releaseId)
       expect(t.exact(ReleaseIO).is(apiResponse)).toBeTruthy()
@@ -59,7 +36,9 @@ describe('Database', () => {
       const apiResponse = await client.getRelease(releaseId, CurrenciesEnum.SEK)
       expect(t.exact(ReleaseIO).is(apiResponse)).toBeTruthy()
     })
+  })
 
+  describe('Release Rating By User', () => {
     it('getReleaseRatingForUser', async () => {
       const username = 'memory'
       const apiResponse = await client.getReleaseRatingForUser(username, releaseId)
@@ -81,21 +60,30 @@ describe('Database', () => {
       // Empty response has 0 keys
       expect(Object.keys(apiResponse).length).toEqual(0)
     })
+  })
 
+  describe('Community Release Rating', () => {
     it('getCommunityReleaseRating', async () => {
       const apiResponse = await client.getCommunityReleaseRating(releaseId)
       expect(t.exact(CommunityReleaseRatingResponseIO).is(apiResponse)).toBeTruthy()
     })
   })
 
-  describe('Master', () => {
-    const masterId = 1000
+  describe('Release Stats', () => {
+    it('getReleaseStats', async () => {
+      const apiResponse = await client.getReleaseStats(releaseId)
+      expect(t.exact(ReleaseStatsResponseIO).is(apiResponse)).toBeTruthy()
+    })
+  })
 
+  describe('Master Release', () => {
     it('getMaster', async () => {
       const apiResponse = await client.getMaster(masterId)
       expect(t.exact(MasterIO).is(apiResponse)).toBeTruthy()
     })
+  })
 
+  describe('Master Release Versions', () => {
     it('getMasterVersions', async () => {
       const apiResponse = await client.getMasterVersions(masterId)
       expect(t.exact(MasterVersionsResponseIO).is(apiResponse)).toBeTruthy()
@@ -109,13 +97,13 @@ describe('Database', () => {
   })
 
   describe('Artist', () => {
-    const artistId = 108713
-
     it('getArtist', async () => {
       const apiResponse = await client.getArtist(artistId)
       expect(t.exact(ArtistIO).is(apiResponse)).toBeTruthy()
     })
+  })
 
+  describe('Artist Releases', () => {
     it('getArtistReleases', async () => {
       const apiResponse = await client.getArtistReleases(artistId)
       expect(t.exact(ArtistReleasesResponseIO).is(apiResponse)).toBeTruthy()
@@ -143,13 +131,13 @@ describe('Database', () => {
   })
 
   describe('Label', () => {
-    const labelId = 1
-
     it('getLabel', async () => {
       const apiResponse = await client.getLabel(labelId)
       expect(t.exact(LabelIO).is(apiResponse)).toBeTruthy()
     })
+  })
 
+  describe('All Label Releases', () => {
     it('getLabelReleases', async () => {
       const apiResponse = await client.getLabelReleases(labelId)
       expect(t.exact(LabelReleasesResponseIO).is(apiResponse)).toBeTruthy()
@@ -159,6 +147,34 @@ describe('Database', () => {
       const apiResponse = await client.getLabelReleases(labelId, pagination)
       expect(apiResponse.pagination).toHaveProperty('page', pagination.page)
       expect(apiResponse.pagination).toHaveProperty('per_page', pagination.perPage)
+    })
+  })
+
+  describe('Search', () => {
+    // @TODO - With pagination + test all options
+    it('searchDatabase', async () => {
+      const apiResponse = await client.searchDatabase()
+      expect(t.exact(SearchResponseIO).is(apiResponse)).toBeTruthy()
+    })
+
+    it('searchRelease', async () => {
+      const apiResponse = await client.searchRelease('Number')
+      expect(t.exact(SearchResponseIO).is(apiResponse)).toBeTruthy()
+    })
+
+    it('searchMaster', async () => {
+      const apiResponse = await client.searchMaster('Number')
+      expect(t.exact(SearchResponseIO).is(apiResponse)).toBeTruthy()
+    })
+
+    it('searchArtist', async () => {
+      const apiResponse = await client.searchArtist('Jacob')
+      expect(t.exact(SearchResponseIO).is(apiResponse)).toBeTruthy()
+    })
+
+    it('searchLabel', async () => {
+      const apiResponse = await client.searchLabel('Music')
+      expect(t.exact(SearchResponseIO).is(apiResponse)).toBeTruthy()
     })
   })
 })

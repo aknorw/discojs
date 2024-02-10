@@ -1,12 +1,11 @@
-import resolve from '@rollup/plugin-node-resolve'
-import replace from '@rollup/plugin-replace'
-// import typescript from '@rollup/plugin-typescript'
-import typescript from 'rollup-plugin-ts'
-import commonjs from '@rollup/plugin-commonjs'
+const resolve = require('@rollup/plugin-node-resolve')
+const replace = require('@rollup/plugin-replace')
+const typescript = require('rollup-plugin-ts')
+const commonjs = require('rollup-plugin-commonjs')
 
-import pkg from './package.json'
+const pkg = require('./package.json')
 
-export default {
+module.exports = {
   input: 'src/index.ts',
   output: [
     {
@@ -20,12 +19,14 @@ export default {
   ],
   external: [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})],
   plugins: [
-    // builtins(),
     resolve({
       extensions: ['.ts'],
     }),
     commonjs(),
     typescript(),
-    replace({ __packageVersion__: pkg.version, preventAssignment: true }),
+    replace({
+      preventAssignment: true,
+      __packageVersion__: pkg.version,
+    }),
   ],
 }
