@@ -16,7 +16,8 @@ import {
 } from './release'
 import { SearchEntityIO } from './search'
 import { IdentityIO, UserIO, UserListIO, UserListItemIO } from './user'
-import { ReleaseConditionsEnum } from '../src/constants'
+import { ReleaseConditionsEnum } from '../src/enums'
+import { ExportItemIO } from './inventory'
 
 export type EmptyResponse = {}
 
@@ -188,6 +189,15 @@ export type CommunityReleaseRatingResponse = t.TypeOf<typeof CommunityReleaseRat
 /**
  * @internal
  */
+export const ReleaseStatsResponseIO = t.type({
+  num_have: t.Integer,
+  num_want: t.Integer,
+})
+export type ReleaseStatsResponse = t.TypeOf<typeof ReleaseStatsResponseIO>
+
+/**
+ * @internal
+ */
 export const MasterVersionsResponseIO = t.type({
   pagination: PaginationIO,
   versions: t.array(MasterVersionIO),
@@ -255,3 +265,12 @@ export const MarketplaceStatisticsResponseIO = t.type({
   num_for_sale: t.union([t.Integer, t.null]),
 })
 export type MarketplaceStatisticsResponse = t.TypeOf<typeof MarketplaceStatisticsResponseIO>
+
+/**
+ * @internal
+ */
+export const RecentExportsResponseIO = t.type({
+  pagination: PaginationIO,
+  items: t.array(ExportItemIO),
+})
+export type RecentExportsResponse = t.TypeOf<typeof RecentExportsResponseIO>

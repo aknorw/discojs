@@ -9,5 +9,5 @@
     "target": "esnext",
     "strict": true
   },
-  "include": ["./models/", "./src/"]
+  "include": ["./e2e", "./models/", "./src/"]
 }

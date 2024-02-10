@@ -1,7 +1,7 @@
 import * as t from 'io-ts'
 
 import { makeEnumIOType } from './helpers'
-import { CurrenciesEnum } from '../src/constants'
+import { CurrenciesEnum } from '../src/enums'
 
 /**
  * @internal
@@ -74,3 +74,16 @@ export const StatBooleanIO = t.type({
   in_collection: t.boolean,
   in_wantlist: t.boolean,
 })
+
+/**
+ * @internal
+ */
+export const RatingValuesIO = t.union([
+  t.literal(0),
+  t.literal(1),
+  t.literal(2),
+  t.literal(3),
+  t.literal(4),
+  t.literal(5),
+])
+export type RatingValues = t.TypeOf<typeof RatingValuesIO>
