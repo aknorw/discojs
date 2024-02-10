@@ -2,11 +2,31 @@ import crossFetch, { Headers } from 'cross-fetch'
 
 import { AuthOptions, isAuthenticated, makeSetAuthorizationHeader, SetAuthorizationHeaderFunction } from './auth'
 import { AuthError, DiscogsError } from '../errors'
+import { createLimiter, Limiter, LimiterOptions } from './limiter'
 import { ErrorResponse } from '../../models'
 
 export type RequestInit = Parameters<typeof crossFetch>[1]
 export type Response = ReturnType<typeof crossFetch> extends Promise<infer Q> ? Q : never
 export type Blob = ReturnType<Response['blob']> extends Promise<infer Q> ? Q : never
+
+/** Base API URL to which URI will be appended. */
+const API_BASE_URL = 'https://api.discogs.com'
+
+/** Base URL dedicated to Discogs images. */
+const IMG_BASE_URL = 'https://img.discogs.com'
+
+/** Discogs API version. */
+const API_VERSION = 'v2'
+
+/** Default user-agent to be used in requests. */
+const DEFAULT_USER_AGENT = `Discojs/__packageVersion__`
+
+/** Header set by Discogs API to indicate the total number of requests you can make in a one minute window. */
+const RATE_LIMIT_HEADER = 'X-Discogs-Ratelimit'
+
+/** Header set by Discogs API to indicate the number of remaining requests you are able to make in the existing rate limit window. */
+const RATE_LIMIT_REMAINING_HEADER = 'X-Discogs-Ratelimit-Remaining'
+
 /**
  * HTTP verbs.
  *
@@ -21,6 +41,18 @@ export enum HTTPVerbsEnum {
 
 // @TODO: Support other output formats.
 export type OutputFormat = 'discogs' // | 'plaintext' | 'html'
+
+/**
+ * A cache for the results of fetches.
+ */
+export type ResultCache = {
+  /**
+   * If the result of a given request is in your cache, return it. Otherwise, invoke and return the factory.
+   * @param factory method to get current content
+   * @param args fetch arguments (headers, query parameters, data, etc.)
+   */
+  get<T>(factory: () => Promise<T>, ...args: Parameters<typeof crossFetch>): Promise<T>
+}
 
 export type FetcherOptions = Partial<AuthOptions> &
   LimiterOptions & {
@@ -41,6 +73,11 @@ export type FetcherOptions = Partial<AuthOptions> &
      * Additional fetch options.
      */
     fetchOptions?: RequestInit
+
+    /**
+     * Optional cache for requests
+     */
+    cache?: ResultCache
   }
 
 export class Fetcher {
@@ -54,6 +91,7 @@ export class Fetcher {
   private maxRequests: number
   private reservoirRefreshInterval: number
   private limiter: Limiter
+  private cache: ResultCache | undefined
 
   constructor(options: FetcherOptions) {
     const {
@@ -63,6 +101,7 @@ export class Fetcher {
       userAgent = DEFAULT_USER_AGENT,
       outputFormat = 'discogs',
       fetchOptions = {},
+      cache = undefined,
     } = options || {}
 
     this.userAgent = userAgent
@@ -88,6 +127,8 @@ export class Fetcher {
       maxRequests: this.maxRequests,
       requestLimitInterval: this.reservoirRefreshInterval,
     })
+
+    this.cache = cache;
   }
 
   private updateMaxRequests(maxRequests: number) {
@@ -187,7 +228,13 @@ export class Fetcher {
 
     options.headers = Object.fromEntries(clonedHeaders)
 
-    return this.limiter.schedule(() => this.fetch<T>(endpoint, options, isImgEndpoint || isCsvEndpoint))
+    const execute = () => this.limiter.schedule(() => this.fetch<T>(endpoint, options, isImgEndpoint || isCsvEndpoint))
+
+    if (this.cache) {
+      return this.cache.get(execute, endpoint, options)
+    }
+
+    return execute()
   }
 
   /**
