@@ -39,7 +39,8 @@
   "lint-staged": {
     "src/*.{ts,json}": [
       "yarn pretty",
-      "yarn lint"
+      "yarn lint",
+      "git add"
     ]
   },
   "dependencies": {
