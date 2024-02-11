@@ -128,7 +128,7 @@ export class Fetcher {
       requestLimitInterval: this.reservoirRefreshInterval,
     })
 
-    this.cache = cache;
+    this.cache = cache
   }
 
   private updateMaxRequests(maxRequests: number) {
@@ -171,9 +171,7 @@ export class Fetcher {
     if (status === 422 || status >= 500) {
       const error: ErrorResponse = await response.json()
       const { message, detail } = error
-      const errorMessage = detail 
-        ? detail.map(e => `${e.loc.join('.')}: ${e.msg} (${e.type})`).join('\n') 
-        : message
+      const errorMessage = detail ? detail.map((e) => `${e.loc.join('.')}: ${e.msg} (${e.type})`).join('\n') : message
       throw new DiscogsError(errorMessage, status)
     }
 
@@ -201,9 +199,15 @@ export class Fetcher {
    */
   async schedule<T>(uri: string, query?: Record<string, any>, method?: HTTPVerbsEnum, data?: Record<string, any>) {
     const isImgEndpoint = uri.startsWith(IMG_BASE_URL)
-    const endpoint = isImgEndpoint
+    const isRestUri = isImgEndpoint || uri.startsWith(API_BASE_URL)
+    const hasQuery = query && typeof query === 'object'
+    const endpoint = isRestUri
       ? uri
-      : API_BASE_URL + (query && typeof query === 'object' ? Fetcher.addQueryToUri(uri, query) : uri)
+      : API_BASE_URL + (hasQuery ? Fetcher.addQueryToUri(uri, query) : uri)
+
+    if (isRestUri && hasQuery && Object.keys(query).length) {
+      throw new DiscogsError('Cannot add a query to a REST URI', 400)
+    }
 
     const isCsvEndpoint = uri.endsWith('/download')
 
