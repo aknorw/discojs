@@ -62,6 +62,7 @@ export const UserIO = t.intersection([
     username: t.string,
     name: t.string,
     profile: t.string,
+    avatar_url: t.string,
     home_page: t.string,
     location: t.string,
     registered: t.string,

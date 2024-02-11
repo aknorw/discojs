@@ -28,6 +28,9 @@ export const MasterIO = t.intersection([
     videos: t.array(VideoIO),
     uri: t.string,
   }),
+  t.partial({
+    notes: t.string,
+  }),
 ])
 
 export type Master = t.TypeOf<typeof MasterIO>

@@ -23,6 +23,7 @@ const ArtistBaseIO = t.intersection([
   ResourceURLIO,
   t.type({
     id: t.Integer,
+    name: t.string,
     profile: t.string,
     data_quality: makeEnumIOType(DataQualityEnum),
     releases_url: t.string,

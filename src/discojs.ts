@@ -1,6 +1,7 @@
 import { CurrenciesEnum, ReleaseConditionsEnum, SleeveConditionsEnum } from './enums'
 import { applyMixins, FetcherOptions, Fetcher, OutputFormat } from './utils'
 
+import { AllNext } from './allNext'
 import { Database } from './database'
 import { MarketPlace } from './marketplace'
 import { InventoryExport } from './inventoryExport'
@@ -19,6 +20,7 @@ export interface Discojs
     UserLists,
     Database,
     MarketPlace,
+    AllNext,
     InventoryExport,
     InventoryUpload {}
 
@@ -88,6 +90,7 @@ applyMixins(Discojs, [
   UserLists,
   Database,
   MarketPlace,
+  AllNext,
   InventoryExport,
   InventoryUpload,
 ])

@@ -21,6 +21,29 @@ import { ExportItemIO } from './inventory'
 
 export type EmptyResponse = {}
 
+export const ErrorResponseIO = t.intersection([
+  t.type({
+    message: t.string,
+  }),
+  t.partial({
+    detail: t.array(
+      t.type({
+        loc: t.array(t.string),
+        msg: t.string,
+        type: t.string,
+      }),
+    ),
+  }),
+])
+
+export type ErrorResponse = t.TypeOf<typeof ErrorResponseIO>
+
+export type Pagination = t.TypeOf<typeof PaginationIO>
+
+export interface IPaginated {
+  pagination: Pagination
+}
+
 export type IdentityResponse = t.TypeOf<typeof IdentityIO>
 
 export type UserProfileResponse = t.TypeOf<typeof UserIO>
@@ -57,6 +80,13 @@ export const FoldersResponseIO = t.type({
 })
 export type FoldersResponse = t.TypeOf<typeof FoldersResponseIO>
 
+export const FieldIO = t.type({
+  field_id: t.Integer,
+  value: t.string,
+})
+
+export type Field = t.TypeOf<typeof FieldIO>
+
 /**
  * @internal
  */
@@ -69,6 +99,8 @@ export const FolderReleasesResponseIO = t.type({
       rating: t.Integer,
       date_added: t.string,
       basic_information: ReleaseMinimalInfoIO,
+      folder_id: t.Integer,
+      notes: t.array(FieldIO),
     }),
   ),
 })
