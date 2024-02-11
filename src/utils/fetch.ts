@@ -201,9 +201,7 @@ export class Fetcher {
     const isImgEndpoint = uri.startsWith(IMG_BASE_URL)
     const isRestUri = isImgEndpoint || uri.startsWith(API_BASE_URL)
     const hasQuery = query && typeof query === 'object'
-    const endpoint = isRestUri
-      ? uri
-      : API_BASE_URL + (hasQuery ? Fetcher.addQueryToUri(uri, query) : uri)
+    const endpoint = isRestUri ? uri : API_BASE_URL + (hasQuery ? Fetcher.addQueryToUri(uri, query) : uri)
 
     if (isRestUri && hasQuery && Object.keys(query).length) {
       throw new DiscogsError('Cannot add a query to a REST URI', 400)
