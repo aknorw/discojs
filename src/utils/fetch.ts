@@ -4,6 +4,7 @@ import { AuthOptions, isAuthenticated, makeSetAuthorizationHeader, SetAuthorizat
 import { AuthError, DiscogsError } from '../errors'
 import { createLimiter, Limiter, LimiterOptions } from './limiter'
 import { ErrorResponse } from '../../models'
+import { boolean } from 'fp-ts'
 
 export type RequestInit = Parameters<typeof crossFetch>[1]
 export type Response = ReturnType<typeof crossFetch> extends Promise<infer Q> ? Q : never
@@ -78,6 +79,12 @@ export type FetcherOptions = Partial<AuthOptions> &
      * Optional cache for requests
      */
     cache?: ResultCache
+
+    /**
+     * Set to `false` for use in a browser
+     * @default `true`
+     */
+    allowUnsafeHeaders?: boolean
   }
 
 export class Fetcher {
@@ -102,19 +109,27 @@ export class Fetcher {
       outputFormat = 'discogs',
       fetchOptions = {},
       cache = undefined,
+      allowUnsafeHeaders = true,
     } = options || {}
 
     this.userAgent = userAgent
 
     this.outputFormat = outputFormat
 
-    this.headers = new Headers({
+    const headersSrc: HeadersInit = {
       Accept: `application/vnd.discogs.${API_VERSION}.${outputFormat}+json`,
-      'Accept-Encoding': 'gzip,deflate',
-      Connection: 'close',
       'Content-Type': 'application/json',
-      'User-Agent': userAgent,
-    })
+    }
+
+    const unsafeHeadersSrc: HeadersInit = allowUnsafeHeaders
+      ? {
+          'Accept-Encoding': 'gzip,deflate',
+          Connection: 'close',
+          'User-Agent': userAgent,
+        }
+      : {}
+
+    this.headers = new Headers({ ...headersSrc, ...unsafeHeadersSrc })
 
     this.setAuthorizationHeader = makeSetAuthorizationHeader(options)
 
