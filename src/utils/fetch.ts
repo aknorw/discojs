@@ -3,6 +3,11 @@ import crossFetch, { Headers } from 'cross-fetch'
 import { AuthOptions, isAuthenticated, makeSetAuthorizationHeader, SetAuthorizationHeaderFunction } from './auth'
 import { AuthError, DiscogsError } from '../errors'
 import { createLimiter, Limiter, LimiterOptions } from './limiter'
+import { ErrorResponse } from '../../models'
+
+export type RequestInit = Parameters<typeof crossFetch>[1]
+export type Response = ReturnType<typeof crossFetch> extends Promise<infer Q> ? Q : never
+export type Blob = ReturnType<Response['blob']> extends Promise<infer Q> ? Q : never
 
 /** Base API URL to which URI will be appended. */
 const API_BASE_URL = 'https://api.discogs.com'
@@ -22,6 +27,13 @@ const RATE_LIMIT_HEADER = 'X-Discogs-Ratelimit'
 /** Header set by Discogs API to indicate the number of remaining requests you are able to make in the existing rate limit window. */
 const RATE_LIMIT_REMAINING_HEADER = 'X-Discogs-Ratelimit-Remaining'
 
+let buffer: undefined | typeof Buffer
+try {
+  buffer = Buffer
+} catch {
+  buffer = undefined
+}
+
 /**
  * HTTP verbs.
  *
@@ -36,6 +48,18 @@ export enum HTTPVerbsEnum {
 
 // @TODO: Support other output formats.
 export type OutputFormat = 'discogs' // | 'plaintext' | 'html'
+
+/**
+ * A cache for the results of fetches.
+ */
+export type ResultCache = {
+  /**
+   * If the result of a given request is in your cache, return it. Otherwise, invoke and return the factory.
+   * @param factory method to get current content
+   * @param args fetch arguments (headers, query parameters, data, etc.)
+   */
+  get<T>(factory: () => Promise<T>, ...args: Parameters<typeof crossFetch>): Promise<T>
+}
 
 export type FetcherOptions = Partial<AuthOptions> &
   LimiterOptions & {
@@ -56,6 +80,17 @@ export type FetcherOptions = Partial<AuthOptions> &
      * Additional fetch options.
      */
     fetchOptions?: RequestInit
+
+    /**
+     * Optional cache for requests
+     */
+    cache?: ResultCache
+
+    /**
+     * Set to `false` for use in a browser
+     * @default `true`
+     */
+    allowUnsafeHeaders?: boolean
   }
 
 export class Fetcher {
@@ -69,6 +104,7 @@ export class Fetcher {
   private maxRequests: number
   private reservoirRefreshInterval: number
   private limiter: Limiter
+  private cache: ResultCache | undefined
 
   constructor(options: FetcherOptions) {
     const {
@@ -78,19 +114,28 @@ export class Fetcher {
       userAgent = DEFAULT_USER_AGENT,
       outputFormat = 'discogs',
       fetchOptions = {},
+      cache = undefined,
+      allowUnsafeHeaders = true,
     } = options || {}
 
     this.userAgent = userAgent
 
     this.outputFormat = outputFormat
 
-    this.headers = new Headers({
+    const headersSrc: HeadersInit = {
       Accept: `application/vnd.discogs.${API_VERSION}.${outputFormat}+json`,
-      'Accept-Encoding': 'gzip,deflate',
-      Connection: 'close',
       'Content-Type': 'application/json',
-      'User-Agent': userAgent,
-    })
+    }
+
+    const unsafeHeadersSrc: HeadersInit = allowUnsafeHeaders
+      ? {
+          'Accept-Encoding': 'gzip,deflate',
+          Connection: 'close',
+          'User-Agent': userAgent,
+        }
+      : {}
+
+    this.headers = new Headers({ ...headersSrc, ...unsafeHeadersSrc })
 
     this.setAuthorizationHeader = makeSetAuthorizationHeader(options)
 
@@ -103,6 +148,8 @@ export class Fetcher {
       maxRequests: this.maxRequests,
       requestLimitInterval: this.reservoirRefreshInterval,
     })
+
+    this.cache = cache
   }
 
   private updateMaxRequests(maxRequests: number) {
@@ -142,6 +189,13 @@ export class Fetcher {
       throw new AuthError()
     }
 
+    if (status === 422 || status >= 500) {
+      const error: ErrorResponse = await response.json()
+      const { message, detail } = error
+      const errorMessage = detail ? detail.map((e) => `${e.loc.join('.')}: ${e.msg} (${e.type})`).join('\n') : message
+      throw new DiscogsError(errorMessage, status)
+    }
+
     if (status < 200 || status >= 300) {
       throw new DiscogsError(statusText, status)
     }
@@ -166,9 +220,13 @@ export class Fetcher {
    */
   async schedule<T>(uri: string, query?: Record<string, any>, method?: HTTPVerbsEnum, data?: Record<string, any>) {
     const isImgEndpoint = uri.startsWith(IMG_BASE_URL)
-    const endpoint = isImgEndpoint
-      ? uri
-      : API_BASE_URL + (query && typeof query === 'object' ? Fetcher.addQueryToUri(uri, query) : uri)
+    const isRestUri = isImgEndpoint || uri.startsWith(API_BASE_URL)
+    const hasQuery = query && typeof query === 'object'
+    const endpoint = isRestUri ? uri : API_BASE_URL + (hasQuery ? Fetcher.addQueryToUri(uri, query) : uri)
+
+    if (isRestUri && hasQuery && Object.keys(query).length) {
+      throw new DiscogsError('Cannot add a query to a REST URI', 400)
+    }
 
     const isCsvEndpoint = uri.endsWith('/download')
 
@@ -181,19 +239,32 @@ export class Fetcher {
     if (this.setAuthorizationHeader)
       this.headers.set('Authorization', this.setAuthorizationHeader(uri, method || HTTPVerbsEnum.GET))
 
-    const clonedHeaders = new Map(this.headers)
-
     if (data) {
+      const clonedHeaders = new Map(this.headers)
+
       const stringifiedData = JSON.stringify(Fetcher.transformData(data))
       options.body = stringifiedData
 
+      clonedHeaders.delete('content-type')
       clonedHeaders.set('Content-Type', 'application/json')
-      clonedHeaders.set('Content-Length', Buffer.byteLength(stringifiedData, 'utf8').toString())
+
+      if (buffer !== undefined) {
+        clonedHeaders.delete('content-length')
+        clonedHeaders.set('Content-Length', buffer.byteLength(stringifiedData, 'utf8').toString())
+      }
+
+      options.headers = Object.fromEntries(clonedHeaders)
+    } else {
+      options.headers = Object.fromEntries(this.headers)
     }
 
-    options.headers = Object.fromEntries(clonedHeaders)
+    const execute = () => this.limiter.schedule(() => this.fetch<T>(endpoint, options, isImgEndpoint || isCsvEndpoint))
 
-    return this.limiter.schedule(() => this.fetch<T>(endpoint, options, isImgEndpoint || isCsvEndpoint))
+    if (this.cache) {
+      return this.cache.get(execute, endpoint, options)
+    }
+
+    return execute()
   }
 
   /**

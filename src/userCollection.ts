@@ -332,8 +332,9 @@ export class UserCollection {
     const username = await this.getUsername()
     return this.fetcher.schedule<EmptyResponse>(
       `/users/${username}/collection/folders/${folderId}/releases/${releaseId}/instances/${instanceId}/fields/${fieldId}`,
-      { value },
+      undefined,
       HTTPVerbsEnum.POST,
+      { value },
     )
   }
 

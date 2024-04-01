@@ -1,4 +1,5 @@
 export * from './discojs'
 export * from './enums'
 export * from './errors'
-export { SortOrdersEnum } from './utils'
+export { ResultCache, SortOrdersEnum } from './utils'
+export { IPaginated, Pagination } from '../models/api'

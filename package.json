@@ -1,6 +1,6 @@
 {
   "name": "discojs",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Easiest way to use the Discogs API in Javascript/Typescript",
   "author": "aknorw",
   "license": "MIT",
@@ -17,7 +17,7 @@
   "types": "./lib/index.d.ts",
   "scripts": {
     "clean": "rimraf lib",
-    "pretty": "prettier --config .prettierrc --write '{models,src}/**/*.{ts,json}'",
+    "pretty": "prettier --config .prettierrc --write \"{models,src}/**/*.{ts,json}\"",
     "lint": "eslint --ext .ts,.json models/ src/",
     "test:spec": "cross-env NODE_ENV=test jest --testMatch='**/*.spec.ts'",
     "test:e2e": "cross-env NODE_ENV=test jest --testMatch='**/*.e2e.ts' --runInBand",
@@ -25,6 +25,7 @@
     "docs": "typedoc --inputFiles src/index.ts --exclude \"**/*+(.spec).ts\" --excludeNotExported --excludePrivate --stripInternal",
     "prebuild": "yarn run clean",
     "build": "cross-env NODE_ENV=production rollup -c",
+    "build-dev": "cross-env NODE_ENV=development rollup -c",
     "prepare": "husky install"
   },
   "repository": {

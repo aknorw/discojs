@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
+    "outDir": "lib",
     "allowSyntheticDefaultImports": true,
     "declaration": true,
-    "emitDeclarationOnly": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
+    "module": "ESNext",
     "moduleResolution": "node",
-    "target": "esnext",
+    "target": "ES2019",
     "strict": true
   },
   "include": ["./e2e", "./models/", "./src/"]
