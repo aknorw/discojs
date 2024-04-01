@@ -254,6 +254,8 @@ export class Fetcher {
       }
 
       options.headers = Object.fromEntries(clonedHeaders)
+    } else {
+      options.headers = Object.fromEntries(this.headers)
     }
 
     const execute = () => this.limiter.schedule(() => this.fetch<T>(endpoint, options, isImgEndpoint || isCsvEndpoint))
