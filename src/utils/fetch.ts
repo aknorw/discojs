@@ -4,7 +4,6 @@ import { AuthOptions, isAuthenticated, makeSetAuthorizationHeader, SetAuthorizat
 import { AuthError, DiscogsError } from '../errors'
 import { createLimiter, Limiter, LimiterOptions } from './limiter'
 import { ErrorResponse } from '../../models'
-import { boolean } from 'fp-ts'
 
 export type RequestInit = Parameters<typeof crossFetch>[1]
 export type Response = ReturnType<typeof crossFetch> extends Promise<infer Q> ? Q : never
@@ -27,6 +26,13 @@ const RATE_LIMIT_HEADER = 'X-Discogs-Ratelimit'
 
 /** Header set by Discogs API to indicate the number of remaining requests you are able to make in the existing rate limit window. */
 const RATE_LIMIT_REMAINING_HEADER = 'X-Discogs-Ratelimit-Remaining'
+
+let buffer: undefined | typeof Buffer
+try {
+  buffer = Buffer
+} catch {
+  buffer = undefined
+}
 
 /**
  * HTTP verbs.
@@ -233,17 +239,22 @@ export class Fetcher {
     if (this.setAuthorizationHeader)
       this.headers.set('Authorization', this.setAuthorizationHeader(uri, method || HTTPVerbsEnum.GET))
 
-    const clonedHeaders = new Map(this.headers)
-
     if (data) {
+      const clonedHeaders = new Map(this.headers)
+
       const stringifiedData = JSON.stringify(Fetcher.transformData(data))
       options.body = stringifiedData
 
+      clonedHeaders.delete('content-type')
       clonedHeaders.set('Content-Type', 'application/json')
-      clonedHeaders.set('Content-Length', Buffer.byteLength(stringifiedData, 'utf8').toString())
-    }
 
-    options.headers = Object.fromEntries(clonedHeaders)
+      if (buffer !== undefined) {
+        clonedHeaders.delete('content-length')
+        clonedHeaders.set('Content-Length', buffer.byteLength(stringifiedData, 'utf8').toString())
+      }
+
+      options.headers = Object.fromEntries(clonedHeaders)
+    }
 
     const execute = () => this.limiter.schedule(() => this.fetch<T>(endpoint, options, isImgEndpoint || isCsvEndpoint))
 
