@@ -37,6 +37,20 @@ export enum HTTPVerbsEnum {
 // @TODO: Support other output formats.
 export type OutputFormat = 'discogs' // | 'plaintext' | 'html'
 
+/**
+ * A cache for the results of fetches.
+ */
+export type ResultCache = {
+  /**
+   * If the result of a given request is in your cache, return it.
+   * Otherwise, invoke and return the factory.
+   * 
+   * @param factory method to get current content
+   * @param args fetch arguments (headers, query parameters, data, etc.)
+   */
+  get<T>(factory: () => Promise<T>, ...args: Parameters<typeof crossFetch>): Promise<T>
+}
+
 export type FetcherOptions = Partial<AuthOptions> &
   LimiterOptions & {
     /**
@@ -56,6 +70,11 @@ export type FetcherOptions = Partial<AuthOptions> &
      * Additional fetch options.
      */
     fetchOptions?: RequestInit
+
+    /**
+     * Optional cache for requests
+     */
+    cache?: ResultCache
   }
 
 export class Fetcher {
@@ -69,6 +88,7 @@ export class Fetcher {
   private maxRequests: number
   private reservoirRefreshInterval: number
   private limiter: Limiter
+  private cache: ResultCache | undefined
 
   constructor(options: FetcherOptions) {
     const {
@@ -78,6 +98,7 @@ export class Fetcher {
       userAgent = DEFAULT_USER_AGENT,
       outputFormat = 'discogs',
       fetchOptions = {},
+      cache = undefined,
     } = options || {}
 
     this.userAgent = userAgent
@@ -103,6 +124,8 @@ export class Fetcher {
       maxRequests: this.maxRequests,
       requestLimitInterval: this.reservoirRefreshInterval,
     })
+
+    this.cache = cache
   }
 
   private updateMaxRequests(maxRequests: number) {
@@ -193,7 +216,9 @@ export class Fetcher {
 
     options.headers = Object.fromEntries(clonedHeaders)
 
-    return this.limiter.schedule(() => this.fetch<T>(endpoint, options, isImgEndpoint || isCsvEndpoint))
+    const execute = () => this.limiter.schedule(() => this.fetch<T>(endpoint, options, isImgEndpoint || isCsvEndpoint))
+
+    return this.cache?.get(execute, endpoint, options) ?? execute()
   }
 
   /**
