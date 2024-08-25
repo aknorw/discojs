@@ -44,7 +44,7 @@ export type ResultCache = {
   /**
    * If the result of a given request is in your cache, return it.
    * Otherwise, invoke and return the factory.
-   * 
+   *
    * @param factory method to get current content
    * @param args fetch arguments (headers, query parameters, data, etc.)
    */
