@@ -22,6 +22,14 @@ export class UserWantlist {
     return this.fetcher.schedule<WantlistResponse>(`/users/${username}/wants`, paginate(pagination))
   }
 
+  /**
+   * Returns all releases in a user’s wantlist.
+   *
+   * @category User
+   * @label Wantlist
+   *
+   * @link https://www.discogs.com/developers#page:user-wantlist,header:user-wantlist-wantlist
+   */
   getAllWantlistForUser(this: Discojs, username: string) {
     return this.fetcher.createAllMethod((pagination) => this.getWantlistForUser(username, pagination))
   }
@@ -41,6 +49,14 @@ export class UserWantlist {
     return this.getWantlistForUser(username, pagination)
   }
 
+  /**
+   * Returns all releases in authenticated user’s wantlist.
+   *
+   * @category User
+   * @label Wantlist
+   *
+   * @link https://www.discogs.com/developers#page:user-wantlist,header:user-wantlist-wantlist
+   */
   getAllWantlist(this: Discojs) {
     return this.fetcher.createAllMethod((pagination) => this.getWantlist(pagination))
   }

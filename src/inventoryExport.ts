@@ -29,6 +29,14 @@ export class InventoryExport {
     return this.fetcher.schedule<RecentExportsResponse>('/inventory/export', paginate(pagination))
   }
 
+  /**
+   * Get all recent exports of your inventory.
+   *
+   * @category Inventory Export
+   * @label Get recent exports
+   *
+   * @link https://www.discogs.com/developers#page:inventory-export,header:inventory-export-get-recent-exports
+   */
   getAllRecentExports(this: Discojs) {
     return this.fetcher.createAllMethod((pagination) => this.getRecentExports(pagination))
   }

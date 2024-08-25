@@ -133,6 +133,14 @@ export class UserCollection {
     )
   }
 
+  /**
+   * View all user’s collection folders which contain a specified release. This will also show information about each release instance.
+   *
+   * @category User
+   * @label Items By Release
+   *
+   * @link https://www.discogs.com/developers#page:user-collection,header:user-collection-collection-items-by-release
+   */
   listAllItemsByReleaseForUser(this: Discojs, username: string, release_id: number) {
     return this.fetcher.createAllMethod((pagination) =>
       this.listItemsByReleaseForUser(username, release_id, pagination),
@@ -182,6 +190,14 @@ export class UserCollection {
     })
   }
 
+  /**
+   * Returns all items in a folder in a user’s collection.
+   *
+   * @category User
+   * @label Collection Items By Folder
+   *
+   * @link https://www.discogs.com/developers#page:user-collection,header:user-collection-collection-items-by-folder
+   */
   listAllItemsInFolderForUser(
     this: Discojs,
     username: string,
@@ -214,6 +230,14 @@ export class UserCollection {
     return this.listItemsInFolderForUser(username, folderId, sort, pagination)
   }
 
+  /**
+   * Returns all items in a folder in authenticated user’s collection.
+   *
+   * @category User
+   * @label Collection Items By Folder
+   *
+   * @link https://www.discogs.com/developers#page:user-collection,header:user-collection-collection-items-by-folder
+   */
   listAllItemsInFolder(this: Discojs, folderId: FolderIdsEnum | number, sort?: SortOptions<UserSortEnum>) {
     return this.fetcher.createAllMethod((pagination) => this.listItemsInFolder(folderId, sort, pagination))
   }

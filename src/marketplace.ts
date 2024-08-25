@@ -68,6 +68,14 @@ export class MarketPlace {
     })
   }
 
+  /**
+   * Get all seller’s inventory.
+   *
+   * @category Marketplace
+   * @label Inventory
+   *
+   * @link https://www.discogs.com/developers#page:marketplace,header:marketplace-inventory
+   */
   getAllInventoryForUser(
     this: Discojs,
     username: string,
@@ -95,6 +103,14 @@ export class MarketPlace {
     return this.getInventoryForUser(username, status, sort, pagination)
   }
 
+  /**
+   * Get all authenticated user’s inventory.
+   *
+   * @category Marketplace
+   * @label Inventory
+   *
+   * @link https://www.discogs.com/developers#page:marketplace,header:marketplace-inventory
+   */
   getAllInventory(this: Discojs, status?: InventoryStatusesEnum, sort?: SortOptions<InventorySortEnum>) {
     return this.fetcher.createAllMethod((pagination) => this.getInventory(status, sort, pagination))
   }
@@ -206,6 +222,14 @@ export class MarketPlace {
     })
   }
 
+  /**
+   * Returns all authenticated user’s orders.
+   *
+   * @category Marketplace
+   * @label List Orders
+   *
+   * @link https://www.discogs.com/developers#page:marketplace,header:marketplace-list-orders
+   */
   listAllOrders(this: Discojs, status?: OrderStatusesEnum, archived?: boolean, sort?: SortOptions<OrderSortEnum>) {
     return this.fetcher.createAllMethod((pagination) => this.listOrders(status, archived, sort, pagination))
   }

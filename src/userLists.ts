@@ -18,6 +18,14 @@ export class UserLists {
     return this.fetcher.schedule<UserListsResponse>(`/users/${username}/lists`, paginate(pagination))
   }
 
+  /**
+   * Returns all user’s lists.
+   *
+   * @category User
+   * @label Lists
+   *
+   * @link https://www.discogs.com/developers#page:user-lists,header:user-lists-user-lists
+   */
   getAllListsForUser(this: Discojs, username: string) {
     return this.fetcher.createAllMethod((pagination) => this.getListsForUser(username, pagination))
   }
@@ -35,6 +43,14 @@ export class UserLists {
     return this.getListsForUser(username, pagination)
   }
 
+  /**
+   * Returns all authenticated user’s lists.
+   *
+   * @category User
+   * @label Lists
+   *
+   * @link https://www.discogs.com/developers#page:user-lists,header:user-lists-user-lists
+   */
   getAllLists(this: Discojs) {
     return this.fetcher.createAllMethod((pagination) => this.getLists(pagination))
   }
