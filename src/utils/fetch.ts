@@ -293,7 +293,10 @@ export class Fetcher {
     let lastPage = 1
 
     do {
-      const { pagination, ...data } = await fetchFunction({ page: currentPage })
+      const { pagination, ...data } = await fetchFunction({
+        page: currentPage,
+        perPage: 100, // Use maximum value to reduce the number of requests.
+      })
       lastPage = pagination.pages
       yield data
       currentPage += 1
