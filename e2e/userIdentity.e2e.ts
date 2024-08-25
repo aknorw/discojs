@@ -7,7 +7,7 @@ import { IdentityIO, UserIO } from '../models/user'
 
 declare const client: Discojs
 
-const rodneyfool = 'rodneyfool'
+const blindborges = 'blindborges'
 const pagination = { page: 1, perPage: 1 }
 
 describe('User Identity', () => {
@@ -20,7 +20,7 @@ describe('User Identity', () => {
 
   describe('Profile', () => {
     it('getProfileForUser', async () => {
-      const apiResponse = await client.getProfileForUser(rodneyfool)
+      const apiResponse = await client.getProfileForUser(blindborges)
       expect(t.exact(UserIO).is(apiResponse)).toBeTruthy()
     })
 
@@ -43,12 +43,12 @@ describe('User Identity', () => {
 
   describe('Submissions', () => {
     it('getSubmissionsForUser', async () => {
-      const apiResponse = await client.getSubmissionsForUser(rodneyfool)
+      const apiResponse = await client.getSubmissionsForUser(blindborges)
       expect(t.exact(UserSubmissionsResponseIO).is(apiResponse)).toBeTruthy()
     })
 
     it('getSubmissionsForUser - with pagination', async () => {
-      const apiResponse = await client.getSubmissionsForUser(rodneyfool, pagination)
+      const apiResponse = await client.getSubmissionsForUser(blindborges, pagination)
       expect(apiResponse.pagination).toHaveProperty('page', pagination.page)
       expect(apiResponse.pagination).toHaveProperty('per_page', pagination.perPage)
     })

@@ -6,18 +6,18 @@ import { UserListItemsResponseIO, UserListsResponseIO } from '../models'
 
 declare const client: Discojs
 
-const rodneyfool = 'rodneyfool'
+const blindborges = 'blindborges'
 const pagination = { page: 1, perPage: 1 }
 
 describe('User Lists', () => {
   describe('User Lists', () => {
     it('getListsForUser', async () => {
-      const apiResponse = await client.getListsForUser(rodneyfool)
+      const apiResponse = await client.getListsForUser(blindborges)
       expect(t.exact(UserListsResponseIO).is(apiResponse)).toBeTruthy()
     })
 
     it('getListsForUser - with pagination', async () => {
-      const apiResponse = await client.getListsForUser(rodneyfool, pagination)
+      const apiResponse = await client.getListsForUser(blindborges, pagination)
       expect(apiResponse.pagination).toHaveProperty('page', pagination.page)
       expect(apiResponse.pagination).toHaveProperty('per_page', pagination.perPage)
     })

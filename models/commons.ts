@@ -88,3 +88,12 @@ export const RatingValuesIO = t.union([
   t.literal(5),
 ])
 export type RatingValues = t.TypeOf<typeof RatingValuesIO>
+
+/**
+ * @internal
+ */
+export const FieldIO = t.type({
+  field_id: t.Integer,
+  value: t.string,
+})
+export type Field = t.TypeOf<typeof FieldIO>
