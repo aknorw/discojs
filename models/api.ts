@@ -1,7 +1,7 @@
 import * as t from 'io-ts'
 
 import { UserSubmissionArtistIO } from './artist'
-import { PaginationIO, ResourceURLIO, ValueWithCurrencyIO } from './commons'
+import { FieldIO, PaginationIO, ResourceURLIO, ValueWithCurrencyIO } from './commons'
 import { CollectionValueIO, CustomFieldIO, FolderIO } from './folder'
 import { LabelIO } from './label'
 import { ListingIO, OrderIO, OrderMessageIO } from './marketplace'
@@ -63,13 +63,19 @@ export type FoldersResponse = t.TypeOf<typeof FoldersResponseIO>
 export const FolderReleasesResponseIO = t.type({
   pagination: PaginationIO,
   releases: t.array(
+    t.intersection([
     t.type({
       id: t.Integer,
       instance_id: t.Integer,
       rating: t.Integer,
       date_added: t.string,
-      basic_information: ReleaseMinimalInfoIO,
+        basic_information: ReleaseMinimalInfoIO,
+      }),
+      t.partial({
+      folder_id: t.Integer,
+      notes: t.array(FieldIO),
     }),
+    ]),
   ),
 })
 export type FolderReleasesResponse = t.TypeOf<typeof FolderReleasesResponseIO>
