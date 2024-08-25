@@ -7,7 +7,7 @@ import { UserCollection } from './userCollection'
 import { UserIdentity } from './userIdentity'
 import { UserLists } from './userLists'
 import { UserWantlist } from './userWantlist'
-import { applyMixins, Fetcher, FetcherOptions, OutputFormat } from './utils'
+import { applyMixins, Blob, Fetcher, FetcherOptions, OutputFormat } from './utils'
 
 type DiscojsOptions = FetcherOptions
 

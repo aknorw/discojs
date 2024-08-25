@@ -22,6 +22,18 @@ export class UserWantlist {
   }
 
   /**
+   * Returns all releases in a user’s wantlist.
+   *
+   * @category User
+   * @label Wantlist
+   *
+   * @link https://www.discogs.com/developers#page:user-wantlist,header:user-wantlist-wantlist
+   */
+  getAllWantlistForUser(this: Discojs, username: string) {
+    return this.fetcher.createAllMethod((pagination) => this.getWantlistForUser(username, pagination))
+  }
+
+  /**
    * Returns the list of releases in authenticated user’s wantlist.
    * Basic information about each release is provided, suitable for display in a list.
    * For detailed information, make another API call to fetch the corresponding release.
@@ -34,6 +46,18 @@ export class UserWantlist {
   async getWantlist(this: Discojs, pagination?: Pagination) {
     const username = await this.getUsername()
     return this.getWantlistForUser(username, pagination)
+  }
+
+  /**
+   * Returns all releases in authenticated user’s wantlist.
+   *
+   * @category User
+   * @label Wantlist
+   *
+   * @link https://www.discogs.com/developers#page:user-wantlist,header:user-wantlist-wantlist
+   */
+  getAllWantlist(this: Discojs) {
+    return this.fetcher.createAllMethod((pagination) => this.getWantlist(pagination))
   }
 
   /**

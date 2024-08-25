@@ -21,9 +21,21 @@ describe('User Lists', () => {
       expect(apiResponse.pagination).toHaveProperty('per_page', pagination.perPage)
     })
 
+    it('getAllListsForUser', async () => {
+      for await (const response of client.getAllListsForUser(blindborges)) {
+        expect('lists' in response).toBeTruthy()
+      }
+    })
+
     it('getLists', async () => {
       const apiResponse = await client.getLists()
       expect(t.exact(UserListsResponseIO).is(apiResponse)).toBeTruthy()
+    })
+
+    it('getAllLists', async () => {
+      for await (const response of client.getAllLists()) {
+        expect('lists' in response).toBeTruthy()
+      }
     })
   })
 

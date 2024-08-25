@@ -164,6 +164,18 @@ export class Database {
   }
 
   /**
+   * Retrieves all releases that are versions of a master.
+   *
+   * @category Database
+   * @label Master Release Versions
+   *
+   * @link https://www.discogs.com/developers#page:database,header:database-master-release-versions
+   */
+  getAllMasterVersions(this: Discojs, masterId: number) {
+    return this.fetcher.createAllMethod((pagination) => this.getMasterVersions(masterId, pagination))
+  }
+
+  /**
    * Get an artist.
    *
    * @category Database
@@ -196,6 +208,18 @@ export class Database {
   }
 
   /**
+   * Returns all releases and masters associated with an artist.
+   *
+   * @category Database
+   * @label Artist Releases
+   *
+   * @link https://www.discogs.com/developers#page:database,header:database-artist-releases
+   */
+  getAllArtistReleases(this: Discojs, artistId: number, sort?: SortOptions<ReleaseSortEnum>) {
+    return this.fetcher.createAllMethod((pagination) => this.getArtistReleases(artistId, sort, pagination))
+  }
+
+  /**
    * Get a label.
    *
    * @category Database
@@ -217,6 +241,18 @@ export class Database {
    */
   async getLabelReleases(this: Discojs, labelId: number, pagination?: Pagination) {
     return this.fetcher.schedule<LabelReleasesResponse>(`/labels/${labelId}/releases`, paginate(pagination))
+  }
+
+  /**
+   * Returns all releases associated with the label.
+   *
+   * @category Database
+   * @label Label Releases
+   *
+   * @link https://www.discogs.com/developers#page:database,header:database-all-label-releases
+   */
+  getAllLabelReleases(this: Discojs, labelId: number) {
+    return this.fetcher.createAllMethod((pagination) => this.getLabelReleases(labelId, pagination))
   }
 
   /**

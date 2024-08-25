@@ -102,6 +102,17 @@ export class UserIdentity {
   }
 
   /**
+   * Retrieve all user’s submissions by username.
+   *
+   * @category User Submissions
+   *
+   * @link https://www.discogs.com/developers#page:user-identity,header:user-identity-user-submissions
+   */
+  getAllSubmissionsForUser(this: Discojs, username: string) {
+    return this.fetcher.createAllMethod((pagination) => this.getSubmissionsForUser(username, pagination))
+  }
+
+  /**
    * Retrieve authenticated user’s submissions.
    *
    * @category User Submissions
@@ -111,6 +122,17 @@ export class UserIdentity {
   async getSubmissions(this: Discojs, pagination?: Pagination) {
     const username = await this.getUsername()
     return this.getSubmissionsForUser(username, pagination)
+  }
+
+  /**
+   * Retrieve all authenticated user’s submissions.
+   *
+   * @category User Submissions
+   *
+   * @link https://www.discogs.com/developers#page:user-identity,header:user-identity-user-submissions
+   */
+  getAllSubmissions(this: Discojs) {
+    return this.fetcher.createAllMethod((pagination) => this.getSubmissions(pagination))
   }
 
   /**
@@ -133,6 +155,17 @@ export class UserIdentity {
   }
 
   /**
+   * Retrieve all user’s contributions by username.
+   *
+   * @category User Contributions
+   *
+   * @link https://www.discogs.com/developers#page:user-identity,header:user-identity-user-contributions
+   */
+  getAllContributionsForUser(this: Discojs, username: string, sort?: SortOptions<UserSortEnum>) {
+    return this.fetcher.createAllMethod((pagination) => this.getContributionsForUser(username, sort, pagination))
+  }
+
+  /**
    * Retrieve authenticated user’s contributions.
    *
    * @category User Contributions
@@ -142,5 +175,16 @@ export class UserIdentity {
   async getContributions(this: Discojs, sort?: SortOptions<UserSortEnum>, pagination?: Pagination) {
     const username = await this.getUsername()
     return this.getContributionsForUser(username, sort, pagination)
+  }
+
+  /**
+   * Retrieve all authenticated user’s contributions.
+   *
+   * @category User Contributions
+   *
+   * @link https://www.discogs.com/developers#page:user-identity,header:user-identity-user-contributions
+   */
+  getAllContributions(this: Discojs, sort?: SortOptions<UserSortEnum>) {
+    return this.fetcher.createAllMethod((pagination) => this.getContributions(sort, pagination))
   }
 }
