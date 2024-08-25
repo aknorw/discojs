@@ -18,6 +18,7 @@ export const PaginationIO = t.type({
     last: t.union([t.string, t.undefined]),
   }),
 })
+export type Pagination = t.TypeOf<typeof PaginationIO>
 
 /**
  * @internal
@@ -87,3 +88,12 @@ export const RatingValuesIO = t.union([
   t.literal(5),
 ])
 export type RatingValues = t.TypeOf<typeof RatingValuesIO>
+
+/**
+ * @internal
+ */
+export const FieldIO = t.type({
+  field_id: t.Integer,
+  value: t.string,
+})
+export type Field = t.TypeOf<typeof FieldIO>

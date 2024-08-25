@@ -50,10 +50,16 @@ export const ReleaseArtistIO = t.intersection([
 /**
  * @internal
  */
-const ReleaseFormatIO = t.type({
-  name: t.string,
-  qty: t.string,
-})
+const ReleaseFormatIO = t.intersection([
+  t.type({
+    name: t.string,
+    qty: t.string,
+  }),
+  t.partial({
+    text: t.string,
+    descriptions: t.array(t.string),
+  }),
+])
 
 /**
  * @internal
@@ -66,6 +72,9 @@ const ReleaseEntityIO = t.intersection([
     entity_type: t.string,
     entity_type_name: t.string,
     catno: t.string,
+  }),
+  t.partial({
+    thumbnail_url: t.string,
   }),
 ])
 
@@ -80,12 +89,17 @@ const ReleaseIdentifierIO = t.type({
 /**
  * @internal
  */
-export const TrackIO = t.type({
-  type_: t.string,
-  title: t.string,
-  position: t.string,
-  duration: t.string,
-})
+export const TrackIO = t.intersection([
+  t.type({
+    type_: t.string,
+    title: t.string,
+    position: t.string,
+    duration: t.string,
+  }),
+  t.partial({
+    artists: t.array(ReleaseArtistIO),
+  }),
+])
 
 /**
  * @internal
