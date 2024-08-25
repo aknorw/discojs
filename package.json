@@ -20,7 +20,7 @@
   "type": "module",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
-  "types": "./lib/index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
