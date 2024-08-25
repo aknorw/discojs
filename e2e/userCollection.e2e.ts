@@ -123,7 +123,7 @@ describe('User Collection', () => {
 
     it('listAllItemsInFolderForUser', async () => {
       // eslint-disable-next-line no-restricted-syntax
-      for await (const response of client.listAllItemsInFolderForUser(rodneyfool, FolderIdsEnum.ALL)) {
+      for await (const response of client.listAllItemsInFolderForUser(blindborges, FolderIdsEnum.ALL)) {
         expect('releases' in response).toBeTruthy()
       }
     })

@@ -55,7 +55,7 @@ describe('User Identity', () => {
 
     it('getAllSubmissionsForUser', async () => {
       // eslint-disable-next-line no-restricted-syntax
-      for await (const response of client.getAllSubmissionsForUser(rodneyfool)) {
+      for await (const response of client.getAllSubmissionsForUser(blindborges)) {
         expect('submissions' in response).toBeTruthy()
       }
     })

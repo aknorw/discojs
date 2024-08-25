@@ -26,7 +26,7 @@ describe('User Wantlist', () => {
 
     it('getAllWantlistForUser', async () => {
       // eslint-disable-next-line no-restricted-syntax
-      for await (const response of client.getAllWantlistForUser(rodneyfool)) {
+      for await (const response of client.getAllWantlistForUser(blindborges)) {
         expect('wants' in response).toBeTruthy()
       }
     })

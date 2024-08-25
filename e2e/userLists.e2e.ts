@@ -24,7 +24,7 @@ describe('User Lists', () => {
 
     it('getAllListsForUser', async () => {
       // eslint-disable-next-line no-restricted-syntax
-      for await (const response of client.getAllListsForUser(rodneyfool)) {
+      for await (const response of client.getAllListsForUser(blindborges)) {
         expect('lists' in response).toBeTruthy()
       }
     })
