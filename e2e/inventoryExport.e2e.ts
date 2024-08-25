@@ -1,9 +1,8 @@
 import * as t from 'io-ts'
 
-import { Discojs } from '../lib'
-
 import { RecentExportsResponseIO } from '../models'
 import { ExportItemIO } from '../models/inventory'
+import { Discojs } from '../src'
 
 declare const client: Discojs
 

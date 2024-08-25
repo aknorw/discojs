@@ -13,7 +13,6 @@ import {
   ReleaseStatsResponse,
   SearchResponse,
 } from '../models'
-
 import type { Discojs } from './discojs'
 import { CurrenciesEnum, ReleaseSortEnum, SearchTypeEnum } from './enums'
 import { HTTPVerbsEnum, paginate, Pagination, sortBy, SortOptions } from './utils'

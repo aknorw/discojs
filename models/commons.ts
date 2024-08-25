@@ -1,7 +1,7 @@
 import * as t from 'io-ts'
 
-import { makeEnumIOType } from './helpers'
 import { CurrenciesEnum } from '../src/enums'
+import { makeEnumIOType } from './helpers'
 
 /**
  * @internal

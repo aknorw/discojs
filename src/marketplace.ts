@@ -1,7 +1,6 @@
 import {
   CreateListingResponse,
   EmptyResponse,
-  Fee,
   InventoryResponse,
   Listing,
   MarketplaceStatisticsResponse,
@@ -11,20 +10,19 @@ import {
   OrdersResponse,
   PriceSuggestionsResponse,
 } from '../models'
-
 import type { Discojs } from './discojs'
 import {
-  InventoryStatusesEnum,
-  InventorySortEnum,
   CurrenciesEnum,
+  EditOrderStatusesEnum,
+  InventorySortEnum,
+  InventoryStatusesEnum,
   ListingStatusesEnum,
+  OrderSortEnum,
+  OrderStatusesEnum,
   ReleaseConditionsEnum,
   SleeveConditionsEnum,
-  EditOrderStatusesEnum,
-  OrderStatusesEnum,
-  OrderSortEnum,
 } from './enums'
-import { SortOptions, Pagination, sortBy, paginate, HTTPVerbsEnum } from './utils'
+import { HTTPVerbsEnum, paginate, Pagination, sortBy, SortOptions } from './utils'
 
 type ListingOptions = {
   releaseId: number

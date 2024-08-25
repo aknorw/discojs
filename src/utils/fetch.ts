@@ -1,9 +1,9 @@
 import crossFetch, { Headers } from 'cross-fetch'
 
-import { AuthOptions, isAuthenticated, makeSetAuthorizationHeader, SetAuthorizationHeaderFunction } from './auth'
-import { AuthError, DiscogsError } from '../errors'
-import { createLimiter, Limiter, LimiterOptions } from './limiter'
 import { ErrorResponse } from '../../models'
+import { AuthError, DiscogsError } from '../errors'
+import { AuthOptions, isAuthenticated, makeSetAuthorizationHeader, SetAuthorizationHeaderFunction } from './auth'
+import { createLimiter, Limiter, LimiterOptions } from './limiter'
 
 /** Base API URL to which URI will be appended. */
 const API_BASE_URL = 'https://api.discogs.com'
