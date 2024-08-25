@@ -3,6 +3,7 @@ import crossFetch, { Headers } from 'cross-fetch'
 import { AuthOptions, isAuthenticated, makeSetAuthorizationHeader, SetAuthorizationHeaderFunction } from './auth'
 import { AuthError, DiscogsError } from '../errors'
 import { createLimiter, Limiter, LimiterOptions } from './limiter'
+import { ErrorResponse } from '../../models'
 
 /** Base API URL to which URI will be appended. */
 const API_BASE_URL = 'https://api.discogs.com'
@@ -163,6 +164,12 @@ export class Fetcher {
     // Check status
     if (status === 401) {
       throw new AuthError()
+    }
+
+    if (status === 422 || status >= 500) {
+      const { message, detail }: ErrorResponse = await response.json()
+      const errorMessage = detail ? detail.map((e) => `${e.loc.join('.')}: ${e.msg} (${e.type})`).join('\n') : message
+      throw new DiscogsError(errorMessage, status)
     }
 
     if (status < 200 || status >= 300) {

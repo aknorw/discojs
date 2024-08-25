@@ -25,8 +25,11 @@ export const MasterIO = t.intersection([
     num_for_sale: t.Integer,
     data_quality: makeEnumIOType(DataQualityEnum),
     images: t.array(ImageIO),
-    videos: t.array(VideoIO),
     uri: t.string,
+  }),
+  t.partial({
+    videos: t.array(VideoIO),
+    notes: t.string,
   }),
 ])
 
