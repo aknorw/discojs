@@ -56,6 +56,13 @@ export type FetcherOptions = Partial<AuthOptions> &
      * Additional fetch options.
      */
     fetchOptions?: RequestInit
+
+    /**
+     * Set to `false` for use in a browser.
+     *
+     * @default `true`
+     */
+    allowUnsafeHeaders?: boolean
   }
 
 export class Fetcher {
@@ -78,18 +85,25 @@ export class Fetcher {
       userAgent = DEFAULT_USER_AGENT,
       outputFormat = 'discogs',
       fetchOptions = {},
+      allowUnsafeHeaders = true,
     } = options || {}
 
     this.userAgent = userAgent
 
     this.outputFormat = outputFormat
 
+    const unsafeHeadersInit: HeadersInit = allowUnsafeHeaders
+      ? {
+          'Accept-Encoding': 'gzip,deflate',
+          Connection: 'close',
+          'User-Agent': userAgent,
+        }
+      : {}
+
     this.headers = new Headers({
       Accept: `application/vnd.discogs.${API_VERSION}.${outputFormat}+json`,
-      'Accept-Encoding': 'gzip,deflate',
-      Connection: 'close',
       'Content-Type': 'application/json',
-      'User-Agent': userAgent,
+      ...unsafeHeadersInit,
     })
 
     this.setAuthorizationHeader = makeSetAuthorizationHeader(options)
