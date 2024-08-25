@@ -21,6 +21,25 @@ import { ExportItemIO } from './inventory'
 
 export type EmptyResponse = {}
 
+/**
+ * @internal
+ */
+export const ErrorResponseIO = t.intersection([
+  t.type({
+    message: t.string,
+  }),
+  t.partial({
+    detail: t.array(
+      t.type({
+        loc: t.array(t.string),
+        msg: t.string,
+        type: t.string,
+      }),
+    ),
+  }),
+])
+export type ErrorResponse = t.TypeOf<typeof ErrorResponseIO>
+
 export type IdentityResponse = t.TypeOf<typeof IdentityIO>
 
 export type UserProfileResponse = t.TypeOf<typeof UserIO>
