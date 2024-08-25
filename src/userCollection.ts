@@ -160,6 +160,14 @@ export class UserCollection {
     return this.listItemsByReleaseForUser(username, release_id, pagination)
   }
 
+  /**
+   * View all authenticated user’s collection folders which contain a specified release. This will also show information about each release instance.
+   *
+   * @category User
+   * @label Items By Release
+   *
+   * @link https://www.discogs.com/developers#page:user-collection,header:user-collection-collection-items-by-release
+   */
   listAllItemsByRelease(this: Discojs, release_id: number) {
     return this.fetcher.createAllMethod((pagination) => this.listItemsByRelease(release_id, pagination))
   }
