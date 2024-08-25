@@ -3,6 +3,7 @@ import crossFetch, { Headers } from 'cross-fetch'
 import { AuthOptions, isAuthenticated, makeSetAuthorizationHeader, SetAuthorizationHeaderFunction } from './auth'
 import { AuthError, DiscogsError } from '../errors'
 import { createLimiter, Limiter, LimiterOptions } from './limiter'
+import { ErrorResponse } from '../../models'
 
 /** Base API URL to which URI will be appended. */
 const API_BASE_URL = 'https://api.discogs.com'
@@ -37,6 +38,20 @@ export enum HTTPVerbsEnum {
 // @TODO: Support other output formats.
 export type OutputFormat = 'discogs' // | 'plaintext' | 'html'
 
+/**
+ * A cache for the results of fetches.
+ */
+export type ResultCache = {
+  /**
+   * If the result of a given request is in your cache, return it.
+   * Otherwise, invoke and return the factory.
+   *
+   * @param factory method to get current content
+   * @param args fetch arguments (headers, query parameters, data, etc.)
+   */
+  get<T>(factory: () => Promise<T>, ...args: Parameters<typeof crossFetch>): Promise<T>
+}
+
 export type FetcherOptions = Partial<AuthOptions> &
   LimiterOptions & {
     /**
@@ -58,6 +73,11 @@ export type FetcherOptions = Partial<AuthOptions> &
     fetchOptions?: RequestInit
 
     /**
+     * Optional cache for requests
+     */
+    cache?: ResultCache
+
+    /**
      * Set to `false` for use in a browser.
      *
      * @default `true`
@@ -76,6 +96,7 @@ export class Fetcher {
   private maxRequests: number
   private reservoirRefreshInterval: number
   private limiter: Limiter
+  private cache: ResultCache | undefined
 
   constructor(options: FetcherOptions) {
     const {
@@ -85,6 +106,7 @@ export class Fetcher {
       userAgent = DEFAULT_USER_AGENT,
       outputFormat = 'discogs',
       fetchOptions = {},
+      cache = undefined,
       allowUnsafeHeaders = true,
     } = options || {}
 
@@ -117,6 +139,8 @@ export class Fetcher {
       maxRequests: this.maxRequests,
       requestLimitInterval: this.reservoirRefreshInterval,
     })
+
+    this.cache = cache
   }
 
   private updateMaxRequests(maxRequests: number) {
@@ -154,6 +178,12 @@ export class Fetcher {
     // Check status
     if (status === 401) {
       throw new AuthError()
+    }
+
+    if (status === 422 || status >= 500) {
+      const { message, detail }: ErrorResponse = await response.json()
+      const errorMessage = detail ? detail.map((e) => `${e.loc.join('.')}: ${e.msg} (${e.type})`).join('\n') : message
+      throw new DiscogsError(errorMessage, status)
     }
 
     if (status < 200 || status >= 300) {
@@ -207,7 +237,9 @@ export class Fetcher {
 
     options.headers = Object.fromEntries(clonedHeaders)
 
-    return this.limiter.schedule(() => this.fetch<T>(endpoint, options, isImgEndpoint || isCsvEndpoint))
+    const execute = () => this.limiter.schedule(() => this.fetch<T>(endpoint, options, isImgEndpoint || isCsvEndpoint))
+
+    return this.cache?.get(execute, endpoint, options) ?? execute()
   }
 
   /**

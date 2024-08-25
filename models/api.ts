@@ -1,7 +1,7 @@
 import * as t from 'io-ts'
 
 import { UserSubmissionArtistIO } from './artist'
-import { PaginationIO, ResourceURLIO, ValueWithCurrencyIO } from './commons'
+import { FieldIO, PaginationIO, ResourceURLIO, ValueWithCurrencyIO } from './commons'
 import { CollectionValueIO, CustomFieldIO, FolderIO } from './folder'
 import { LabelIO } from './label'
 import { ListingIO, OrderIO, OrderMessageIO } from './marketplace'
@@ -20,6 +20,25 @@ import { ReleaseConditionsEnum } from '../src/enums'
 import { ExportItemIO } from './inventory'
 
 export type EmptyResponse = {}
+
+/**
+ * @internal
+ */
+export const ErrorResponseIO = t.intersection([
+  t.type({
+    message: t.string,
+  }),
+  t.partial({
+    detail: t.array(
+      t.type({
+        loc: t.array(t.string),
+        msg: t.string,
+        type: t.string,
+      }),
+    ),
+  }),
+])
+export type ErrorResponse = t.TypeOf<typeof ErrorResponseIO>
 
 export type IdentityResponse = t.TypeOf<typeof IdentityIO>
 
@@ -63,13 +82,19 @@ export type FoldersResponse = t.TypeOf<typeof FoldersResponseIO>
 export const FolderReleasesResponseIO = t.type({
   pagination: PaginationIO,
   releases: t.array(
-    t.type({
-      id: t.Integer,
-      instance_id: t.Integer,
-      rating: t.Integer,
-      date_added: t.string,
-      basic_information: ReleaseMinimalInfoIO,
-    }),
+    t.intersection([
+      t.type({
+        id: t.Integer,
+        instance_id: t.Integer,
+        rating: t.Integer,
+        date_added: t.string,
+        basic_information: ReleaseMinimalInfoIO,
+      }),
+      t.partial({
+        folder_id: t.Integer,
+        notes: t.array(FieldIO),
+      }),
+    ]),
   ),
 })
 export type FolderReleasesResponse = t.TypeOf<typeof FolderReleasesResponseIO>

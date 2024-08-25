@@ -6,7 +6,7 @@ import { WantlistResponseIO, AddToWantlistResponseIO } from '../models'
 
 declare const client: Discojs
 
-const rodneyfool = 'rodneyfool'
+const blindborges = 'blindborges'
 const pagination = { page: 1, perPage: 1 }
 
 describe('User Wantlist', () => {
@@ -14,12 +14,12 @@ describe('User Wantlist', () => {
 
   describe('Wantlist', () => {
     it('getWantlistForUser', async () => {
-      const apiResponse = await client.getWantlistForUser(rodneyfool)
+      const apiResponse = await client.getWantlistForUser(blindborges)
       expect(t.exact(WantlistResponseIO).is(apiResponse)).toBeTruthy()
     })
 
     it('getWantlistForUser - with pagination', async () => {
-      const apiResponse = await client.getWantlistForUser(rodneyfool, pagination)
+      const apiResponse = await client.getWantlistForUser(blindborges, pagination)
       expect(apiResponse.pagination).toHaveProperty('page', pagination.page)
       expect(apiResponse.pagination).toHaveProperty('per_page', pagination.perPage)
     })
