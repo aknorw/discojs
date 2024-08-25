@@ -30,10 +30,10 @@
     "lint": "eslint .",
     "prepare": "husky",
     "prepublishOnly": "npm run build",
-    "pretty": "prettier --config .prettierrc.json --check '**/*.{js,ts,json}'",
+    "pretty": "prettier --config .prettierrc.json --check \"**/*.{js,ts,json}\"",
     "test": "yarn test:spec && yarn test:e2e",
-    "test:e2e": "jest --testMatch='**/*.e2e.ts' --runInBand",
-    "test:spec": "jest --testMatch='**/*.spec.ts'"
+    "test:e2e": "jest --testMatch=\"**/*.e2e.ts\" --runInBand",
+    "test:spec": "jest --testMatch=\"**/*.spec.ts\""
   },
   "lint-staged": {
     "*.{js,ts,json}": [
