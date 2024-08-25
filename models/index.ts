@@ -1,6 +1,6 @@
 export * from './api'
 export { Artist } from './artist'
-export { RatingValues } from './commons'
+export { PaginationResponse, RatingValues } from './commons'
 export { Folder } from './folder'
 export { Label } from './label'
 export { Fee, Listing, Order, OrderMessage } from './marketplace'

@@ -1,5 +1,5 @@
 import { CurrenciesEnum, ReleaseConditionsEnum, SleeveConditionsEnum } from './enums'
-import { applyMixins, FetcherOptions, Fetcher, OutputFormat } from './utils'
+import { applyMixins, Blob, FetcherOptions, Fetcher, OutputFormat } from './utils'
 
 import { Database } from './database'
 import { MarketPlace } from './marketplace'

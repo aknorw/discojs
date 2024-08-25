@@ -3,6 +3,12 @@ import crossFetch, { Headers } from 'cross-fetch'
 import { AuthOptions, isAuthenticated, makeSetAuthorizationHeader, SetAuthorizationHeaderFunction } from './auth'
 import { AuthError, DiscogsError } from '../errors'
 import { createLimiter, Limiter, LimiterOptions } from './limiter'
+import { PaginationResponse } from '../../models'
+import { Pagination } from './paginate'
+
+type RequestInit = Parameters<typeof crossFetch>[1]
+type Response = ReturnType<typeof crossFetch> extends Promise<infer Q> ? Q : never
+export type Blob = ReturnType<Response['blob']> extends Promise<infer Q> ? Q : never
 
 /** Base API URL to which URI will be appended. */
 const API_BASE_URL = 'https://api.discogs.com'
@@ -233,5 +239,21 @@ export class Fetcher {
       }),
       {} as Record<string, any>,
     )
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async *createAllMethod<T extends { pagination: PaginationResponse }>(
+    fetchFunction: (pagination?: Pagination) => Promise<T>,
+  ): AsyncGenerator<Omit<T, 'pagination'>> {
+    let currentPage = 1
+    let lastPage = 1
+
+    do {
+      // eslint-disable-next-line no-await-in-loop
+      const { pagination, ...data } = await fetchFunction({ page: currentPage })
+      lastPage = pagination.pages
+      yield data
+      currentPage += 1
+    } while (currentPage <= lastPage)
   }
 }

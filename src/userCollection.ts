@@ -133,6 +133,12 @@ export class UserCollection {
     )
   }
 
+  listAllItemsByReleaseForUser(this: Discojs, username: string, release_id: number) {
+    return this.fetcher.createAllMethod((pagination) =>
+      this.listItemsByReleaseForUser(username, release_id, pagination),
+    )
+  }
+
   /**
    * View authenticated user’s collection folders which contain a specified release. This will also show information about each release instance.
    *
@@ -144,6 +150,10 @@ export class UserCollection {
   async listItemsByRelease(this: Discojs, release_id: number, pagination?: Pagination) {
     const username = await this.getUsername()
     return this.listItemsByReleaseForUser(username, release_id, pagination)
+  }
+
+  listAllItemsByRelease(this: Discojs, release_id: number) {
+    return this.fetcher.createAllMethod((pagination) => this.listItemsByRelease(release_id, pagination))
   }
 
   /**
@@ -172,6 +182,17 @@ export class UserCollection {
     })
   }
 
+  listAllItemsInFolderForUser(
+    this: Discojs,
+    username: string,
+    folderId: FolderIdsEnum | number,
+    sort?: SortOptions<UserSortEnum>,
+  ) {
+    return this.fetcher.createAllMethod((pagination) =>
+      this.listItemsInFolderForUser(username, folderId, sort, pagination),
+    )
+  }
+
   /**
    * Returns the list of item in a folder in authenticated user’s collection.
    *
@@ -191,6 +212,10 @@ export class UserCollection {
   ) {
     const username = await this.getUsername()
     return this.listItemsInFolderForUser(username, folderId, sort, pagination)
+  }
+
+  listAllItemsInForlder(this: Discojs, folderId: FolderIdsEnum | number, sort?: SortOptions<UserSortEnum>) {
+    return this.fetcher.createAllMethod((pagination) => this.listItemsInFolder(folderId, sort, pagination))
   }
 
   /**

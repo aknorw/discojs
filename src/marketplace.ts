@@ -68,6 +68,15 @@ export class MarketPlace {
     })
   }
 
+  getAllInventoryForUser(
+    this: Discojs,
+    username: string,
+    status: InventoryStatusesEnum = InventoryStatusesEnum.ALL,
+    sort?: SortOptions<InventorySortEnum>,
+  ) {
+    return this.fetcher.createAllMethod((pagination) => this.getInventoryForUser(username, status, sort, pagination))
+  }
+
   /**
    * Get authenticated user’s inventory.
    *
@@ -84,6 +93,10 @@ export class MarketPlace {
   ) {
     const username = await this.getUsername()
     return this.getInventoryForUser(username, status, sort, pagination)
+  }
+
+  getAllInventory(this: Discojs, status?: InventoryStatusesEnum, sort?: SortOptions<InventorySortEnum>) {
+    return this.fetcher.createAllMethod((pagination) => this.getInventory(status, sort, pagination))
   }
 
   /**
@@ -191,6 +204,10 @@ export class MarketPlace {
       ...sortBy(OrderSortEnum.ID, sort),
       ...paginate(pagination),
     })
+  }
+
+  listAllOrders(this: Discojs, status?: OrderStatusesEnum, archived?: boolean, sort?: SortOptions<OrderSortEnum>) {
+    return this.fetcher.createAllMethod((pagination) => this.listOrders(status, archived, sort, pagination))
   }
 
   /**

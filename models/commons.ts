@@ -18,6 +18,7 @@ export const PaginationIO = t.type({
     last: t.union([t.string, t.undefined]),
   }),
 })
+export type PaginationResponse = t.TypeOf<typeof PaginationIO>
 
 /**
  * @internal

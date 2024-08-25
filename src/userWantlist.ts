@@ -22,6 +22,10 @@ export class UserWantlist {
     return this.fetcher.schedule<WantlistResponse>(`/users/${username}/wants`, paginate(pagination))
   }
 
+  getAllWantlistForUser(this: Discojs, username: string) {
+    return this.fetcher.createAllMethod((pagination) => this.getWantlistForUser(username, pagination))
+  }
+
   /**
    * Returns the list of releases in authenticated user’s wantlist.
    * Basic information about each release is provided, suitable for display in a list.
@@ -35,6 +39,10 @@ export class UserWantlist {
   async getWantlist(this: Discojs, pagination?: Pagination) {
     const username = await this.getUsername()
     return this.getWantlistForUser(username, pagination)
+  }
+
+  getAllWantlist(this: Discojs) {
+    return this.fetcher.createAllMethod((pagination) => this.getWantlist(pagination))
   }
 
   /**

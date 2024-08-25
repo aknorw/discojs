@@ -18,6 +18,10 @@ export class UserLists {
     return this.fetcher.schedule<UserListsResponse>(`/users/${username}/lists`, paginate(pagination))
   }
 
+  getAllListsForUser(this: Discojs, username: string) {
+    return this.fetcher.createAllMethod((pagination) => this.getListsForUser(username, pagination))
+  }
+
   /**
    * Returns authenticated user’s lists.
    *
@@ -29,6 +33,10 @@ export class UserLists {
   async getLists(this: Discojs, pagination?: Pagination) {
     const username = await this.getUsername()
     return this.getListsForUser(username, pagination)
+  }
+
+  getAllLists(this: Discojs) {
+    return this.fetcher.createAllMethod((pagination) => this.getLists(pagination))
   }
 
   /**

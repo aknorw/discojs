@@ -29,6 +29,10 @@ export class InventoryExport {
     return this.fetcher.schedule<RecentExportsResponse>('/inventory/export', paginate(pagination))
   }
 
+  getAllRecentExports(this: Discojs) {
+    return this.fetcher.createAllMethod((pagination) => this.getRecentExports(pagination))
+  }
+
   /**
    * Get details about the status of an inventory export.
    *

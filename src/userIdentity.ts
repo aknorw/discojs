@@ -102,6 +102,10 @@ export class UserIdentity {
     return this.fetcher.schedule<UserSubmissionsResponse>(`/users/${username}/submissions`, paginate(pagination))
   }
 
+  getAllSubmissionsForUser(this: Discojs, username: string) {
+    return this.fetcher.createAllMethod((pagination) => this.getSubmissionsForUser(username, pagination))
+  }
+
   /**
    * Retrieve authenticated user’s submissions.
    *
@@ -112,6 +116,10 @@ export class UserIdentity {
   async getSubmissions(this: Discojs, pagination?: Pagination) {
     const username = await this.getUsername()
     return this.getSubmissionsForUser(username, pagination)
+  }
+
+  getAllSubmissions(this: Discojs) {
+    return this.fetcher.createAllMethod((pagination) => this.getSubmissions(pagination))
   }
 
   /**
@@ -133,6 +141,10 @@ export class UserIdentity {
     })
   }
 
+  getAllContributionsForUser(this: Discojs, username: string, sort?: SortOptions<UserSortEnum>) {
+    return this.fetcher.createAllMethod((pagination) => this.getContributionsForUser(username, sort, pagination))
+  }
+
   /**
    * Retrieve authenticated user’s contributions.
    *
@@ -143,5 +155,9 @@ export class UserIdentity {
   async getContributions(this: Discojs, sort?: SortOptions<UserSortEnum>, pagination?: Pagination) {
     const username = await this.getUsername()
     return this.getContributionsForUser(username, sort, pagination)
+  }
+
+  getAllContributions(this: Discojs, sort?: SortOptions<UserSortEnum>) {
+    return this.fetcher.createAllMethod((pagination) => this.getContributions(sort, pagination))
   }
 }

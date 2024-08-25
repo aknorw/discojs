@@ -164,6 +164,10 @@ export class Database {
     return this.fetcher.schedule<MasterVersionsResponse>(`/masters/${masterId}/versions`, paginate(pagination))
   }
 
+  getAllMasterVersions(this: Discojs, masterId: number) {
+    return this.fetcher.createAllMethod((pagination) => this.getMasterVersions(masterId, pagination))
+  }
+
   /**
    * Get an artist.
    *
@@ -196,6 +200,10 @@ export class Database {
     })
   }
 
+  getAllArtistReleases(this: Discojs, artistId: number, sort?: SortOptions<ReleaseSortEnum>) {
+    return this.fetcher.createAllMethod((pagination) => this.getArtistReleases(artistId, sort, pagination))
+  }
+
   /**
    * Get a label.
    *
@@ -218,6 +226,10 @@ export class Database {
    */
   async getLabelReleases(this: Discojs, labelId: number, pagination?: Pagination) {
     return this.fetcher.schedule<LabelReleasesResponse>(`/labels/${labelId}/releases`, paginate(pagination))
+  }
+
+  getAllLabelReleases(this: Discojs, labelId: number) {
+    return this.fetcher.createAllMethod((pagination) => this.getLabelReleases(labelId, pagination))
   }
 
   /**
