@@ -94,6 +94,13 @@ describe('Database', () => {
       expect(apiResponse.pagination).toHaveProperty('page', pagination.page)
       expect(apiResponse.pagination).toHaveProperty('per_page', pagination.perPage)
     })
+
+    it('getAllMasterVersions', async () => {
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const response of client.getAllMasterVersions(masterId)) {
+        expect('versions' in response).toBeTruthy()
+      }
+    })
   })
 
   describe('Artist', () => {
@@ -128,6 +135,13 @@ describe('Database', () => {
       expect(apiResponse.pagination).toHaveProperty('page', pagination.page)
       expect(apiResponse.pagination).toHaveProperty('per_page', pagination.perPage)
     })
+
+    it('getAllArtistReleases', async () => {
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const response of client.getAllArtistReleases(artistId)) {
+        expect('releases' in response).toBeTruthy()
+      }
+    })
   })
 
   describe('Label', () => {
@@ -147,6 +161,13 @@ describe('Database', () => {
       const apiResponse = await client.getLabelReleases(labelId, pagination)
       expect(apiResponse.pagination).toHaveProperty('page', pagination.page)
       expect(apiResponse.pagination).toHaveProperty('per_page', pagination.perPage)
+    })
+
+    it('getAllLabelReleases', async () => {
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const response of client.getAllLabelReleases(labelId)) {
+        expect('releases' in response).toBeTruthy()
+      }
     })
   })
 

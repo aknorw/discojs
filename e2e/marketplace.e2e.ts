@@ -50,9 +50,23 @@ describe('Marketplace', () => {
       expect(apiResponse.pagination).toHaveProperty('per_page', pagination.perPage)
     })
 
+    it('getAllInventoryForUser', async () => {
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const response of client.getAllInventoryForUser(username)) {
+        expect('listings' in response).toBeTruthy()
+      }
+    })
+
     it('getInventory', async () => {
       const apiResponse = await client.getInventory()
       expect(t.exact(InventoryResponseIO).is(apiResponse)).toBeTruthy()
+    })
+
+    it('getAllInventory', async () => {
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const response of client.getAllInventory()) {
+        expect('listings' in response).toBeTruthy()
+      }
     })
   })
 
@@ -87,6 +101,13 @@ describe('Marketplace', () => {
     it('listOrders', async () => {
       const apiResponse = await client.listOrders()
       expect(t.exact(OrdersResponseIO).is(apiResponse)).toBeTruthy()
+    })
+
+    it('listAllOrders', async () => {
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const response of client.listAllOrders()) {
+        expect('orders' in response).toBeTruthy()
+      }
     })
   })
 

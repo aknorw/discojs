@@ -35,6 +35,13 @@ describe('Inventory Export', () => {
       const { items } = apiResponse
       exportId = items[0].id
     })
+
+    it('getAllRecentExports', async () => {
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const response of client.getAllRecentExports()) {
+        expect('items' in response).toBeTruthy()
+      }
+    })
   })
 
   describe('Get an export', () => {

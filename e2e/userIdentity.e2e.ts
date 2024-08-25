@@ -53,9 +53,23 @@ describe('User Identity', () => {
       expect(apiResponse.pagination).toHaveProperty('per_page', pagination.perPage)
     })
 
+    it('getAllSubmissionsForUser', async () => {
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const response of client.getAllSubmissionsForUser(rodneyfool)) {
+        expect('submissions' in response).toBeTruthy()
+      }
+    })
+
     it('getSubmissions', async () => {
       const apiResponse = await client.getSubmissions(pagination)
       expect(t.exact(UserSubmissionsResponseIO).is(apiResponse)).toBeTruthy()
+    })
+
+    it('getAllSubmissions', async () => {
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const response of client.getAllSubmissions()) {
+        expect('submissions' in response).toBeTruthy()
+      }
     })
   })
 
@@ -87,9 +101,23 @@ describe('User Identity', () => {
       expect(apiResponse.pagination).toHaveProperty('per_page', pagination.perPage)
     })
 
+    it('getAllContributionsForUser', async () => {
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const response of client.getAllContributionsForUser(username)) {
+        expect('contributions' in response).toBeTruthy()
+      }
+    })
+
     it('getContributions', async () => {
       const apiResponse = await client.getContributions()
       expect(t.exact(UserContributionsResponseIO).is(apiResponse)).toBeTruthy()
+    })
+
+    it('getAllContributions', async () => {
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const response of client.getAllContributions()) {
+        expect('contributions' in response).toBeTruthy()
+      }
     })
   })
 })

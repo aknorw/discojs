@@ -24,9 +24,23 @@ describe('User Wantlist', () => {
       expect(apiResponse.pagination).toHaveProperty('per_page', pagination.perPage)
     })
 
+    it('getAllWantlistForUser', async () => {
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const response of client.getAllWantlistForUser(rodneyfool)) {
+        expect('wants' in response).toBeTruthy()
+      }
+    })
+
     it('getWantlist', async () => {
       const apiResponse = await client.getWantlist()
       expect(t.exact(WantlistResponseIO).is(apiResponse)).toBeTruthy()
+    })
+
+    it('getAllWantlist', async () => {
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const response of client.getAllWantlist()) {
+        expect('wants' in response).toBeTruthy()
+      }
     })
   })
 

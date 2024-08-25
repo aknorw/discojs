@@ -76,7 +76,16 @@ describe('User Collection', () => {
       expect(apiResponse.pagination).toHaveProperty('per_page', pagination.perPage)
     })
 
-    // @TODO: Add tests for listItemsByRelease
+    it('listAllItemsByReleaseForUser', async () => {
+      const username = 'susan.salkeld'
+      const releaseId = 7781525
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const response of client.listAllItemsByReleaseForUser(username, releaseId)) {
+        expect('releases' in response).toBeTruthy()
+      }
+    })
+
+    // @TODO: Add tests for listItemsByRelease + listAllItemsByRelease.
   })
 
   describe('Collection Items By Folder', () => {
@@ -110,6 +119,13 @@ describe('User Collection', () => {
       const apiResponse = await client.listItemsInFolderForUser(rodneyfool, FolderIdsEnum.ALL, undefined, pagination)
       expect(apiResponse.pagination).toHaveProperty('page', pagination.page)
       expect(apiResponse.pagination).toHaveProperty('per_page', pagination.perPage)
+    })
+
+    it('listAllItemsInFolderForUser', async () => {
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const response of client.listAllItemsInFolderForUser(rodneyfool, FolderIdsEnum.ALL)) {
+        expect('releases' in response).toBeTruthy()
+      }
     })
   })
 
