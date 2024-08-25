@@ -36,7 +36,6 @@ describe('Inventory Export', () => {
     })
 
     it('getAllRecentExports', async () => {
-      // eslint-disable-next-line no-restricted-syntax
       for await (const response of client.getAllRecentExports()) {
         expect('items' in response).toBeTruthy()
       }

@@ -24,7 +24,6 @@ describe('User Wantlist', () => {
     })
 
     it('getAllWantlistForUser', async () => {
-      // eslint-disable-next-line no-restricted-syntax
       for await (const response of client.getAllWantlistForUser(blindborges)) {
         expect('wants' in response).toBeTruthy()
       }
@@ -36,7 +35,6 @@ describe('User Wantlist', () => {
     })
 
     it('getAllWantlist', async () => {
-      // eslint-disable-next-line no-restricted-syntax
       for await (const response of client.getAllWantlist()) {
         expect('wants' in response).toBeTruthy()
       }

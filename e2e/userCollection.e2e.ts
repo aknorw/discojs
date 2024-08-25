@@ -78,7 +78,7 @@ describe('User Collection', () => {
     it('listAllItemsByReleaseForUser', async () => {
       const username = 'susan.salkeld'
       const releaseId = 7781525
-      // eslint-disable-next-line no-restricted-syntax
+
       for await (const response of client.listAllItemsByReleaseForUser(username, releaseId)) {
         expect('releases' in response).toBeTruthy()
       }
@@ -121,7 +121,6 @@ describe('User Collection', () => {
     })
 
     it('listAllItemsInFolderForUser', async () => {
-      // eslint-disable-next-line no-restricted-syntax
       for await (const response of client.listAllItemsInFolderForUser(blindborges, FolderIdsEnum.ALL)) {
         expect('releases' in response).toBeTruthy()
       }

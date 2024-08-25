@@ -22,7 +22,6 @@ describe('User Lists', () => {
     })
 
     it('getAllListsForUser', async () => {
-      // eslint-disable-next-line no-restricted-syntax
       for await (const response of client.getAllListsForUser(blindborges)) {
         expect('lists' in response).toBeTruthy()
       }
@@ -34,7 +33,6 @@ describe('User Lists', () => {
     })
 
     it('getAllLists', async () => {
-      // eslint-disable-next-line no-restricted-syntax
       for await (const response of client.getAllLists()) {
         expect('lists' in response).toBeTruthy()
       }

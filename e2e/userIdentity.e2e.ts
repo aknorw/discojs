@@ -53,7 +53,6 @@ describe('User Identity', () => {
     })
 
     it('getAllSubmissionsForUser', async () => {
-      // eslint-disable-next-line no-restricted-syntax
       for await (const response of client.getAllSubmissionsForUser(blindborges)) {
         expect('submissions' in response).toBeTruthy()
       }
@@ -65,7 +64,6 @@ describe('User Identity', () => {
     })
 
     it('getAllSubmissions', async () => {
-      // eslint-disable-next-line no-restricted-syntax
       for await (const response of client.getAllSubmissions()) {
         expect('submissions' in response).toBeTruthy()
       }
@@ -101,7 +99,6 @@ describe('User Identity', () => {
     })
 
     it('getAllContributionsForUser', async () => {
-      // eslint-disable-next-line no-restricted-syntax
       for await (const response of client.getAllContributionsForUser(username)) {
         expect('contributions' in response).toBeTruthy()
       }
@@ -113,7 +110,6 @@ describe('User Identity', () => {
     })
 
     it('getAllContributions', async () => {
-      // eslint-disable-next-line no-restricted-syntax
       for await (const response of client.getAllContributions()) {
         expect('contributions' in response).toBeTruthy()
       }

@@ -95,7 +95,6 @@ describe('Database', () => {
     })
 
     it('getAllMasterVersions', async () => {
-      // eslint-disable-next-line no-restricted-syntax
       for await (const response of client.getAllMasterVersions(masterId)) {
         expect('versions' in response).toBeTruthy()
       }
@@ -136,7 +135,6 @@ describe('Database', () => {
     })
 
     it('getAllArtistReleases', async () => {
-      // eslint-disable-next-line no-restricted-syntax
       for await (const response of client.getAllArtistReleases(artistId)) {
         expect('releases' in response).toBeTruthy()
       }
@@ -163,7 +161,6 @@ describe('Database', () => {
     })
 
     it('getAllLabelReleases', async () => {
-      // eslint-disable-next-line no-restricted-syntax
       for await (const response of client.getAllLabelReleases(labelId)) {
         expect('releases' in response).toBeTruthy()
       }

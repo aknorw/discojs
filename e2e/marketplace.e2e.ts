@@ -50,7 +50,6 @@ describe('Marketplace', () => {
     })
 
     it('getAllInventoryForUser', async () => {
-      // eslint-disable-next-line no-restricted-syntax
       for await (const response of client.getAllInventoryForUser(username)) {
         expect('listings' in response).toBeTruthy()
       }
@@ -62,7 +61,6 @@ describe('Marketplace', () => {
     })
 
     it('getAllInventory', async () => {
-      // eslint-disable-next-line no-restricted-syntax
       for await (const response of client.getAllInventory()) {
         expect('listings' in response).toBeTruthy()
       }
@@ -103,7 +101,6 @@ describe('Marketplace', () => {
     })
 
     it('listAllOrders', async () => {
-      // eslint-disable-next-line no-restricted-syntax
       for await (const response of client.listAllOrders()) {
         expect('orders' in response).toBeTruthy()
       }
