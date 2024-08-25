@@ -1,7 +1,5 @@
 import * as t from 'io-ts'
 
-import { ImageIO, ResourceURLIO, StatNumberIO, ValueWithCurrencyIO } from './commons'
-import { makeEnumIOType } from './helpers'
 import {
   CurrenciesEnum,
   EditOrderStatusesEnum,
@@ -10,6 +8,8 @@ import {
   ReleaseConditionsEnum,
   SleeveConditionsEnum,
 } from '../src/enums'
+import { ImageIO, ResourceURLIO, StatNumberIO, ValueWithCurrencyIO } from './commons'
+import { makeEnumIOType } from './helpers'
 
 /**
  * @internal

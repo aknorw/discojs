@@ -1,8 +1,10 @@
 import * as t from 'io-ts'
 
+import { ReleaseConditionsEnum } from '../src/enums'
 import { UserSubmissionArtistIO } from './artist'
 import { FieldIO, PaginationIO, ResourceURLIO, ValueWithCurrencyIO } from './commons'
 import { CollectionValueIO, CustomFieldIO, FolderIO } from './folder'
+import { ExportItemIO } from './inventory'
 import { LabelIO } from './label'
 import { ListingIO, OrderIO, OrderMessageIO } from './marketplace'
 import { MasterVersionIO } from './master'
@@ -11,15 +13,13 @@ import {
   CommunityReleaseRatingIO,
   LabelReleaseIO,
   ReleaseBasicInfoIO,
-  ReleaseMinimalInfoIO,
   ReleaseIO,
+  ReleaseMinimalInfoIO,
 } from './release'
 import { SearchEntityIO } from './search'
 import { IdentityIO, UserIO, UserListIO, UserListItemIO } from './user'
-import { ReleaseConditionsEnum } from '../src/enums'
-import { ExportItemIO } from './inventory'
 
-export type EmptyResponse = {}
+export type EmptyResponse = Record<any, never>
 
 /**
  * @internal
@@ -256,7 +256,7 @@ export const OrdersResponseIO = t.type({
   pagination: PaginationIO,
   orders: t.array(OrderIO),
 })
-export interface OrdersResponse extends t.TypeOf<typeof OrdersResponseIO> {}
+export type OrdersResponse = t.TypeOf<typeof OrdersResponseIO>
 
 /**
  * @internal

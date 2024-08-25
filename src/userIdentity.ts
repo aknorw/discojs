@@ -5,7 +5,6 @@ import {
   UserProfileResponse,
   UserSubmissionsResponse,
 } from '../models'
-
 import type { Discojs } from './discojs'
 import { CurrenciesEnum, UserSortEnum } from './enums'
 import { HTTPVerbsEnum, paginate, Pagination, sortBy, SortOptions } from './utils'

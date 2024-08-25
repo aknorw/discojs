@@ -1,5 +1,4 @@
 import { AddToWantlistResponse, EmptyResponse, RatingValues, WantlistResponse } from '../models'
-
 import type { Discojs } from './discojs'
 import { HTTPVerbsEnum, paginate, Pagination } from './utils'
 

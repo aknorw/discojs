@@ -1,7 +1,5 @@
 import * as t from 'io-ts'
 
-import { CurrenciesEnum, Discojs, ReleaseSortEnum, SortOrdersEnum } from '../lib'
-
 import {
   ArtistReleasesResponseIO,
   CommunityReleaseRatingResponseIO,
@@ -15,6 +13,7 @@ import { ArtistIO } from '../models/artist'
 import { LabelIO } from '../models/label'
 import { MasterIO } from '../models/master'
 import { ReleaseIO } from '../models/release'
+import { CurrenciesEnum, Discojs, ReleaseSortEnum, SortOrdersEnum } from '../src'
 
 declare const client: Discojs
 

@@ -1,8 +1,8 @@
 import * as t from 'io-ts'
 
+import { DataQualityEnum } from '../src/enums'
 import { ImageIO, ResourceURLIO } from './commons'
 import { makeEnumIOType } from './helpers'
-import { DataQualityEnum } from '../src/enums'
 
 /**
  * @internal

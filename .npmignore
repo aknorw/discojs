@@ -1,6 +1,0 @@
-src
-test
-coverage
-.env
-*.log
-.DS_Store
