@@ -1,8 +1,8 @@
 import * as t from 'io-ts'
 
+import { CommunityStatusesEnum, DataQualityEnum } from '../src/enums'
 import { ImageIO, ResourceURLIO, StatNumberIO, VideoIO } from './commons'
 import { makeEnumIOType } from './helpers'
-import { CommunityStatusesEnum, DataQualityEnum } from '../src/enums'
 
 /**
  * @internal

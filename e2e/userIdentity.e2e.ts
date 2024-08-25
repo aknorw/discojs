@@ -1,9 +1,8 @@
 import * as t from 'io-ts'
 
-import { Discojs, SortOrdersEnum, UserSortEnum } from '../lib'
-
-import { UserSubmissionsResponseIO, UserContributionsResponseIO } from '../models/api'
+import { UserContributionsResponseIO, UserSubmissionsResponseIO } from '../models/api'
 import { IdentityIO, UserIO } from '../models/user'
+import { Discojs, SortOrdersEnum, UserSortEnum } from '../src'
 
 declare const client: Discojs
 

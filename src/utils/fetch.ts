@@ -1,9 +1,9 @@
 import crossFetch, { Headers } from 'cross-fetch'
 
-import { AuthOptions, isAuthenticated, makeSetAuthorizationHeader, SetAuthorizationHeaderFunction } from './auth'
-import { AuthError, DiscogsError } from '../errors'
-import { createLimiter, Limiter, LimiterOptions } from './limiter'
 import { ErrorResponse, PaginationResponse } from '../../models'
+import { AuthError, DiscogsError } from '../errors'
+import { AuthOptions, isAuthenticated, makeSetAuthorizationHeader, SetAuthorizationHeaderFunction } from './auth'
+import { createLimiter, Limiter, LimiterOptions } from './limiter'
 import { Pagination } from './paginate'
 
 type RequestInit = Parameters<typeof crossFetch>[1]
@@ -286,7 +286,6 @@ export class Fetcher {
     )
   }
 
-  // eslint-disable-next-line class-methods-use-this
   async *createAllMethod<T extends { pagination: PaginationResponse }>(
     fetchFunction: (pagination?: Pagination) => Promise<T>,
   ): AsyncGenerator<Omit<T, 'pagination'>> {
@@ -294,7 +293,6 @@ export class Fetcher {
     let lastPage = 1
 
     do {
-      // eslint-disable-next-line no-await-in-loop
       const { pagination, ...data } = await fetchFunction({ page: currentPage })
       lastPage = pagination.pages
       yield data

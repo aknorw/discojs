@@ -1,8 +1,6 @@
-/* eslint-disable import/no-extraneous-dependencies, no-undef */
-
 import * as dotenv from 'dotenv'
 
-import { Discojs } from './lib'
+import { Discojs } from './src'
 
 dotenv.config()
 

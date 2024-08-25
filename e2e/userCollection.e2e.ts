@@ -1,9 +1,8 @@
 import * as t from 'io-ts'
 
-import { Discojs, FolderIdsEnum, SortOrdersEnum, UserSortEnum } from '../lib'
-
-import { FoldersResponseIO, FolderReleasesResponseIO, AddToFolderResponseIO, CustomFieldsResponseIO } from '../models'
-import { FolderIO, CollectionValueIO } from '../models/folder'
+import { AddToFolderResponseIO, CustomFieldsResponseIO, FolderReleasesResponseIO, FoldersResponseIO } from '../models'
+import { CollectionValueIO, FolderIO } from '../models/folder'
+import { Discojs, FolderIdsEnum, SortOrdersEnum, UserSortEnum } from '../src'
 
 declare const client: Discojs
 

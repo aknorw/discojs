@@ -1,9 +1,8 @@
 import * as t from 'io-ts'
 
-import { CurrenciesEnum, Discojs, InventorySortEnum, InventoryStatusesEnum, SortOrdersEnum } from '../lib'
-
 import { InventoryResponseIO, MarketplaceStatisticsResponseIO, OrdersResponseIO } from '../models/api'
-import { FeeIO, ListingIO } from '../models/marketplace'
+import { ListingIO } from '../models/marketplace'
+import { CurrenciesEnum, Discojs, InventorySortEnum, InventoryStatusesEnum, SortOrdersEnum } from '../src'
 
 declare const client: Discojs
 

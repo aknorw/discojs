@@ -2,76 +2,79 @@
   "name": "discojs",
   "version": "2.2.0",
   "description": "Easiest way to use the Discogs API in Javascript/Typescript",
-  "author": "aknorw",
-  "license": "MIT",
   "keywords": [
     "discogs",
     "api",
     "client"
   ],
-  "main": "lib/index.js",
-  "module": "lib/index.es.js",
-  "files": [
-    "lib"
-  ],
-  "types": "./lib/index.d.ts",
-  "scripts": {
-    "clean": "rimraf lib",
-    "pretty": "prettier --config .prettierrc --write '{models,src}/**/*.{ts,json}'",
-    "lint": "eslint --ext .ts,.json models/ src/",
-    "test:spec": "cross-env NODE_ENV=test jest --testMatch='**/*.spec.ts'",
-    "test:e2e": "cross-env NODE_ENV=test jest --testMatch='**/*.e2e.ts' --runInBand",
-    "test": "yarn build && yarn test:spec && yarn test:e2e",
-    "docs": "typedoc --inputFiles src/index.ts --exclude \"**/*+(.spec).ts\" --excludeNotExported --excludePrivate --stripInternal",
-    "prebuild": "yarn run clean",
-    "build": "cross-env NODE_ENV=production rollup -c",
-    "prepare": "husky install"
+  "homepage": "https://github.com/aknorw/discojs#readme",
+  "bugs": {
+    "url": "https://github.com/aknorw/discojs/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aknorw/discojs.git"
   },
-  "homepage": "https://github.com/aknorw/discojs#readme",
-  "bugs": {
-    "url": "https://github.com/aknorw/discojs/issues"
+  "license": "MIT",
+  "author": "aknorw",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rimraf dist && rollup -c",
+    "docs": "typedoc --inputFiles src/index.ts --exclude \"**/*+(.spec).ts\" --excludeNotExported --excludePrivate --stripInternal",
+    "lint": "eslint .",
+    "prepare": "husky",
+    "prepublishOnly": "npm run build",
+    "pretty": "prettier --config .prettierrc.json --check \"**/*.{js,ts,json}\"",
+    "test": "yarn test:spec && yarn test:e2e",
+    "test:e2e": "jest --testMatch=\"**/*.e2e.ts\" --runInBand",
+    "test:spec": "jest --testMatch=\"**/*.spec.ts\""
   },
   "lint-staged": {
-    "src/*.{ts,json}": [
-      "yarn pretty",
-      "yarn lint",
-      "git add"
+    "*.{js,ts,json}": [
+      "prettier --config .prettierrc.json --write",
+      "eslint"
     ]
   },
   "dependencies": {
     "bottleneck": "^2.19.5",
-    "cross-fetch": "^3.1.5",
-    "fp-ts": "^2.13.1",
-    "io-ts": "^2.2.20",
+    "cross-fetch": "^4.0.0",
+    "fp-ts": "^2.16.9",
+    "io-ts": "^2.2.21",
     "oauth-1.0a": "^2.2.6"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^15.0.1",
-    "@rollup/plugin-replace": "^5.0.2",
-    "@types/jest": "^29.2.5",
-    "@typescript-eslint/eslint-plugin": "^5.48.2",
-    "@typescript-eslint/parser": "^5.48.2",
-    "cross-env": "^7.0.3",
-    "dotenv": "^16.0.3",
-    "eslint": "^8.32.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-config-prettier": "^8.6.0",
-    "eslint-import-resolver-typescript": "^3.5.3",
-    "eslint-plugin-import": "^2.27.5",
-    "husky": "^8.0.0",
-    "jest": "^29.3.1",
-    "lint-staged": "^13.1.0",
-    "prettier": "^2.8.3",
-    "rimraf": "^4.1.0",
-    "rollup": "^3.10.0",
+    "@eslint/compat": "^1.1.1",
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.9.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.7",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/jest": "^29.5.12",
+    "@typescript-eslint/eslint-plugin": "^8.2.0",
+    "@typescript-eslint/parser": "^8.2.0",
+    "dotenv": "^16.4.5",
+    "eslint": "^9.9.1",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.1.4",
+    "jest": "^29.7.0",
+    "lint-staged": "^15.2.8",
+    "prettier": "^3.3.3",
+    "rimraf": "^6.0.1",
+    "rollup": "^4.21.0",
     "rollup-plugin-commonjs": "^10.1.0",
-    "rollup-plugin-ts": "^3.1.1",
-    "ts-jest": "^29.0.5",
+    "rollup-plugin-ts": "^3.4.5",
+    "ts-jest": "^29.2.5",
     "typedoc": "^0.19.2",
-    "typescript": "^4.9.4"
+    "typescript": "^5.5.4"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": "please-use-yarn-instead"
   }
 }

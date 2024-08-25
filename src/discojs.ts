@@ -1,14 +1,13 @@
-import { CurrenciesEnum, ReleaseConditionsEnum, SleeveConditionsEnum } from './enums'
-import { applyMixins, Blob, FetcherOptions, Fetcher, OutputFormat } from './utils'
-
 import { Database } from './database'
-import { MarketPlace } from './marketplace'
+import { CurrenciesEnum, ReleaseConditionsEnum, SleeveConditionsEnum } from './enums'
 import { InventoryExport } from './inventoryExport'
 import { InventoryUpload } from './inventoryUpload'
+import { MarketPlace } from './marketplace'
 import { UserCollection } from './userCollection'
 import { UserIdentity } from './userIdentity'
 import { UserLists } from './userLists'
 import { UserWantlist } from './userWantlist'
+import { applyMixins, Blob, Fetcher, FetcherOptions, OutputFormat } from './utils'
 
 type DiscojsOptions = FetcherOptions
 

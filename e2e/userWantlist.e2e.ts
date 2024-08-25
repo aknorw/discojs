@@ -1,8 +1,7 @@
 import * as t from 'io-ts'
 
-import { Discojs } from '../lib'
-
-import { WantlistResponseIO, AddToWantlistResponseIO } from '../models'
+import { AddToWantlistResponseIO, WantlistResponseIO } from '../models'
+import { Discojs } from '../src'
 
 declare const client: Discojs
 

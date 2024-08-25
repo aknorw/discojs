@@ -8,7 +8,6 @@ import {
   FoldersResponse,
   RatingValues,
 } from '../models'
-
 import type { Discojs } from './discojs'
 import { FolderIdsEnum, UserSortEnum } from './enums'
 import { HTTPVerbsEnum, paginate, Pagination, sortBy, SortOptions } from './utils'

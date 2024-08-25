@@ -1,8 +1,8 @@
 import * as t from 'io-ts'
 
+import { SearchTypeEnum } from '../src/enums'
 import { ResourceURLIO, StatBooleanIO } from './commons'
 import { makeEnumIOType } from './helpers'
-import { SearchTypeEnum } from '../src/enums'
 
 /**
  * @internal
