@@ -64,17 +64,17 @@ export const FolderReleasesResponseIO = t.type({
   pagination: PaginationIO,
   releases: t.array(
     t.intersection([
-    t.type({
-      id: t.Integer,
-      instance_id: t.Integer,
-      rating: t.Integer,
-      date_added: t.string,
+      t.type({
+        id: t.Integer,
+        instance_id: t.Integer,
+        rating: t.Integer,
+        date_added: t.string,
         basic_information: ReleaseMinimalInfoIO,
       }),
       t.partial({
-      folder_id: t.Integer,
-      notes: t.array(FieldIO),
-    }),
+        folder_id: t.Integer,
+        notes: t.array(FieldIO),
+      }),
     ]),
   ),
 })
