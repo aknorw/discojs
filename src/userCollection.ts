@@ -214,7 +214,7 @@ export class UserCollection {
     return this.listItemsInFolderForUser(username, folderId, sort, pagination)
   }
 
-  listAllItemsInForlder(this: Discojs, folderId: FolderIdsEnum | number, sort?: SortOptions<UserSortEnum>) {
+  listAllItemsInFolder(this: Discojs, folderId: FolderIdsEnum | number, sort?: SortOptions<UserSortEnum>) {
     return this.fetcher.createAllMethod((pagination) => this.listItemsInFolder(folderId, sort, pagination))
   }
 
