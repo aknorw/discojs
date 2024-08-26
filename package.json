@@ -1,6 +1,6 @@
 {
   "name": "discojs",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Easiest way to use the Discogs API in Javascript/Typescript",
   "keywords": [
     "discogs",
@@ -74,7 +74,6 @@
     "typescript": "^5.5.4"
   },
   "engines": {
-    "node": ">=20.0.0",
-    "npm": "please-use-yarn-instead"
+    "node": ">=20.0.0"
   }
 }
