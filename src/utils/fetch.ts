@@ -236,8 +236,13 @@ export class Fetcher {
       const stringifiedData = JSON.stringify(Fetcher.transformData(data))
       options.body = stringifiedData
 
-      clonedHeaders.set('Content-Type', 'application/json')
-      clonedHeaders.set('Content-Length', Buffer.byteLength(stringifiedData, 'utf8').toString())
+      // Header names must be set in lower case here: `clonedHeaders` was built by iterating a
+      // `Headers`, which lower-cases the names it yields, and a `Map` keyed `content-type` happily
+      // takes a second `Content-Type` entry. `Object.fromEntries` keeps both, and fetch then joins
+      // them into `content-type: application/json, application/json`, which Discogs rejects.
+      clonedHeaders.set('content-type', 'application/json')
+
+      clonedHeaders.set('content-length', Buffer.byteLength(stringifiedData, 'utf8').toString())
     }
 
     options.headers = Object.fromEntries(clonedHeaders)
