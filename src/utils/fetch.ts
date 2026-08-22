@@ -28,6 +28,12 @@ const RATE_LIMIT_HEADER = 'X-Discogs-Ratelimit'
 /** Header set by Discogs API to indicate the number of remaining requests you are able to make in the existing rate limit window. */
 const RATE_LIMIT_REMAINING_HEADER = 'X-Discogs-Ratelimit-Remaining'
 
+/** Header set by Discogs API to indicate the number of requests made in the existing rate limit window. */
+const RATE_LIMIT_USED_HEADER = 'X-Discogs-Ratelimit-Used'
+
+/** Standard header naming how long to wait before retrying. Discogs does not currently send one on 429. */
+const RETRY_AFTER_HEADER = 'Retry-After'
+
 /**
  * HTTP verbs.
  *
@@ -57,6 +63,35 @@ export type ResultCache = {
   get<T>(factory: () => Promise<T>, ...args: Parameters<typeof crossFetch>): Promise<T>
 }
 
+/**
+ * What the Discogs API reported about your rate limit on a single response.
+ *
+ * Every field is optional because the headers are not always readable. In
+ * particular, a browser can only see them when the response carries
+ * `Access-Control-Expose-Headers` naming them, which the Discogs API does not
+ * send -- so in a browser these arrive populated only via a proxy (see
+ * `FetcherOptions.apiBaseUrl`).
+ *
+ * Prefer `remaining` over `limit - used`: `used` keeps counting past the cap
+ * once you are over it, while `remaining` clamps at 0.
+ */
+export type RateLimitInfo = {
+  /** Total requests allowed in the window. */
+  limit?: number
+  /** Requests made in the window. May exceed `limit`. */
+  used?: number
+  /** Requests still available in the window. */
+  remaining?: number
+  /** Seconds to wait, from `Retry-After`. Generally only present on a 429. */
+  retryAfter?: number
+  /** HTTP status of the response these numbers came from. */
+  status: number
+  /** URL that was requested. */
+  url: string
+  /** When this was observed, as epoch milliseconds. */
+  at: number
+}
+
 export type FetcherOptions = Partial<AuthOptions> &
   LimiterOptions & {
     /**
@@ -83,6 +118,15 @@ export type FetcherOptions = Partial<AuthOptions> &
     cache?: ResultCache
 
     /**
+     * Called with the rate limit reported by every response, including error
+     * responses. Lets a consumer show the real numbers, or pace itself off them
+     * rather than guessing.
+     *
+     * Throwing from here is swallowed; it cannot fail the request.
+     */
+    onRateLimit?: (info: RateLimitInfo) => void
+
+    /**
      * Set to `false` for use in a browser.
      *
      * @default `true`
@@ -102,6 +146,7 @@ export class Fetcher {
   private reservoirRefreshInterval: number
   private limiter: Limiter
   private cache: ResultCache | undefined
+  private onRateLimit: ((info: RateLimitInfo) => void) | undefined
 
   constructor(options: FetcherOptions) {
     const {
@@ -113,6 +158,7 @@ export class Fetcher {
       fetchOptions = {},
       cache = undefined,
       allowUnsafeHeaders = true,
+      onRateLimit = undefined,
     } = options || {}
 
     this.userAgent = userAgent
@@ -146,6 +192,8 @@ export class Fetcher {
     })
 
     this.cache = cache
+
+    this.onRateLimit = onRateLimit
   }
 
   private updateMaxRequests(maxRequests: number) {
@@ -160,25 +208,53 @@ export class Fetcher {
     this.limiter.updateSettings({ reservoir: remainingRequests })
   }
 
-  private maybeUpdateLimiter(headers: Headers) {
-    const rateLimit = parseInt(headers.get(RATE_LIMIT_HEADER) ?? '', 10)
-    const rateLimitRemaining = parseInt(headers.get(RATE_LIMIT_REMAINING_HEADER) ?? '', 10)
+  /** `parseInt` that yields undefined rather than NaN for an absent or junk header. */
+  private static readNumber(headers: Headers, name: string) {
+    const value = parseInt(headers.get(name) ?? '', 10)
+    return Number.isNaN(value) ? undefined : value
+  }
+
+  private handleRateLimitHeaders(url: string, status: number, headers: Headers) {
+    const rateLimit = Fetcher.readNumber(headers, RATE_LIMIT_HEADER)
+    const rateLimitRemaining = Fetcher.readNumber(headers, RATE_LIMIT_REMAINING_HEADER)
 
     // Update max requests only if lower than the current value.
-    if (!Number.isNaN(rateLimit) && rateLimit < this.maxRequests) {
+    if (rateLimit !== undefined && rateLimit < this.maxRequests) {
       this.updateMaxRequests(rateLimit)
     }
 
-    if (!Number.isNaN(rateLimitRemaining)) {
+    if (rateLimitRemaining !== undefined) {
       this.updateRemainingRequests(rateLimitRemaining)
     }
+
+    const retryAfter = Fetcher.readNumber(headers, RETRY_AFTER_HEADER)
+
+    if (this.onRateLimit) {
+      try {
+        this.onRateLimit({
+          limit: rateLimit,
+          used: Fetcher.readNumber(headers, RATE_LIMIT_USED_HEADER),
+          remaining: rateLimitRemaining,
+          retryAfter,
+          status,
+          url,
+          at: Date.now(),
+        })
+      } catch {
+        // A consumer's reporting hook must not be able to fail their request.
+      }
+    }
+
+    return retryAfter
   }
 
   private async fetch<T>(url: string, options?: RequestInit, shouldReturnBlob?: boolean): Promise<T> {
     const response = await crossFetch(url, options)
     const { status, statusText, headers } = response
 
-    this.maybeUpdateLimiter(headers)
+    // Deliberately before the status checks below, so the numbers are reported for
+    // error responses too -- a 429 is precisely when a consumer most wants them.
+    const retryAfter = this.handleRateLimitHeaders(url, status, headers)
 
     // Check status
     if (status === 401) {
@@ -192,7 +268,7 @@ export class Fetcher {
     }
 
     if (status < 200 || status >= 300) {
-      throw new DiscogsError(statusText, status)
+      throw new DiscogsError(statusText, status, retryAfter)
     }
 
     if (status === 204) {
