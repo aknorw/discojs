@@ -108,6 +108,7 @@ export class Fetcher {
       requestLimit = 25,
       requestLimitAuth = 60,
       requestLimitInterval = 60 * 1000,
+      maxConcurrent = 1,
       userAgent = DEFAULT_USER_AGENT,
       outputFormat = 'discogs',
       fetchOptions = {},
@@ -143,6 +144,7 @@ export class Fetcher {
     this.limiter = createLimiter({
       maxRequests: this.maxRequests,
       requestLimitInterval: this.reservoirRefreshInterval,
+      maxConcurrent,
     })
 
     this.cache = cache
