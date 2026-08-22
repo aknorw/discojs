@@ -242,7 +242,12 @@ export class Fetcher {
       // them into `content-type: application/json, application/json`, which Discogs rejects.
       clonedHeaders.set('content-type', 'application/json')
 
-      clonedHeaders.set('content-length', Buffer.byteLength(stringifiedData, 'utf8').toString())
+      // `Content-Length` is a forbidden header name in browsers — the user agent computes it — and
+      // `Buffer` only exists on Node, where referencing it in a bundled browser build throws a
+      // `ReferenceError`. Set it only where it is both available and honoured.
+      if (typeof Buffer !== 'undefined') {
+        clonedHeaders.set('content-length', Buffer.byteLength(stringifiedData, 'utf8').toString())
+      }
     }
 
     options.headers = Object.fromEntries(clonedHeaders)
