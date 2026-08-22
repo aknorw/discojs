@@ -8,6 +8,7 @@ import {
   OrderMessage,
   OrderMessagesResponse,
   OrdersResponse,
+  OwnInventoryResponse,
   PriceSuggestionsResponse,
 } from '../models'
 import type { Discojs } from './discojs'
@@ -98,7 +99,8 @@ export class MarketPlace {
     pagination?: Pagination,
   ) {
     const username = await this.getUsername()
-    return this.getInventoryForUser(username, status, sort, pagination)
+    // Authenticated as the inventory owner, so Discogs always returns the owner-only keys.
+    return this.getInventoryForUser(username, status, sort, pagination) as Promise<OwnInventoryResponse>
   }
 
   /**

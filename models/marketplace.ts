@@ -64,6 +64,18 @@ const OriginalPriceIO = t.partial({
 })
 
 /**
+ * Keys Discogs only returns when the authenticated user is the listing owner.
+ *
+ * @internal
+ */
+const OwnListingFieldsProps = {
+  weight: t.number,
+  format_quantity: t.Integer,
+  external_id: t.string,
+  location: t.string,
+}
+
+/**
  * @internal
  */
 export const ListingIO = t.intersection([
@@ -113,10 +125,24 @@ export const ListingIO = t.intersection([
     audio: t.boolean,
     uri: t.string,
   }),
+  /**
+   * Present when the request is authenticated: `in_cart` tells whether the listing is in the
+   * authenticated user's cart. The remaining keys are only returned when the authenticated user
+   * is the listing owner.
+   */
   t.partial({
     in_cart: t.boolean,
+    ...OwnListingFieldsProps,
   }),
 ])
+
+/**
+ * A listing returned by an endpoint that can only ever return the authenticated user's own
+ * listings, so the owner-only keys are always present.
+ *
+ * @internal
+ */
+export const OwnListingIO = t.intersection([ListingIO, t.type(OwnListingFieldsProps)])
 
 /**
  * @internal
@@ -252,5 +278,6 @@ export const OrderMessageIO = t.intersection([
 
 export type Fee = t.TypeOf<typeof FeeIO>
 export type Listing = t.TypeOf<typeof ListingIO>
+export type OwnListing = t.TypeOf<typeof OwnListingIO>
 export type Order = t.TypeOf<typeof OrderIO>
 export type OrderMessage = t.TypeOf<typeof OrderMessageIO>

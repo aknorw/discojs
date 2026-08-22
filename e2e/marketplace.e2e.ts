@@ -1,6 +1,11 @@
 import * as t from 'io-ts'
 
-import { InventoryResponseIO, MarketplaceStatisticsResponseIO, OrdersResponseIO } from '../models/api'
+import {
+  InventoryResponseIO,
+  MarketplaceStatisticsResponseIO,
+  OrdersResponseIO,
+  OwnInventoryResponseIO,
+} from '../models/api'
 import { ListingIO } from '../models/marketplace'
 import { CurrenciesEnum, Discojs, InventorySortEnum, InventoryStatusesEnum, SortOrdersEnum } from '../src'
 
@@ -57,7 +62,8 @@ describe('Marketplace', () => {
 
     it('getInventory', async () => {
       const apiResponse = await client.getInventory()
-      expect(t.exact(InventoryResponseIO).is(apiResponse)).toBeTruthy()
+      // Authenticated as the owner, so the owner-only keys must be present.
+      expect(t.exact(OwnInventoryResponseIO).is(apiResponse)).toBeTruthy()
     })
 
     it('getAllInventory', async () => {
