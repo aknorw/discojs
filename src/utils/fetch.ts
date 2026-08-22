@@ -73,6 +73,21 @@ export type FetcherOptions = Partial<AuthOptions> &
     outputFormat?: OutputFormat
 
     /**
+     * Base URL for API requests, in place of `https://api.discogs.com`.
+     *
+     * Useful for pointing at a mock server in tests, or at a proxy — e.g. one that
+     * adds the `Access-Control-Expose-Headers` that Discogs omits, without which a
+     * browser cannot read the `X-Discogs-Ratelimit*` headers at all.
+     *
+     * Only the API host is affected. Image requests still go to `img.discogs.com`
+     * directly, and the URL reported to `cache` is always the canonical
+     * `https://api.discogs.com/...` one regardless of this setting — see `schedule`.
+     *
+     * @default https://api.discogs.com
+     */
+    apiBaseUrl?: string
+
+    /**
      * Additional fetch options.
      */
     fetchOptions?: RequestInit
@@ -98,6 +113,8 @@ export class Fetcher {
   private setAuthorizationHeader?: SetAuthorizationHeaderFunction
   private options: RequestInit
 
+  private apiBaseUrl: string
+
   private maxRequests: number
   private reservoirRefreshInterval: number
   private limiter: Limiter
@@ -113,7 +130,11 @@ export class Fetcher {
       fetchOptions = {},
       cache = undefined,
       allowUnsafeHeaders = true,
+      apiBaseUrl = API_BASE_URL,
     } = options || {}
+
+    // Tolerate a trailing slash; every call site concatenates a path beginning with one.
+    this.apiBaseUrl = apiBaseUrl.replace(/\/+$/, '')
 
     this.userAgent = userAgent
 
@@ -215,9 +236,20 @@ export class Fetcher {
    */
   async schedule<T>(uri: string, query?: Record<string, any>, method?: HTTPVerbsEnum, data?: Record<string, any>) {
     const isImgEndpoint = uri.startsWith(IMG_BASE_URL)
-    const endpoint = isImgEndpoint
-      ? uri
-      : API_BASE_URL + (query && typeof query === 'object' ? Fetcher.addQueryToUri(uri, query) : uri)
+    const path = query && typeof query === 'object' ? Fetcher.addQueryToUri(uri, query) : uri
+
+    // Two URLs, deliberately.
+    //
+    // `endpoint` is the request's canonical identity and is what `cache` is keyed on;
+    // `requestUrl` is where it actually goes. They diverge only when `apiBaseUrl` points
+    // somewhere else. Keeping the cache key canonical means switching to a proxy neither
+    // invalidates a consumer's cache nor changes what its cache-clearing patterns match.
+    //
+    // Note the auth header is signed over the *relative* `uri` below, and the PLAINTEXT
+    // signature (`consumerSecret&tokenSecret`) does not cover the URL at all, so this
+    // split is signature-safe. It would stop being so under HMAC-SHA1.
+    const endpoint = isImgEndpoint ? uri : API_BASE_URL + path
+    const requestUrl = isImgEndpoint ? uri : this.apiBaseUrl + path
 
     const isCsvEndpoint = uri.endsWith('/download')
 
@@ -242,7 +274,7 @@ export class Fetcher {
 
     options.headers = Object.fromEntries(clonedHeaders)
 
-    const execute = () => this.limiter.schedule(() => this.fetch<T>(endpoint, options, isImgEndpoint || isCsvEndpoint))
+    const execute = () => this.limiter.schedule(() => this.fetch<T>(requestUrl, options, isImgEndpoint || isCsvEndpoint))
 
     return this.cache?.get(execute, endpoint, options) ?? execute()
   }
