@@ -73,6 +73,13 @@ export type FetcherOptions = Partial<AuthOptions> &
     outputFormat?: OutputFormat
 
     /**
+     * Base URL for API requests.
+     *
+     * @default https://api.discogs.com
+     */
+    apiBaseUrl?: string
+
+    /**
      * Additional fetch options.
      */
     fetchOptions?: RequestInit
@@ -98,6 +105,8 @@ export class Fetcher {
   private setAuthorizationHeader?: SetAuthorizationHeaderFunction
   private options: RequestInit
 
+  private apiBaseUrl: string
+
   private maxRequests: number
   private reservoirRefreshInterval: number
   private limiter: Limiter
@@ -113,7 +122,11 @@ export class Fetcher {
       fetchOptions = {},
       cache = undefined,
       allowUnsafeHeaders = true,
+      apiBaseUrl = API_BASE_URL,
     } = options || {}
+
+    // Ignore a trailing slash (we always append starting with one)
+    this.apiBaseUrl = apiBaseUrl.replace(/\/+$/, '')
 
     this.userAgent = userAgent
 
@@ -215,9 +228,12 @@ export class Fetcher {
    */
   async schedule<T>(uri: string, query?: Record<string, any>, method?: HTTPVerbsEnum, data?: Record<string, any>) {
     const isImgEndpoint = uri.startsWith(IMG_BASE_URL)
-    const endpoint = isImgEndpoint
-      ? uri
-      : API_BASE_URL + (query && typeof query === 'object' ? Fetcher.addQueryToUri(uri, query) : uri)
+    const path = query && typeof query === 'object' ? Fetcher.addQueryToUri(uri, query) : uri
+
+    // endpoint is the cache identity, requestUrl is what we fetch
+    // Keeping them separate means changing proxy doesn't invalidate cache.
+    const endpoint = isImgEndpoint ? uri : API_BASE_URL + path
+    const requestUrl = isImgEndpoint ? uri : this.apiBaseUrl + path
 
     const isCsvEndpoint = uri.endsWith('/download')
 
@@ -242,7 +258,7 @@ export class Fetcher {
 
     options.headers = Object.fromEntries(clonedHeaders)
 
-    const execute = () => this.limiter.schedule(() => this.fetch<T>(endpoint, options, isImgEndpoint || isCsvEndpoint))
+    const execute = () => this.limiter.schedule(() => this.fetch<T>(requestUrl, options, isImgEndpoint || isCsvEndpoint))
 
     return this.cache?.get(execute, endpoint, options) ?? execute()
   }
