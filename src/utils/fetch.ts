@@ -236,15 +236,11 @@ export class Fetcher {
       const stringifiedData = JSON.stringify(Fetcher.transformData(data))
       options.body = stringifiedData
 
-      // Header names must be set in lower case here: `clonedHeaders` was built by iterating a
-      // `Headers`, which lower-cases the names it yields, and a `Map` keyed `content-type` happily
-      // takes a second `Content-Type` entry. `Object.fromEntries` keeps both, and fetch then joins
-      // them into `content-type: application/json, application/json`, which Discogs rejects.
+      // Using lower-case keys avoids duplicate values (`content-type: application/json, application/json`) in browsers
       clonedHeaders.set('content-type', 'application/json')
 
-      // `Content-Length` is a forbidden header name in browsers — the user agent computes it — and
-      // `Buffer` only exists on Node, where referencing it in a bundled browser build throws a
-      // `ReferenceError`. Set it only where it is both available and honoured.
+      // `Content-Length` is a forbidden header name in browsers, which calculate and fill the value themselves.
+      // `Buffer` only exists on Node, so is a perfect gate to avoid setting a forbidden header in browsers.
       if (typeof Buffer !== 'undefined') {
         clonedHeaders.set('content-length', Buffer.byteLength(stringifiedData, 'utf8').toString())
       }
