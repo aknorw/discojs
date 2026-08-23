@@ -236,8 +236,14 @@ export class Fetcher {
       const stringifiedData = JSON.stringify(Fetcher.transformData(data))
       options.body = stringifiedData
 
-      clonedHeaders.set('Content-Type', 'application/json')
-      clonedHeaders.set('Content-Length', Buffer.byteLength(stringifiedData, 'utf8').toString())
+      // Using lower-case keys avoids duplicate values (`content-type: application/json, application/json`) in browsers
+      clonedHeaders.set('content-type', 'application/json')
+
+      // `Content-Length` is a forbidden header name in browsers, which calculate and fill the value themselves.
+      // `Buffer` only exists on Node, so is a perfect gate to avoid setting a forbidden header in browsers.
+      if (typeof Buffer !== 'undefined') {
+        clonedHeaders.set('content-length', Buffer.byteLength(stringifiedData, 'utf8').toString())
+      }
     }
 
     options.headers = Object.fromEntries(clonedHeaders)
