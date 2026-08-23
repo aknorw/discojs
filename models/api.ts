@@ -239,8 +239,6 @@ export const InventoryResponseIO = t.type({
 export type InventoryResponse = t.TypeOf<typeof InventoryResponseIO>
 
 /**
- * Inventory of the authenticated user, whose listings always carry the owner-only keys.
- *
  * @internal
  */
 export const OwnInventoryResponseIO = t.type({
