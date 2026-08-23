@@ -9,6 +9,8 @@ export type LimiterOptions = {
   requestLimitAuth?: number
   /** Interval to use to throttle requests in ms. Defaults to 60 seconds. */
   requestLimitInterval?: number
+  /** How many requests may be in flight at once. Defaults to 1. */
+  maxConcurrent?: number
 }
 
 interface CreateLimiterArgs {
@@ -16,6 +18,8 @@ interface CreateLimiterArgs {
   maxRequests: number
   /** Every `requestLimitInterval` ms, number of requests will be reset. */
   requestLimitInterval: number
+  /** How many requests may be in flight at once. */
+  maxConcurrent?: number
 }
 
 /**
@@ -23,9 +27,9 @@ interface CreateLimiterArgs {
  *
  * @internal
  */
-export function createLimiter({ maxRequests, requestLimitInterval }: CreateLimiterArgs) {
+export function createLimiter({ maxRequests, requestLimitInterval, maxConcurrent = 1 }: CreateLimiterArgs) {
   return new Bottleneck({
-    maxConcurrent: 1,
+    maxConcurrent,
     minTime: requestLimitInterval / maxRequests,
     reservoir: maxRequests,
     reservoirRefreshAmount: maxRequests,
