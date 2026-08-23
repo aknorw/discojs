@@ -66,6 +66,16 @@ const OriginalPriceIO = t.partial({
 /**
  * @internal
  */
+const OwnListingFieldsProps = {
+  weight: t.number,
+  format_quantity: t.Integer,
+  external_id: t.string,
+  location: t.string,
+}
+
+/**
+ * @internal
+ */
 export const ListingIO = t.intersection([
   ResourceURLIO,
   t.type({
@@ -115,8 +125,14 @@ export const ListingIO = t.intersection([
   }),
   t.partial({
     in_cart: t.boolean,
+    ...OwnListingFieldsProps,
   }),
 ])
+
+/**
+ * @internal
+ */
+export const OwnListingIO = t.intersection([ListingIO, t.type(OwnListingFieldsProps)])
 
 /**
  * @internal
@@ -252,5 +268,6 @@ export const OrderMessageIO = t.intersection([
 
 export type Fee = t.TypeOf<typeof FeeIO>
 export type Listing = t.TypeOf<typeof ListingIO>
+export type OwnListing = t.TypeOf<typeof OwnListingIO>
 export type Order = t.TypeOf<typeof OrderIO>
 export type OrderMessage = t.TypeOf<typeof OrderMessageIO>

@@ -6,7 +6,7 @@ import { FieldIO, PaginationIO, ResourceURLIO, ValueWithCurrencyIO } from './com
 import { CollectionValueIO, CustomFieldIO, FolderIO } from './folder'
 import { ExportItemIO } from './inventory'
 import { LabelIO } from './label'
-import { ListingIO, OrderIO, OrderMessageIO } from './marketplace'
+import { ListingIO, OrderIO, OrderMessageIO, OwnListingIO } from './marketplace'
 import { MasterVersionIO } from './master'
 import {
   ArtistReleaseIO,
@@ -237,6 +237,15 @@ export const InventoryResponseIO = t.type({
   listings: t.array(ListingIO),
 })
 export type InventoryResponse = t.TypeOf<typeof InventoryResponseIO>
+
+/**
+ * @internal
+ */
+export const OwnInventoryResponseIO = t.type({
+  pagination: PaginationIO,
+  listings: t.array(OwnListingIO),
+})
+export type OwnInventoryResponse = t.TypeOf<typeof OwnInventoryResponseIO>
 
 /**
  * @internal
