@@ -1,13 +1,12 @@
 import { createLimiter, Limiter } from './limiter'
 
-/** Bottleneck keeps its resolved settings on the store rather than the instance. */
 function settings(limiter: Limiter) {
   return (limiter as unknown as { _store: { storeOptions: { maxConcurrent: number; minTime: number } } })._store
     .storeOptions
 }
 
 describe('createLimiter', () => {
-  it('should serialise requests by default', () => {
+  it('should serialize requests by default', () => {
     const limiter = createLimiter({ maxRequests: 60, requestLimitInterval: 60_000 })
     expect(settings(limiter).maxConcurrent).toEqual(1)
   })

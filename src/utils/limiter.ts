@@ -9,15 +9,7 @@ export type LimiterOptions = {
   requestLimitAuth?: number
   /** Interval to use to throttle requests in ms. Defaults to 60 seconds. */
   requestLimitInterval?: number
-  /**
-   * How many requests may be in flight at once. Defaults to 1.
-   *
-   * This is independent of the rate limit: `minTime` still spaces request *starts*, so
-   * raising this cannot exceed the configured requests-per-interval. What it does fix is
-   * throughput collapsing to `1 / latency` when a response takes longer than `minTime` --
-   * with the default of 1, a 2s response caps you at 30 requests/minute however high the
-   * rate limit is.
-   */
+  /** How many requests may be in flight at once. Defaults to 1. */
   maxConcurrent?: number
 }
 
