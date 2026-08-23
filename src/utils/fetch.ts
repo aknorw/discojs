@@ -73,15 +73,7 @@ export type FetcherOptions = Partial<AuthOptions> &
     outputFormat?: OutputFormat
 
     /**
-     * Base URL for API requests, in place of `https://api.discogs.com`.
-     *
-     * Useful for pointing at a mock server in tests, or at a proxy — e.g. one that
-     * adds the `Access-Control-Expose-Headers` that Discogs omits, without which a
-     * browser cannot read the `X-Discogs-Ratelimit*` headers at all.
-     *
-     * Only the API host is affected. Image requests still go to `img.discogs.com`
-     * directly, and the URL reported to `cache` is always the canonical
-     * `https://api.discogs.com/...` one regardless of this setting — see `schedule`.
+     * Base URL for API requests.
      *
      * @default https://api.discogs.com
      */
@@ -133,7 +125,7 @@ export class Fetcher {
       apiBaseUrl = API_BASE_URL,
     } = options || {}
 
-    // Tolerate a trailing slash; every call site concatenates a path beginning with one.
+    // Ignore a trailing slash (we always append starting with one)
     this.apiBaseUrl = apiBaseUrl.replace(/\/+$/, '')
 
     this.userAgent = userAgent
@@ -238,16 +230,8 @@ export class Fetcher {
     const isImgEndpoint = uri.startsWith(IMG_BASE_URL)
     const path = query && typeof query === 'object' ? Fetcher.addQueryToUri(uri, query) : uri
 
-    // Two URLs, deliberately.
-    //
-    // `endpoint` is the request's canonical identity and is what `cache` is keyed on;
-    // `requestUrl` is where it actually goes. They diverge only when `apiBaseUrl` points
-    // somewhere else. Keeping the cache key canonical means switching to a proxy neither
-    // invalidates a consumer's cache nor changes what its cache-clearing patterns match.
-    //
-    // Note the auth header is signed over the *relative* `uri` below, and the PLAINTEXT
-    // signature (`consumerSecret&tokenSecret`) does not cover the URL at all, so this
-    // split is signature-safe. It would stop being so under HMAC-SHA1.
+    // endpoint is the cache identity, requestUrl is what we fetch
+    // Keeping them separate means changing proxy doesn't invalidate cache.
     const endpoint = isImgEndpoint ? uri : API_BASE_URL + path
     const requestUrl = isImgEndpoint ? uri : this.apiBaseUrl + path
 
