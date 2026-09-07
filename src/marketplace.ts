@@ -170,7 +170,7 @@ export class MarketPlace {
    * @link https://www.discogs.com/developers#page:marketplace,header:marketplace-new-listing
    */
   async createListing(this: Discojs, options: ListingOptions) {
-    return this.fetcher.schedule<CreateListingResponse>('/marketplace/listings/', {}, HTTPVerbsEnum.POST, options)
+    return this.fetcher.schedule<CreateListingResponse>('/marketplace/listings', {}, HTTPVerbsEnum.POST, options)
   }
 
   /**
